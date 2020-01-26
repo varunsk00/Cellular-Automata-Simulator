@@ -12,9 +12,41 @@ The focus of our design is to create a flexible "open" structure that supports a
 
 We plan on incorporating three major class types in our project. We will have a Cell class that holds a state and a color. An abstract Grid class be a 2D array of Cell objects. We will inherit the abstract Grid class for each of the simulation types and use it to set the specific rules for each simulation type. In the main, we load in the XML file, use it to set the current Grid type and control the animation of grid.
 
+* Cell
+    * Smallest Unit
+    * Holds variables representing current state and color
+    * Method updateCell() allows for a chnge of state
+
+* Grid (Abstract)
+    * Collection of cell objects arranged in a 2D grid
+    * getGrid() returns grid at an instant
+    * getScene() returns JavaFX visualization of grid
+    * updateGrid() check neighboring cell states of each cell and updates based on interaction rules
+    * handleMiddleCell() and handleEdgeCase() switch case to avoid null pointer exceptions
+
+* Grid subclasses
+    * Represent different simulation types
+    * Interpret configuration from XML file as constructor
+    * Inherits all methods from Grid 
+
+* Main class
+    * Runs JavaFX environment with loop
+    * Creates new Grid object based on the type of game from XML File
+    * Makes calls to Grid methods to update state
+    * Handles GUI
+
+![Hierarchy Sketch](Hierarchy.png)
+
+#### Different Implementations
+Instead of each type of grid class handling visualizing every Cell, we could create a GridVisualizer class that translates a Grid into shapes that can we can add to our scene.
+
+Instead of making a 2D array for our Grid, we could use an ArrayList of ArrayLists. This would enable us to dynamically grow the size of a grid. However, this would make our grid slower, since without indexing we would need to check the position for every cell.
+
+Instead of passing a state and color to each Cell object from the Grid, we could instead pass just a State and allow the Cell to recoler itself. This would shift the burden of determining a Cell's color to the Cell class, where it conceptually seems to belong. The problem with this implementation, however, is that it would require a new type (new class) of Cell for each different type of Game simulation. This would require us to use inheritance within Cells just to code one method that colors a cell, so to avoid creating many small classes, we can instead have the grid communicate the color to a general Cell object instead.
+
 ## User Interface
 
-The User Interface will consist of a JavaFX scene with an option to load a specific .xml configuration file. The user will be presented with a button to press that will allow them to browse their computer for a .xml configuration file. If the configuration file is not in the valid format, the user will get an error message prompting them to choose a file that is correctly formatted. The user will also be able to pause and play the simulation at will. They will also be an option to speed up the simulation and skip forward.
+The User Interface will consist of a JavaFX scene with an option to load a specific .xml configuration file. The user will be presented with a button to press that will allow them to browse their computer for a .xml configuration file. If the configuration file is not in the valid format, the user will get an error message prompting them to choose a file that is correctly formatted. Moreover, if the Simulation Type is not supported (does not have a corresponding GridType class), an error message will occur prompting the user to chose a simulation that exists. The user will also be able to pause and play the simulation at will by clicking. They will also be an option to speed up the simulation and skip forward.
 
 ![GUI Design](GUI_Design.png)
 
@@ -24,7 +56,7 @@ The User Interface will consist of a JavaFX scene with an option to load a speci
 
  - Cell Class
      - Contains information for the state of a given cell
-         - This could be encoded in a variety of types of instance variables, such as ints, Strings, or JavaFX Rectangle, for example.
+         - This could be encoded in a variety of types of instance variables, such as ints or Strings, for example.
      - Methods
          - public void updateCell(Color color, String state)
              - Update the color and state of a cell
@@ -32,7 +64,8 @@ The User Interface will consist of a JavaFX scene with an option to load a speci
              - Get the current state of the cell
          - public Color getColor()
              - Get the current color of the cell
-     - To shift responsibility off of the Grid class, Cells can store their Rectangle visualization in JavaFX and color their own Rectangle to be displayed in
+    -    *Justification*:
+        -    This class encodes the simple information that each entry in the grid has, including state and color. This allows the Grid to delegate the information to a new class when updating its state.
 
  - Abstract Grid Class
      - A 2D array of Cell objects
@@ -40,10 +73,10 @@ The User Interface will consist of a JavaFX scene with an option to load a speci
      - Returns a JavaFX scene from the grid that represents the current state of the simulation
          - Could return either a Collection of Cells or a Scene to be added to the root
     - Methods:
-        - public Grid() (constructor)
-            - Initializes a 2D array based on loaded configuration
         - public Cell[][] getGrid()
             - Returns 2d Array
+        - public Scene getScene()
+            - Returns a Scene representation of the Grid using Cell's stored colors to display them.
         - public abstract updateGrid()
             - Runs rules once and changes state of each cell
             - Coded in subclasses
@@ -53,12 +86,13 @@ The User Interface will consist of a JavaFX scene with an option to load a speci
         - public abstract handleEdgeCell()
          - Updates the state of a cell on the edge of the grid
          - Must be able to catch a null pointer exception
-    
+    - *Justification:* This adds flexibility to our design and allows us to be able to implement new simulations later on. By having the main class deal with abstract grids, and having concrete grid extensions code the different rules of a simluation, we can add a new simulation type by simply adding a new subclass that extends grid. Moreover, this class encodes similarities between Grids, such as the method getGrid() which returns the 2D array (a method all Grid objects, regardless of simulation type).
 
  - Concrete Grid subclasses
      - Extends Grid class and represents a distinct type of simulation (fire spread, population, water flow)
      - Constructor takes an XML file as a parameter which contains information that is set to instance variables for the Grid Type
      - Changes updateState() method in Grid class based on rules of simuation
+      - *Justification:* As mentioned above, these subclasses allow us to add future simulation types to our game. These classes encode the differences between Simulations, specifically within the updateState() method. This encodes the rules of the simulation by changing each Cell based on conditions involving their neighbors.
 
  - Main Class
      - Constantly updates the simulation with inputs from other private classes (Simulation loop)
@@ -72,7 +106,8 @@ The User Interface will consist of a JavaFX scene with an option to load a speci
          - private Grid loadGrid(File file)
              - Read first line of the file to determine simulation type
              - Create Grid type
-
+    - *Justification*: Since we are using JavaFX, we need a Game Loop, which is implemented in the main class. Using the start() and step() methods, this class essentially runs the game smoothly using GUIs.
+    
 #### Use Cases
 
 *Use Case One*
@@ -120,28 +155,30 @@ We also spent time considering the interaction between the Cell and Grid Classes
     * **Neighboring cells w/n grid and Edge Cases**
 
 
-   Secondary
+    Secondary
     * *Loading XML Config*
     * *Convert grid to visualization*
 
  * Team Member #2: Jaidha
+
     Primary
     * **Setup Main classes and game loop**
     * **Loading XML Config**
     * **Cell class**
 
 
-   Secondary
+    Secondary
     * *GUI development*
     * *Segregation, predator-prey, and fire*
 
     
  * Team Member #3: Eric
+
     Primary
     * **Convert grid to visualization**
     * **GUI development**
 
 
-   Secondary
+    Secondary
     * *Neighboring cells w/n grid*
     * *Segregation, predator-prey, and fire*
