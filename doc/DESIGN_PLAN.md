@@ -15,14 +15,14 @@ We plan on incorporating three major class types in our project. We will have a 
 * Cell
     * Smallest Unit
     * Holds variables representing current state and color
-    * Method updateCell() allows for a chnge of state
+    * Method updateCell() allows for a change of state
 
 * Grid (Abstract)
     * Collection of cell objects arranged in a 2D grid
     * getGrid() returns grid at an instant
     * getScene() returns JavaFX visualization of grid
     * updateGrid() check neighboring cell states of each cell and updates based on interaction rules
-    * handleMiddleCell() and handleEdgeCase() switch case to avoid null pointer exceptions
+    * handleMiddleCell() and handleEdgeCase() switch case to avoid index out of bounds error
 
 * Grid subclasses
     * Represent different simulation types
@@ -31,22 +31,22 @@ We plan on incorporating three major class types in our project. We will have a 
 
 * Main class
     * Runs JavaFX environment with loop
-    * Creates new Grid object based on the type of game from XML File
+    * Creates new Grid object based on the type of game from XML file
     * Makes calls to Grid methods to update state
     * Handles GUI
 
 ![Hierarchy Sketch](Hierarchy.png)
 
 #### Different Implementations
-Instead of each type of grid class handling visualizing every Cell, we could create a GridVisualizer class that translates a Grid into shapes that can we can add to our scene.
+Instead of each type of grid class handling the conversion to a scene, we could create a separate class that offloads that functionality and returns a scene.
 
-Instead of making a 2D array for our Grid, we could use an ArrayList of ArrayLists. This would enable us to dynamically grow the size of a grid. However, this would make our grid slower, since without indexing we would need to check the position for every cell.
+Instead of making a 2D array for our Grid, we could use an ArrayList of ArrayLists. This would enable us to dynamically grow the size of a grid. However, this would make our grid slower, since without indexing we would need to constantly be checking for the position of each cell.
 
-Instead of passing a state and color to each Cell object from the Grid, we could instead pass just a State and allow the Cell to recoler itself. This would shift the burden of determining a Cell's color to the Cell class, where it conceptually seems to belong. The problem with this implementation, however, is that it would require a new type (new class) of Cell for each different type of Game simulation. This would require us to use inheritance within Cells just to code one method that colors a cell, so to avoid creating many small classes, we can instead have the grid communicate the color to a general Cell object instead.
+Instead of passing a state and color to each Cell object from the Grid, we could instead pass just a State and allow the Cell to re-color itself. This would shift the burden of determining a Cell's color to the Cell class, where it conceptually seems to belong. The problem with this implementation, however, is that it would require a new type (new class) of Cell for each different type of Game simulation. This would require us to use inheritance within Cells just to code one method that colors a cell, so to avoid creating many small classes, we can instead have the grid communicate the color to a general Cell object instead.
 
 ## User Interface
 
-The User Interface will consist of a JavaFX scene with an option to load a specific .xml configuration file. The user will be presented with a button to press that will allow them to browse their computer for a .xml configuration file. If the configuration file is not in the valid format, the user will get an error message prompting them to choose a file that is correctly formatted. Moreover, if the Simulation Type is not supported (does not have a corresponding GridType class), an error message will occur prompting the user to chose a simulation that exists. The user will also be able to pause and play the simulation at will by clicking. They will also be an option to speed up the simulation and skip forward.
+The User Interface will consist of a JavaFX scene with an option to load a specific .xml configuration file. The user will be presented with a button to press that will allow them to browse their computer for a .xml configuration file. If the configuration file is not in the valid format, the user will get an error message prompting them to choose a file that is correctly formatted. Moreover, if the Simulation Type is not supported (does not have a corresponding GridType class), an error message will occur prompting the user to chose a simulation that exists. The user will also be able to pause and play the simulation at will by clicking. There will also be an option to speed up or slow down the simulation, in addition to an option to skip forward.
 
 ![GUI Design](GUI_Design.png)
 
@@ -85,17 +85,17 @@ The User Interface will consist of a JavaFX scene with an option to load a speci
             - Updates the state of a cell in the middle of the grid
         - public abstract handleEdgeCell()
          - Updates the state of a cell on the edge of the grid
-         - Must be able to catch a null pointer exception
-    - *Justification:* This adds flexibility to our design and allows us to be able to implement new simulations later on. By having the main class deal with abstract grids, and having concrete grid extensions code the different rules of a simluation, we can add a new simulation type by simply adding a new subclass that extends grid. Moreover, this class encodes similarities between Grids, such as the method getGrid() which returns the 2D array (a method all Grid objects, regardless of simulation type).
+         - Must be able to catch an index out of bounds error
+    - *Justification:* This adds flexibility to our design and allows us to be able to implement new simulations later on. By having the main class deal with abstract grids, and having concrete grid extensions code the different rules of a simulation, we can add a new simulation type by simply adding a new subclass that extends grid. Moreover, this class encodes similarities between Grids, such as the method getGrid() which returns the 2D array (a method needed for all Grid objects, regardless of simulation type).
 
  - Concrete Grid subclasses
      - Extends Grid class and represents a distinct type of simulation (fire spread, population, water flow)
      - Constructor takes an XML file as a parameter which contains information that is set to instance variables for the Grid Type
-     - Changes updateState() method in Grid class based on rules of simuation
+     - implements updateState(), handleMiddleCell(), handleEdgeCell() method in Grid class based on rules of simulation
       - *Justification:* As mentioned above, these subclasses allow us to add future simulation types to our game. These classes encode the differences between Simulations, specifically within the updateState() method. This encodes the rules of the simulation by changing each Cell based on conditions involving their neighbors.
 
  - Main Class
-     - Constantly updates the simulation with inputs from other private classes (Simulation loop)
+     - Constantly updates the simulation with inputs from other classes (Simulation loop)
      - myGrid instance variable
      - Uses a JavaFX environment to present a GUI for the user
      - Handles XML file and calls appropriate grid object
@@ -106,45 +106,54 @@ The User Interface will consist of a JavaFX scene with an option to load a speci
          - private Grid loadGrid(File file)
              - Read first line of the file to determine simulation type
              - Create Grid type
-    - *Justification*: Since we are using JavaFX, we need a Game Loop, which is implemented in the main class. Using the start() and step() methods, this class essentially runs the game smoothly using GUIs.
+    - *Justification*: Since we are using JavaFX, we need a animation loop, which is implemented in the main class. Using the start() and step() methods, this class essentially runs the game smoothly using GUIs.
     
 #### Use Cases
 
 *Use Case One*
-1. Create a GameOfLife grid class that inherits abstract Grid
-2. call updateGrid() on whole grid
-3. while looping through grid, handleMiddleCell() is called due to indices within array
+1. In Main program start(), call loadGrid() method for starting simulation
+2. In loadGrid(), read top of XML file to create a GameOfLife grid object that inherits abstract Grid
+3. Set this grid to myGrid instance varaible
+4. In step() function, updateGrid() is called on whole grid
+5. Within updateGrid(), handleMiddleCell() is called for this Cell
+6. Cell.setState() is called in handleMiddleCell() to set its String to "dead"
 
 *Use Case Two*
-1. Create a GameOfLife grid class that inherits abstract Grid
-2. call updateGrid() on whole grid
-3. while looping through grid, handleEdgeCell() is called due to indices within array
+1. In Main program start(), call loadGrid() method for starting simulation
+2. In loadGrid(), read top of XML file to create a GameOfLife grid object that inherits abstract Grid
+3. Set this grid to myGrid instance varaible
+4. In step() function, updateGrid() is called on whole grid
+5. Within updateGrid(), handleEdgeCell() is called for this Cell
+6. handleEdgeCell() catches index out of bounds errors while counting neighbors
+7. Cell.setState() is called in handleEdgeCell() to set its String to "Live"
 
 *Use Case Three*
 
-1. in the Main classes step() function, first call gridType.updateGrid()
+1. In the Main classes step() function, first call gridType.updateGrid()
 2. updateGrid() iterates through each cell calling either handleMiddleCell() or handleEdgeCell()
-3. handleMiddleCell() or handleEdgeCell() calls Cell.update() with the current state and color.
+3. handleMiddleCell() or handleEdgeCell() calls Cell.updateCell() with the new state and color.
 4. After each cells state has been updated, the step() function then adds the Scene returned from grid.getScene() to the root to be displayed
 
 *Use Case Four*
-1. In the Main start() method, read in the Simulation Type from the XML file.
-2. Based on the type, create a Grid subclass of the simulation type and pass in the XML file as a parameter
+1. In the Main start() method, read in the Simulation Type from the XML file in loadGrid(file)
+2. Based on the simulation type specified in the XML file, create a Grid subclass of the simulation type and pass in the XML file as a parameter for the constructor
 3. The Grid subclass constructor parses the XML and sets instanceVariable myProbCatchFire equal to the value
 
 *Use Case Five*
 1. Click open on the GUI
-2. Select new XML file
-3. call loadGrid() function with file as parameter
-4. in loadGrid(), read the type of Grid dictated by XML, create that grid subclass with XML file as parameter to encode variables like probCatch and initial state
-5. set new grid object to myGrid and begin running step
+2. Select new XML file in window
+3. This call loadGrid() function with file as parameter
+4. In loadGrid(), read the type of Grid dictated by XML, create that grid subclass with XML file as parameter to encode variables like probCatch and initial state
+5. Set new grid object to myGrid and begin running step
 
 
 ## Design Considerations
 
-During discussion, the group decided on giving the Grid subclasses a large amount of functionality, including converting a grid to a JavaFX Scene, loading an XML file configuration, and updating the cells within a grid. From an object-oriented perspective, we believed that it made the most sense for the Grid object to handle these tasks. The Grid is the only object with access to every cell, the array of cells, and the ability to update cells. It made the most sense that the XML file could define the size of the grid as part of the grid constructor and the grid itself has the ability to return its scene. We discussed how this may be giving too much functionality to a single class and may result in a code smell (long class). As we continue to develop, we may have to offload these functionalities into other classes to improve our code sign and readability.
+During discussion, the group decided on giving the Grid subclasses a large amount of functionality, including converting a grid to a JavaFX Scene, loading an XML file configuration, and updating the cells within a grid. From an object-oriented perspective, we believed that it made the most sense for the Grid object to handle these tasks. The Grid is the only object with access to every cell, the array of cells, and the ability to update cells. It made the most sense that the XML file could define the size of the grid as part of the grid constructor and the grid itself has the ability to return its scene. We discussed how this may be giving too much functionality to a single class and may result in a code smell (long class). As we continue to develop, we may have to offload these functionalities into other classes to improve our code design and readability.
 
-We also spent time considering the interaction between the Cell and Grid Classes. We decided to make Cell an object with enough functionality to update its own state and store its updated state. We considered relegating this function to the Grid class, but decided against it in order to make the Cell class more actively involved within the program instead of simply being a variable storage vessel. We decided on making the Grid class abstract since a Grid Object must have certain rules before being initialized. The Grid class simply provides methods intrinsic to all Grids. The Grid subclasses, however, are instantiable and inherit all the method from the Grid class, since they have loaded their configurations and have set rules.
+We also spent time considering the interaction between the Cell and Grid Classes. We decided to make Cell an object with enough functionality to only store its updated state and Color. We considered relegating this function to the Grid class, where it would contain a 2D array of Strings. We decided against this since we believed it would lead to messy and unreadable code, with indexing arrays and dealing with different types of Strings.
+
+We also decided on making the Grid class abstract since a Grid Object must have certain rules before being initialized. The Grid class simply provides methods intrinsic to all Grids. The Grid subclasses, however, are instantiable and inherit all the methods from the Grid class, since they have loaded their configurations and have set rules.
 
 ## Team Responsibilities
 
@@ -173,7 +182,7 @@ We also spent time considering the interaction between the Cell and Grid Classes
 
     
  * Team Member #3: Eric
-
+ 
     Primary
     * **Convert grid to visualization**
     * **GUI development**
