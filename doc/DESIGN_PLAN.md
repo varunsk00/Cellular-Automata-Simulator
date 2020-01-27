@@ -10,7 +10,7 @@ The focus of our design is to create a flexible "open" structure that supports a
 
 ## Overview
 
-We plan on incorporating three major class types in our project. We will have a Cell class that holds a state and a color. An abstract Grid class be a 2D array of Cell objects. We will inherit the abstract Grid class for each of the simulation types and use it to set the specific rules for each simulation type. In the main, we load in the XML file, use it to set the current Grid type and control the animation of grid.
+We plan on incorporating three major class types in our project. We will have a Cell class that holds a state and a color. An abstract Grid class will be a 2D array of Cell objects. We will inherit the abstract Grid class for each of the simulation types and use it to set the specific rules for each simulation type. In main, we load in the XML file, use it to set the current Grid type and control the animation of grid.
 
 * Cell
     * Smallest Unit
@@ -19,18 +19,19 @@ We plan on incorporating three major class types in our project. We will have a 
 
 * Grid (Abstract)
     * Collection of cell objects arranged in a 2D grid
-    * getGrid() returns grid at an instant
-    * getScene() returns JavaFX visualization of grid
+    * getGrid() returns the grid at an instant
+    * getScene() returns JavaFX visualization of grid as a scene
     * updateGrid() check neighboring cell states of each cell and updates based on interaction rules
     * handleMiddleCell() and handleEdgeCase() switch case to avoid index out of bounds error
 
 * Grid subclasses
-    * Represent different simulation types
-    * Interpret configuration from XML file as constructor
+    * Represents different simulation types
+    * Interprets the configuration from XML file as constructor
+    * Updates grid based on the rules from the simulation type
     * Inherits all methods from Grid 
 
 * Main class
-    * Runs JavaFX environment with loop
+    * Runs JavaFX environment with animation loop
     * Creates new Grid object based on the type of game from XML file
     * Makes calls to Grid methods to update state
     * Handles GUI
@@ -64,8 +65,7 @@ The User Interface will consist of a JavaFX scene with an option to load a speci
              - Get the current state of the cell
          - public Color getColor()
              - Get the current color of the cell
-    -    *Justification*:
-        -    This class encodes the simple information that each entry in the grid has, including state and color. This allows the Grid to delegate the information to a new class when updating its state.
+    -    *Justification*: This class encodes the simple information that each entry in the grid has, including state and color. This allows the Grid to delegate the information to a new class when updating its state.
 
  - Abstract Grid Class
      - A 2D array of Cell objects
@@ -113,7 +113,7 @@ The User Interface will consist of a JavaFX scene with an option to load a speci
 *Use Case One*
 1. In Main program start(), call loadGrid() method for starting simulation
 2. In loadGrid(), read top of XML file to create a GameOfLife grid object that inherits abstract Grid
-3. Set this grid to myGrid instance varaible
+3. Set this grid to myGrid instance variable
 4. In step() function, updateGrid() is called on whole grid
 5. Within updateGrid(), handleMiddleCell() is called for this Cell
 6. Cell.setState() is called in handleMiddleCell() to set its String to "dead"
@@ -121,7 +121,7 @@ The User Interface will consist of a JavaFX scene with an option to load a speci
 *Use Case Two*
 1. In Main program start(), call loadGrid() method for starting simulation
 2. In loadGrid(), read top of XML file to create a GameOfLife grid object that inherits abstract Grid
-3. Set this grid to myGrid instance varaible
+3. Set this grid to myGrid instance variable
 4. In step() function, updateGrid() is called on whole grid
 5. Within updateGrid(), handleEdgeCell() is called for this Cell
 6. handleEdgeCell() catches index out of bounds errors while counting neighbors
