@@ -25,7 +25,7 @@ public class Main extends Application {
         primaryStage.setTitle("Simulation");
         startAnimationLoop();
 
-        Grid grid = new Grid(20,20);
+        Grid grid = new Grid(100,100);
         Scene scene = grid.getScene(SCENE_WIDTH,SCENE_HEIGHT);
 
         primaryStage.setScene(scene);
