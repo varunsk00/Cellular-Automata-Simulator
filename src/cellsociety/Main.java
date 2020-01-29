@@ -27,7 +27,8 @@ public class Main extends Application {
     startAnimationLoop();
 
     Grid grid = new Grid(100, 100);
-    Scene scene = grid.getScene(SCENE_WIDTH, SCENE_HEIGHT);
+    GridView gridView = new GridView();
+    Scene scene = gridView.getScene(grid, SCENE_WIDTH, SCENE_HEIGHT);
 
     primaryStage.setScene(scene);
     primaryStage.show();
