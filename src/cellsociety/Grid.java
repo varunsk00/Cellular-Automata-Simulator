@@ -1,4 +1,5 @@
 package cellsociety;
+
 import javafx.scene.paint.Color;
 
 
@@ -12,10 +13,11 @@ public class Grid {
   private int columns;
 
   /**
+   * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
+   * based on given rows and columns
+   *
    * @param rows    the number of rows to generate in our grid
-   * @param columns the number of columns to generate in our grid Sets rows and columns and instance
-   *                variables Calls createGrid to initialize a grid of cells based on given rows and
-   *                columns
+   * @param columns the number of columns to generate in our grid
    **/
   public Grid(int rows, int columns) {
     this.rows = rows;
@@ -39,7 +41,7 @@ public class Grid {
   }
 
   /**
-   * @returna 2D array Cells
+   * @return 2D array Cells
    */
   public Cell[][] getGrid() {
     return this.grid;
@@ -48,7 +50,7 @@ public class Grid {
   /**
    * @return the the number of rows in our grid
    */
-  public int getRows(){
+  public int getRows() {
     return this.rows;
   }
 
@@ -61,7 +63,8 @@ public class Grid {
 
   /**
    * Checks every cell in the current grid and updates based on state of neighbors
-   **/
+   * @return a grid (2D array of cells) with updated state
+   */
   public Cell[][] updateGrid() {
     int rows = grid.length;
     int columns = grid[0].length;

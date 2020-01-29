@@ -10,9 +10,11 @@ import javafx.scene.shape.Shape;
 public class GridView {
 
   /**
+   * Calls renderGrid() to turn grid into a collection of shape objects that we can add to the root
+   * of our scene
+   *
    * @param sceneWidth  the width of the scene we want to return
-   * @param sceneHeight the height of the scene we want to return Calls renderGrid() to turn grid
-   *                    into a collection of shape objects that we can add to the root of our scene
+   * @param sceneHeight the height of the scene we want to return. C
    * @return a scene that is a rendered version of our grid
    **/
   public Scene getScene(Grid grid, double sceneWidth, double sceneHeight) {
@@ -28,7 +30,15 @@ public class GridView {
     return scene;
   }
 
-  private Collection<Shape> renderGrid(Cell[][] grid, double cellWidth, double cellHeight) {
+  /**
+   * Takes in a grid and transforms it into a collection of shapes that can be visualized
+   *
+   * @param grid       the grid (2D array of cells) to render
+   * @param cellWidth  the width of each cell once it is rendered
+   * @param cellHeight the height of each cell once it is rendered
+   * @return a collection of cells transformed into shapes
+   **/
+  public Collection<Shape> renderGrid(Cell[][] grid, double cellWidth, double cellHeight) {
     Collection<Shape> cells = new ArrayList<>();
     for (int i = 0; i < grid.length; i++) {
       Cell[] column = grid[i];

@@ -19,7 +19,8 @@ public class Cell {
   }
 
   /**
-   * @param color the mew color for cell
+   * Updates instance variables of cell
+   * @param color the new color for cell
    * @param state the new state for cell Sets the cell's instance variables to new values
    **/
   public void update(Color color, String state) {
