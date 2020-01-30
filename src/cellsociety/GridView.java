@@ -33,22 +33,25 @@ public class GridView {
   /**
    * Takes in a grid and transforms it into a collection of shapes that can be visualized
    *
-   * @param grid       the grid (2D array of cells) to render
+   * @param grid       the grid (ArrayList of ArrayList of cells) to render
    * @param cellWidth  the width of each cell once it is rendered
    * @param cellHeight the height of each cell once it is rendered
    * @return a collection of cells transformed into shapes
    **/
-  public Collection<Shape> renderGrid(Cell[][] grid, double cellWidth, double cellHeight) {
+  public Collection<Shape> renderGrid(ArrayList<ArrayList<Cell>> grid, double cellWidth,
+      double cellHeight) {
     Collection<Shape> cells = new ArrayList<>();
-    for (int i = 0; i < grid.length; i++) {
-      Cell[] column = grid[i];
-      for (int j = 0; j < column.length; j++) {
-        Cell cell = grid[i][j];
-        Shape shape = new Rectangle(i * cellWidth, j * cellHeight, cellWidth, cellHeight);
+
+    for (ArrayList<Cell> row : grid) {
+      for (Cell cell : row) {
+        int y = grid.indexOf(row);
+        int x = grid.indexOf(cell);
+        Shape shape = new Rectangle(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
         shape.setFill(cell.getColor());
         cells.add(shape);
       }
     }
+
     return cells;
   }
 
