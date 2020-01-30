@@ -23,21 +23,22 @@ public class Grid {
   public Grid(int rows, int columns) {
     this.rows = rows;
     this.columns = columns;
-    this.grid = new ArrayList<>();
-    createGrid();
+    this.grid = createGrid();
   }
 
   /**
    * Initializes an ArrayList of ArrayLists representative of the grid
    **/
-  private void createGrid() {
+  public ArrayList<ArrayList<Cell>> createGrid() {
+    ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
     for (int i = 0; i < rows; i++) {
       ArrayList<Cell> row = new ArrayList<>();
       for (int j = 0; j < columns; j++) {
         row.add(new Cell(Color.WHITE, "empty"));
       }
-      grid.add(row);
+      ret.add(row);
     }
+    return ret;
   }
 
   /**
@@ -68,22 +69,21 @@ public class Grid {
    */
   public void updateGrid() {
     ArrayList<ArrayList<Cell>> newGrid = grid;
-
     for (ArrayList<Cell> row : newGrid) {
       for (Cell cell : row) {
         int x = grid.indexOf(row);
         int y = row.indexOf(cell);
-        if(x%2==0 && y%2!=0){
+        if (x % 2 == 0 && y % 2 != 0) {
           cell.update(Color.BLACK, "full");
         }
-        if(x%2!=0 && y%2==0){
+        if (x % 2 != 0 && y % 2 == 0) {
           cell.update(Color.BLACK, "full");
         }
       }
     }
     this.grid = newGrid;
   }
-
+}
 //  private Cell updateMiddleCell(int x, int y) {
 //    Cell cell = grid.get(x).get(y);
 //    String state = "burning";
@@ -109,4 +109,3 @@ public class Grid {
 //    Cell cell = grid.get(i).get(j);;
 //    return cell.getState();
 //  }
-}

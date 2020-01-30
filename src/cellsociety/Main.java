@@ -19,8 +19,6 @@ public class Main extends Application {
   private static double SCENE_WIDTH = 400;
   private static double SCENE_HEIGHT = 500;
 
-  private Grid grid = new Grid(100, 100);
-
   /**
    * Begins our JavaFX application Gets the current grid and sets the stage to a scene with that
    * grid
@@ -28,12 +26,13 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
 
+    PercGrid grid = new PercGrid(100, 100);
+    grid.updateGrid();
     Group root = new Group();
 
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    grid.updateGrid();
     GridView gridView = new GridView();
     Group gridGroup = gridView.createGroup(grid, SCENE_WIDTH, SCENE_HEIGHT - (SCENE_HEIGHT/10));
 
