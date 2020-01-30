@@ -19,7 +19,7 @@ public class Main extends Application {
   private static double SCENE_WIDTH = 400;
   private static double SCENE_HEIGHT = 500;
 
-  private Grid grid;
+  private Grid grid = new Grid(100, 100);
 
   /**
    * Begins our JavaFX application Gets the current grid and sets the stage to a scene with that
@@ -29,21 +29,22 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
 
     Group root = new Group();
-    grid = new Grid(100, 100);
-    grid.updateGrid();
 
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    GridView gridView = new GridView();
-    Group gridGroup = gridView.createGroup(grid, SCENE_WIDTH, SCENE_HEIGHT - (SCENE_HEIGHT/10) + 5);
+    Grid grid = new Grid(100,100);
+
+    GridView gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT - (SCENE_HEIGHT/10));
+    root.getChildren().addAll(gridView.getGridView());
 
     Visualizer GUIControl = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
-    root.getChildren().addAll(GUIControl.createSimulator(), gridGroup);
-
+    root.getChildren().add(GUIControl.createSimulator());
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     primaryStage.setScene(scene);
     primaryStage.show();
+    gridView.update();
+
   }
 
   private void startAnimationLoop() {

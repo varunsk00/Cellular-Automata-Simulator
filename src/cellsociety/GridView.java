@@ -5,57 +5,56 @@ import java.util.ArrayList;
 import java.util.Collection;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class GridView {
-  private double scene_height;
-  private double scene_width;
-  /**
-   * Calls renderGrid() to turn grid into a collection of shape objects that we can add to the root
-   * of our scene
-   *
-   * @param sceneWidth  the width of the scene we want to return
-   * @param sceneHeight the height of the scene we want to return. C
-   * @return a scene that is a rendered version of our grid
-   **/
-  public Group createGroup(Grid grid, double sceneWidth, double sceneHeight) {
-    scene_width = sceneWidth;
-    scene_height = sceneHeight;
-    Group gridView = new Group();
 
-    double cellWidth = sceneWidth / grid.getColumns();
-    double cellHeight = sceneHeight / grid.getRows();
+  private double sceneHeight;
+  private double sceneWidth;
+  private double cellWidth;
+  private double cellHeight;
+  private Grid grid;
+  private Collection<Shape> gridView;
 
-    Collection<Shape> cells = renderGrid(grid, cellWidth, cellHeight);
-    gridView.getChildren().addAll(cells);
+  public GridView(Grid grid, double sceneWidth, double sceneHeight) {
+    this.sceneHeight = sceneHeight;
+    this.sceneWidth = sceneWidth;
+    this.grid = grid;
+    this.cellWidth = sceneWidth / grid.getColumns();
+    this.cellHeight = sceneHeight / grid.getRows();
+    this.gridView = new ArrayList<>();
+    renderGrid();
+  }
 
-    return gridView;
+  public Collection<Shape> getGridView() {
+    return this.gridView;
   }
 
   /**
    * Takes in a grid and transforms it into a collection of shapes that can be visualized
    *
-   * @param grid       the grid (ArrayList of ArrayList of cells) to render
-   * @param cellWidth  the width of each cell once it is rendered
-   * @param cellHeight the height of each cell once it is rendered
    * @return a collection of cells transformed into shapes
    **/
-  public Collection<Shape> renderGrid(Grid grid, double cellWidth,
-                                      double cellHeight) {
-    Collection<Shape> cells = new ArrayList<>();
-
+  public void renderGrid() {
     for (ArrayList<Cell> row : grid.getGrid()) {
       for (Cell cell : row) {
         int x = grid.getGrid().indexOf(row);
         int y = row.indexOf(cell);
-        Shape shape = new Rectangle(x * cellWidth, y * cellHeight+(scene_height/10), cellWidth, cellHeight);
+        double heightOffset = sceneHeight / 10;
+        Shape shape = new Rectangle(x * cellWidth, y * cellHeight + heightOffset, cellWidth,
+            cellHeight);
         shape.setFill(cell.getColor());
-        cells.add(shape);
+        gridView.add(shape);
       }
     }
+  }
 
-    return cells;
+  public void update(){
+    for (Shape cell : gridView) {
+      cell.setFill(Color.LIGHTBLUE);
+    }
   }
 
 }

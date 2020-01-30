@@ -15,7 +15,6 @@ public class Cell {
    **/
   public Cell(Color color, String state) {
     update(color, state);
-
   }
 
   /**
