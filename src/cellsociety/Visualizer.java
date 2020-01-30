@@ -12,6 +12,10 @@ public class Visualizer {
     private double SIZE_X;
     private double SIZE_Y;
 
+    private boolean playPressed;
+    private boolean speedUpPressed;
+    private boolean skipPressed;
+
     private final static Color HEADER_COLOR =  Color.LIGHTBLUE;
 
     /**
@@ -22,6 +26,9 @@ public class Visualizer {
     public Visualizer(double x, double y) {
         this.SIZE_X = x;
         this.SIZE_Y = y;
+        this.playPressed = false;
+        this.skipPressed = false;
+        this.speedUpPressed = false;
     }
 
     /**
@@ -38,7 +45,7 @@ public class Visualizer {
         playButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                playPressed = true;
             }
         });
 
@@ -50,7 +57,7 @@ public class Visualizer {
         speedUpButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                speedUpPressed = true;
             }
         });
 
@@ -62,7 +69,7 @@ public class Visualizer {
         skipButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                    skipPressed = true;
             }
         });
 
@@ -72,4 +79,9 @@ public class Visualizer {
 
         return returnedGroup;
     }
+
+    public Group createGrid(Grid Grid) {
+
+    }
+
 }
