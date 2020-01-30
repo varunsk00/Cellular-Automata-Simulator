@@ -15,19 +15,18 @@ public class GridView {
    *
    * @param sceneWidth  the width of the scene we want to return
    * @param sceneHeight the height of the scene we want to return. C
-   * @return a scene that is a rendered version of our grid
+   * @return a group that has a rendered version of our grid
    **/
-  public Scene getScene(Grid grid, double sceneWidth, double sceneHeight) {
-    Group root = new Group();
+  public Group createGroup(Grid grid, double sceneWidth, double sceneHeight) {
+    Group gridView = new Group();
 
     double cellWidth = sceneWidth / grid.getColumns();
     double cellHeight = sceneHeight / grid.getRows();
 
     Collection<Shape> cells = renderGrid(grid.getGrid(), cellWidth, cellHeight);
-    root.getChildren().addAll(cells);
+    gridView.getChildren().addAll(cells);
 
-    Scene scene = new Scene(root, sceneWidth, sceneHeight);
-    return scene;
+    return gridView;
   }
 
   /**
