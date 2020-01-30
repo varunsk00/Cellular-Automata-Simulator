@@ -33,17 +33,18 @@ public class Main extends Application {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    grid.updateGrid();
-    GridView gridView = new GridView();
-    Group gridGroup = gridView.createGroup(grid, SCENE_WIDTH, SCENE_HEIGHT - (SCENE_HEIGHT/10));
+    Grid grid = new Grid(100,100);
 
+    GridView gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT - (SCENE_HEIGHT/10));
+    root.getChildren().addAll(gridView.getGridView());
 
     Visualizer GUIControl = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
-    root.getChildren().addAll(GUIControl.createSimulator(), gridGroup);
-
+    root.getChildren().add(GUIControl.createSimulator());
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     primaryStage.setScene(scene);
     primaryStage.show();
+    gridView.update();
+
   }
 
   private void startAnimationLoop() {
