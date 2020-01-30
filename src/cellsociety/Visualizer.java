@@ -6,9 +6,6 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-
-import java.util.ArrayList;
 
 public class Visualizer {
 
@@ -40,7 +37,7 @@ public class Visualizer {
     playButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        playPressed = true;
+        playPressed = (playPressed) ? false : true;
       }
     });
 
@@ -52,7 +49,7 @@ public class Visualizer {
     speedUpButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        speedUpPressed = true;
+        speedUpPressed = (speedUpPressed) ? false : true;
       }
     });
 
@@ -64,7 +61,7 @@ public class Visualizer {
     skipButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        skipPressed = true;
+        skipPressed = (skipPressed) ? false : true;
       }
     });
 
@@ -95,6 +92,11 @@ public class Visualizer {
     }
     return returnedCells;
   }
+
+  public boolean getPlayStatus() {
+    return playPressed;
+  }
+
 }
   /**
    * NOTE: not sure what the point of this is, but leaving it in
