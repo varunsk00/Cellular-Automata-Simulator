@@ -3,9 +3,12 @@ package cellsociety;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
 
 
 public class Main extends Application {
@@ -14,7 +17,7 @@ public class Main extends Application {
   private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private static double SCENE_WIDTH = 400;
-  private static double SCENE_HEIGHT = 400;
+  private static double SCENE_HEIGHT = 500;
 
   /**
    * Begins our JavaFX application Gets the current grid and sets the stage to a scene with that
@@ -23,13 +26,18 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
 
+    Group root = new Group();
+
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
     Grid grid = new Grid(100, 100);
     GridView gridView = new GridView();
-    Scene scene = gridView.getScene(grid, SCENE_WIDTH, SCENE_HEIGHT);
 
+    Visualizer GUIControl = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
+    root.getChildren().add(GUIControl.createSimulator());
+
+    Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     primaryStage.setScene(scene);
     primaryStage.show();
   }

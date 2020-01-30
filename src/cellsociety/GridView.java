@@ -1,5 +1,6 @@
 package cellsociety;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import javafx.scene.Group;
@@ -23,8 +24,8 @@ public class GridView {
     double cellWidth = sceneWidth / grid.getColumns();
     double cellHeight = sceneHeight / grid.getRows();
 
-    Collection<Shape> cells = renderGrid(grid.getGrid(), cellWidth, cellHeight);
-    gridView.getChildren().addAll(cells);
+    Collection<Shape> cells = renderGrid(grid, cellWidth, cellHeight);
+    root.getChildren().addAll(cells);
 
     return gridView;
   }
@@ -37,14 +38,14 @@ public class GridView {
    * @param cellHeight the height of each cell once it is rendered
    * @return a collection of cells transformed into shapes
    **/
-  public Collection<Shape> renderGrid(ArrayList<ArrayList<Cell>> grid, double cellWidth,
+  public Collection<Shape> renderGrid(Grid grid, double cellWidth,
       double cellHeight) {
     Collection<Shape> cells = new ArrayList<>();
 
-    for (ArrayList<Cell> row : grid) {
+    for (ArrayList<Cell> row : grid.getGrid()) {
       for (Cell cell : row) {
-        int y = grid.indexOf(row);
-        int x = grid.indexOf(cell);
+        int x = grid.getGrid().indexOf(row);
+        int y = row.indexOf(cell);
         Shape shape = new Rectangle(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
         shape.setFill(cell.getColor());
         cells.add(shape);
