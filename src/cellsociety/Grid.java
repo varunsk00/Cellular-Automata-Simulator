@@ -1,6 +1,7 @@
 package cellsociety;
 
 import javafx.scene.paint.Color;
+import java.util.ArrayList;
 
 
 public class Grid {
@@ -8,7 +9,7 @@ public class Grid {
   /**
    * TODO Make abstract, updateGrid
    **/
-  private Cell[][] grid;
+  private ArrayList<ArrayList<Cell>> grid;
   private int rows;
   private int columns;
 
@@ -22,28 +23,27 @@ public class Grid {
   public Grid(int rows, int columns) {
     this.rows = rows;
     this.columns = columns;
-    this.grid = createGrid();
+    this.grid = new ArrayList<>();
+    createGrid();
   }
 
-  private Cell[][] createGrid() {
-    Cell[][] grid = new Cell[rows][columns];
+  /**
+   * Initializes an ArrayList of ArrayLists representative of the grid
+   **/
+  private void createGrid() {
     for (int i = 0; i < rows; i++) {
+      ArrayList<Cell> row = new ArrayList<>();
       for (int j = 0; j < columns; j++) {
-        // temporary code to show that the grid is working
-        if (i % 2 == 0) {
-          grid[i][j] = new Cell(Color.BLACK, "water");
-        } else {
-          grid[i][j] = new Cell(Color.WHITE, "empty");
-        }
+        row.add(new Cell(Color.WHITE, "empty"));
       }
+      grid.add(row);
     }
-    return grid;
   }
 
   /**
    * @return 2D array Cells
    */
-  public Cell[][] getGrid() {
+  public ArrayList<ArrayList<Cell>> getGrid() {
     return this.grid;
   }
 
@@ -63,50 +63,50 @@ public class Grid {
 
   /**
    * Checks every cell in the current grid and updates based on state of neighbors
+   *
    * @return a grid (2D array of cells) with updated state
    */
-  public Cell[][] updateGrid() {
-    int rows = grid.length;
-    int columns = grid[0].length;
-    Cell[][] newGrid = new Cell[rows][columns];
+  public void updateGrid() {
+    ArrayList<ArrayList<Cell>> newGrid = grid;
 
-    for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < columns; j++) {
-        //TODO is a try/catch loop better?
-        if (i > 0 && i < rows - 1 && j > 0 && j < columns - 1) {
-          updateMiddleCell(i, j);
-        } else {
-          updateEdgeCell(i, j);
+    for (ArrayList<Cell> row : newGrid) {
+      for (Cell cell : row) {
+        int x = grid.indexOf(row);
+        int y = row.indexOf(cell);
+        if(x%2==0 && y%2!=0){
+          cell.update(Color.BLACK, "full");
+        }
+        if(x%2!=0 && y%2==0){
+          cell.update(Color.BLACK, "full");
         }
       }
     }
-    return newGrid;
+    this.grid = newGrid;
   }
 
-  private Cell updateMiddleCell(int x, int y) {
-    Cell cell = grid[x][y];
-    String state = "burning";
-    //Check cell neighbors
-    for (int i = x - 1; i < x + 1; i++) {
-      for (int j = y - 1; j < y + 1; j++) {
-        if (getCellState(i, j) == state) {
-          cell.update(Color.RED, "burning");
-        }
-      }
-    }
+//  private Cell updateMiddleCell(int x, int y) {
+//    Cell cell = grid.get(x).get(y);
+//    String state = "burning";
+//    //Check cell neighbors
+//    for (int i = x - 1; i < x + 1; i++) {
+//      for (int j = y - 1; j < y + 1; j++) {
+//        if (getCellState(i, j) == state) {
+//          cell.update(Color.RED, "burning");
+//        }
+//      }
+//    }
+//
+//    return cell;
+//  }
 
-    return cell;
-  }
-
-  private Cell updateEdgeCell(int x, int y) {
-    //TODO
-    Cell cell = grid[x][y];
-    return cell;
-  }
-
-  private String getCellState(int i, int j) {
-    Cell cell = grid[i][j];
-    return cell.getState();
-  }
-
+//  private Cell updateEdgeCell(int x, int y) {
+//    //TODO
+//    Cell cell = grid.get(x).get(y);;
+//    return cell;
+//  }
+//
+//  private String getCellState(int i, int j) {
+//    Cell cell = grid.get(i).get(j);;
+//    return cell.getState();
+//  }
 }
