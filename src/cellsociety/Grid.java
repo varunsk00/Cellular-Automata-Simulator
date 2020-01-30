@@ -1,6 +1,7 @@
 package cellsociety;
 
 import javafx.scene.paint.Color;
+import java.util.ArrayList;
 
 
 public class Grid {
@@ -8,7 +9,7 @@ public class Grid {
   /**
    * TODO Make abstract, updateGrid
    **/
-  private Cell[][] grid;
+  private ArrayList<ArrayList<Cell>> grid;
   private int rows;
   private int columns;
 
@@ -22,28 +23,34 @@ public class Grid {
   public Grid(int rows, int columns) {
     this.rows = rows;
     this.columns = columns;
-    this.grid = createGrid();
+    this.grid = new ArrayList<>();
+    createGrid();
   }
 
-  private Cell[][] createGrid() {
-    Cell[][] grid = new Cell[rows][columns];
-    for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < columns; j++) {
-        // temporary code to show that the grid is working
+  /**
+   * Initializes an ArrayList of ArrayLists representative of the grid
+   **/
+  private void createGrid() {
+    for(int i = 0; i<rows; i++){
+      ArrayList<Cell> row = new ArrayList<>();
+      for(int j = 0; j<columns; j++){
         if (i % 2 == 0) {
-          grid[i][j] = new Cell(Color.BLACK, "water");
-        } else {
-          grid[i][j] = new Cell(Color.WHITE, "empty");
+          System.out.println("full");
+          row.add(new Cell(Color.BLACK, "water"));
+        }
+        else{
+          System.out.println("empty");
+          row.add(new Cell(Color.WHITE, "empty"));
         }
       }
+      grid.add(row);
     }
-    return grid;
   }
 
   /**
    * @return 2D array Cells
    */
-  public Cell[][] getGrid() {
+  public ArrayList<ArrayList<Cell>> getGrid() {
     return this.grid;
   }
 
@@ -66,8 +73,8 @@ public class Grid {
    * @return a grid (2D array of cells) with updated state
    */
   public Cell[][] updateGrid() {
-    int rows = grid.length;
-    int columns = grid[0].length;
+    int rows = grid.size();
+    int columns = grid.get(0).size();
     Cell[][] newGrid = new Cell[rows][columns];
 
     for (int i = 0; i < rows; i++) {
@@ -84,7 +91,7 @@ public class Grid {
   }
 
   private Cell updateMiddleCell(int x, int y) {
-    Cell cell = grid[x][y];
+    Cell cell = grid.get(x).get(y);
     String state = "burning";
     //Check cell neighbors
     for (int i = x - 1; i < x + 1; i++) {
@@ -100,12 +107,12 @@ public class Grid {
 
   private Cell updateEdgeCell(int x, int y) {
     //TODO
-    Cell cell = grid[x][y];
+    Cell cell = grid.get(x).get(y);;
     return cell;
   }
 
   private String getCellState(int i, int j) {
-    Cell cell = grid[i][j];
+    Cell cell = grid.get(i).get(j);;
     return cell.getState();
   }
 
