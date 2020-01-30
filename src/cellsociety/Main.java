@@ -8,8 +8,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-
 
 public class Main extends Application {
 
@@ -20,6 +18,8 @@ public class Main extends Application {
   private static double SCENE_HEIGHT = 500;
 
   private Grid grid = new Grid(100, 100);
+
+  public static void main(String[] args) {launch(args);}
 
   /**
    * Begins our JavaFX application Gets the current grid and sets the stage to a scene with that
@@ -35,16 +35,13 @@ public class Main extends Application {
 
     Grid grid = new Grid(100,100);
 
-    GridView gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT - (SCENE_HEIGHT/10));
-    root.getChildren().addAll(gridView.getGridView());
+    Visualizer GUIController = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
+    root.getChildren().addAll(GUIController.renderHeader());
+    root.getChildren().addAll(GUIController.renderGrid(grid));
 
-    Visualizer GUIControl = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
-    root.getChildren().add(GUIControl.createSimulator());
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     primaryStage.setScene(scene);
     primaryStage.show();
-    gridView.update();
-
   }
 
   private void startAnimationLoop() {
