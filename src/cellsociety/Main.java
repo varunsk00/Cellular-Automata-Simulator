@@ -18,7 +18,7 @@ public class Main extends Application {
   private static double SCENE_HEIGHT = 500;
 
   private Grid grid = new Grid(100, 100);
-
+  private Visualizer GUIController;
   public static void main(String[] args) {launch(args);}
 
   /**
@@ -35,7 +35,7 @@ public class Main extends Application {
 
     Grid grid = new Grid(100,100);
 
-    Visualizer GUIController = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
+    GUIController = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
     root.getChildren().addAll(GUIController.renderHeader());
     root.getChildren().addAll(GUIController.renderGrid(grid));
 
@@ -53,6 +53,10 @@ public class Main extends Application {
   }
 
   private void step(double elapsedTime) {
-    // TODO Add animations
+    if (GUIController.getPlayStatus()) {
+      System.out.println("Playing");
+    } else {
+      System.out.println("Paused");
+    }
   }
 }
