@@ -54,9 +54,8 @@ public class Main extends Application {
 
   private void step(double elapsedTime) {
     if (GUIController.getPlayStatus()) {
-      System.out.println("Playing");
-    } else {
-      System.out.println("Paused");
+      grid.updateGrid();
+      GUIController.renderGrid(grid);
     }
   }
 }
