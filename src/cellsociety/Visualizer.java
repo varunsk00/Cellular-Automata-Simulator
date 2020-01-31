@@ -80,7 +80,6 @@ public class Visualizer {
   public Group renderGrid(Grid grid) {
     double cellWidth = sceneWidth / grid.getColumns();
     double cellHeight = (.8  * sceneHeight) / grid.getRows();
-
     Group returnedCells = new Group();
     System.out.println("rendering grid");
     for (int i = 0; i < grid.getColumns(); i++) {

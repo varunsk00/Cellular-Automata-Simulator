@@ -67,7 +67,7 @@ public class Grid {
    *
    * @return a grid (2D array of cells) with updated state
    */
-  public void updateGrid() {
+  public void updateGrid() throws InterruptedException {
     ArrayList<ArrayList<Cell>> newGrid = grid;
     for (ArrayList<Cell> row : newGrid) {
       for (Cell cell : row) {

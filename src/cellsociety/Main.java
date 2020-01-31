@@ -17,23 +17,22 @@ public class Main extends Application {
   private static double SCENE_WIDTH = 400;
   private static double SCENE_HEIGHT = 500;
 
-  private Grid grid = new Grid(100, 100);
+  private Grid grid;
   private Visualizer GUIController;
   public static void main(String[] args) {launch(args);}
+  private Group root = new Group();
+
 
   /**
    * Begins our JavaFX application Gets the current grid and sets the stage to a scene with that
    * grid
    */
   @Override
-  public void start(Stage primaryStage) {
-
-    Group root = new Group();
-
+  public void start(Stage primaryStage) throws InterruptedException {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    Grid grid = new Grid(100,100);
+    grid = new PercGrid(100,100);
 
     GUIController = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
     root.getChildren().addAll(GUIController.renderHeader());
@@ -45,17 +44,24 @@ public class Main extends Application {
   }
 
   private void startAnimationLoop() {
-    KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
+    KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {
+      try {
+        step(SECOND_DELAY);
+      } catch (InterruptedException ex) {
+        ex.printStackTrace();
+      }
+    });
     Timeline animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames().add(frame);
     animation.play();
   }
 
-  private void step(double elapsedTime) {
+  private void step(double elapsedTime) throws InterruptedException {
     if (GUIController.getPlayStatus()) {
-      grid.updateGrid();
       GUIController.renderGrid(grid);
+      grid.updateGrid();
+      root.getChildren().addAll(GUIController.renderGrid(grid));
     }
   }
 }
