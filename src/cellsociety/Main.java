@@ -36,14 +36,19 @@ public class Main extends Application {
     Grid grid = new Grid(100,100);
 
     GridView gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT - (SCENE_HEIGHT/10));
-    root.getChildren().addAll(gridView.getGridView());
+    root.getChildren().addAll(gridView.getRenderGrid());
 
     Visualizer GUIControl = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
     root.getChildren().add(GUIControl.createSimulator());
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     primaryStage.setScene(scene);
     primaryStage.show();
-    gridView.update();
+
+    /**
+     * Updates a grid after it has already been added to a scene!!
+     */
+    grid.updateGrid();
+    gridView.updateGrid(grid);
 
   }
 
