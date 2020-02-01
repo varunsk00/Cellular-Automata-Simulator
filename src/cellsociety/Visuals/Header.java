@@ -1,4 +1,4 @@
-package cellsociety;
+package cellsociety.Visuals;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -65,13 +65,14 @@ public class Header {
     return header;
   }
 
-
-
   public boolean getPlayStatus() {
     return playPressed;
   }
 
 }
+
+
+
   /**
    * NOTE: not sure what the point of this is, but leaving it in
    */
