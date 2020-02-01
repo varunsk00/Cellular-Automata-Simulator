@@ -1,5 +1,7 @@
 package cellsociety;
 
+import cellsociety.Visuals.GridView;
+import cellsociety.Visuals.Header;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -19,7 +21,7 @@ public class Main extends Application {
 
   private Grid grid;
   private GridView gridView;
-  private Visualizer GUIController;
+  private Header GUIController;
   public static void main(String[] args) {launch(args);}
   private Group root = new Group();
 
@@ -35,7 +37,7 @@ public class Main extends Application {
 
     grid = new PercGrid(100,100);
 
-    GUIController = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
+    GUIController = new Header(SCENE_WIDTH);
     gridView = new GridView(grid,SCENE_WIDTH,SCENE_HEIGHT);
     root.getChildren().addAll(gridView.getRenderGrid());
 

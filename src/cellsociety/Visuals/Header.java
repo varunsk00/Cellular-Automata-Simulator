@@ -4,22 +4,20 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Visualizer {
+public class Header {
 
-  private double sceneHeight;
   private double sceneWidth;
 
   private boolean playPressed;
   private boolean speedUpPressed;
   private boolean skipPressed;
 
-  private final static Color HEADER_COLOR = Color.LIGHTBLUE;
-
-  public Visualizer(double sceneWidth, double sceneHeight) {
-    this.sceneHeight = sceneHeight;
+  public Header(double sceneWidth) {
     this.sceneWidth = sceneWidth;
 
     this.playPressed = false;
@@ -27,13 +25,11 @@ public class Visualizer {
     this.speedUpPressed = false;
   }
 
-  public Group renderHeader() {
-    Group returnedGroup = new Group();
-
+  public HBox renderHeader() {
+    HBox header = new HBox();
+    header.setPrefWidth(sceneWidth);
     Button playButton = new Button("Play!");
-    playButton.setLayoutX(0);
-    playButton.setLayoutY(0);
-    playButton.setPrefSize((3 * sceneWidth) / 10, sceneHeight / 10);
+    playButton.setMaxWidth(Double.MAX_VALUE);
     playButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -42,10 +38,7 @@ public class Visualizer {
     });
 
     Button speedUpButton = new Button("Speed Up");
-    speedUpButton.setLayoutX((3 * sceneWidth) / 10);
-    speedUpButton.setLayoutY(0);
-    speedUpButton.setPrefSize((4 * sceneWidth) / 10, sceneHeight / 10);
-
+    speedUpButton.setMaxWidth(Double.MAX_VALUE);
     speedUpButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -54,10 +47,7 @@ public class Visualizer {
     });
 
     Button skipButton = new Button("Skip Ahead");
-    skipButton.setLayoutX((7 * sceneWidth) / 10);
-    skipButton.setLayoutY(0);
-    skipButton.setPrefSize((3 * sceneWidth) / 10, sceneHeight / 10);
-
+    skipButton.setMaxWidth(Double.MAX_VALUE);
     skipButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -65,32 +55,17 @@ public class Visualizer {
       }
     });
 
-    returnedGroup.getChildren().add(speedUpButton);
-    returnedGroup.getChildren().add(skipButton);
-    returnedGroup.getChildren().add(playButton);
+    header.getChildren().add(speedUpButton);
+    header.setHgrow(speedUpButton, Priority.ALWAYS);
+    header.getChildren().add(skipButton);
+    header.setHgrow(skipButton, Priority.ALWAYS);
+    header.getChildren().add(playButton);
+    header.setHgrow(playButton, Priority.ALWAYS);
 
-    return returnedGroup;
+    return header;
   }
 
-  /**
-   * Takes in a grid and transforms it into a collection of shapes that can be visualized
-   *
-   * @return a collection of cells transformed into shapes
-   **/
-  public Group renderGrid(Grid grid) {
-    double cellWidth = sceneWidth / grid.getColumns();
-    double cellHeight = (.8  * sceneHeight) / grid.getRows();
-    Group returnedCells = new Group();
-    System.out.println("rendering grid");
-    for (int i = 0; i < grid.getColumns(); i++) {
-      for (int j = 0; j < grid.getRows(); j++) {
-        Rectangle addedCell = new Rectangle(i * cellWidth, (sceneHeight / 10) + j * cellHeight, cellWidth, cellHeight);
-        addedCell.setFill(grid.getGrid().get(i).get(j).getColor());
-        returnedCells.getChildren().add(addedCell);
-      }
-    }
-    return returnedCells;
-  }
+
 
   public boolean getPlayStatus() {
     return playPressed;
@@ -105,5 +80,27 @@ public class Visualizer {
     for (Shape cell : myGrid) {
       cell.setFill(Color.LIGHTBLUE);
     }
+  }
+
+   /**
+   * Takes in a grid and transforms it into a collection of shapes that can be visualized
+   *
+   * @return a collection of cells transformed into shapes
+   **/
+
+  /*
+  public Group renderGrid(Grid grid) {
+    double cellWidth = sceneWidth / grid.getColumns();
+    double cellHeight = (.8  * sceneHeight) / grid.getRows();
+    Group returnedCells = new Group();
+    System.out.println("rendering grid");
+    for (int i = 0; i < grid.getColumns(); i++) {
+      for (int j = 0; j < grid.getRows(); j++) {
+        Rectangle addedCell = new Rectangle(i * cellWidth, (sceneHeight / 10) + j * cellHeight, cellWidth, cellHeight);
+        addedCell.setFill(grid.getGrid().get(i).get(j).getColor());
+        returnedCells.getChildren().add(addedCell);
+      }
+    }
+    return returnedCells;
   }
    */

@@ -33,7 +33,7 @@ public class GridView {
         int y = row.indexOf(cell);
         Shape shape = new Rectangle(x * cellWidth, y * cellHeight, cellWidth,
             cellHeight);
-        System.out.println(x + y);
+        // System.out.println(x + y);
         shape.setFill(cell.getColor());
         rowShapes.add(shape);
       }
