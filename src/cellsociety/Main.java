@@ -18,6 +18,7 @@ public class Main extends Application {
   private static double SCENE_HEIGHT = 500;
 
   private Grid grid;
+  private GridView gridView;
   private Visualizer GUIController;
   public static void main(String[] args) {launch(args);}
   private Group root = new Group();
@@ -35,8 +36,10 @@ public class Main extends Application {
     grid = new PercGrid(100,100);
 
     GUIController = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
+    gridView = new GridView(grid,SCENE_WIDTH,SCENE_HEIGHT);
+    root.getChildren().addAll(gridView.getRenderGrid());
+
     root.getChildren().addAll(GUIController.renderHeader());
-    root.getChildren().addAll(GUIController.renderGrid(grid));
 
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     primaryStage.setScene(scene);
@@ -59,9 +62,10 @@ public class Main extends Application {
 
   private void step(double elapsedTime) throws InterruptedException {
     if (GUIController.getPlayStatus()) {
-      GUIController.renderGrid(grid);
+//      GUIController.renderGrid(grid);
       grid.updateGrid();
-      root.getChildren().addAll(GUIController.renderGrid(grid));
+      gridView.updateGrid(grid);
+//      root.getChildren().addAll(GUIController.renderGrid(grid));
     }
   }
 }
