@@ -23,6 +23,7 @@ public class Header {
   private boolean playPressed;
   private boolean speedUpPressed;
   private boolean skipPressed;
+  private boolean loadPressed;
 
   public Header(double sceneWidth, String language) {
     this.sceneWidth = sceneWidth;
@@ -30,11 +31,21 @@ public class Header {
     this.playPressed = false;
     this.skipPressed = false;
     this.speedUpPressed = false;
+    this.loadPressed = false;
   }
 
   public HBox renderHeader() {
     HBox header = new HBox();
     header.setPrefWidth(sceneWidth);
+
+    Button loadButton = new Button(myResources.getString("Load"));
+    loadButton.setMaxWidth(Double.MAX_VALUE);
+    loadButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        loadPressed = true;
+      }
+    });
 
     Button playButton = new Button(myResources.getString("Play"));
     playButton.setMaxWidth(Double.MAX_VALUE);
@@ -63,6 +74,8 @@ public class Header {
       }
     });
 
+    header.getChildren().add(loadButton);
+    header.setHgrow(loadButton, Priority.ALWAYS);
     header.getChildren().add(speedUpButton);
     header.setHgrow(speedUpButton, Priority.ALWAYS);
     header.getChildren().add(skipButton);
@@ -71,10 +84,6 @@ public class Header {
     header.setHgrow(playButton, Priority.ALWAYS);
 
     return header;
-  }
-
-  private Button makeButton(String key, EventHandler event) {
-    Button
   }
 
   public boolean getPlayStatus() {
