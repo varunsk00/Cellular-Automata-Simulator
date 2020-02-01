@@ -25,16 +25,16 @@ public class PercGrid extends Grid{
 
                 int random_x = r.nextInt(getColumns());
                 int random_y = r.nextInt(getRows());
-                getGrid().get(random_x).get(random_y).update(Color.BLUE, "full");
-//                System.out.println("opened: " + (random_x) + ", " + (random_y));
+                //getGrid().get(random_x).get(random_y).update(Color.BLUE, "full");
+                //System.out.println("opened: " + (random_x) + ", " + (random_y));
 
                 int x = getGrid().indexOf(row);
                 int y = row.indexOf(cell);
-                if(x>0 && y>0 && x<99 && y<99){
+                if(x>0 && y>0 && x<getColumns() && y<getRows()){
                     if(newGrid.get(x).get(y+1).getState() == "full"|| newGrid.get(x).get(y-1).getState() == "full" ||
                             newGrid.get(x-1).get(y).getState() == "full" || newGrid.get(x+1).get(y).getState() == "full"){
-                        //cell.update(Color.BLUE, "full");
-                        //System.out.println("leak: " + (x) + ", " + (y));
+                        cell.update(Color.BLUE, "full");
+                        System.out.println("leak: " + (x) + ", " + (y));
                     }
                 }
                 //Thread.sleep(100);
