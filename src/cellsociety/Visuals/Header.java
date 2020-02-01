@@ -9,17 +9,24 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ResourceBundle;
+
 public class Header {
 
   private double sceneWidth;
+
+  private static final String RESOURCES  = "Resources";
+  private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety/" + RESOURCES + ".";
+
+  private ResourceBundle myResources;
 
   private boolean playPressed;
   private boolean speedUpPressed;
   private boolean skipPressed;
 
-  public Header(double sceneWidth) {
+  public Header(double sceneWidth, String language) {
     this.sceneWidth = sceneWidth;
-
+    myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     this.playPressed = false;
     this.skipPressed = false;
     this.speedUpPressed = false;
@@ -28,7 +35,8 @@ public class Header {
   public HBox renderHeader() {
     HBox header = new HBox();
     header.setPrefWidth(sceneWidth);
-    Button playButton = new Button("Play!");
+
+    Button playButton = new Button(myResources.getString("Play"));
     playButton.setMaxWidth(Double.MAX_VALUE);
     playButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
@@ -37,7 +45,7 @@ public class Header {
       }
     });
 
-    Button speedUpButton = new Button("Speed Up");
+    Button speedUpButton = new Button(myResources.getString("SpeedUp"));
     speedUpButton.setMaxWidth(Double.MAX_VALUE);
     speedUpButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
@@ -46,7 +54,7 @@ public class Header {
       }
     });
 
-    Button skipButton = new Button("Skip Ahead");
+    Button skipButton = new Button(myResources.getString("Skip"));
     skipButton.setMaxWidth(Double.MAX_VALUE);
     skipButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
@@ -63,6 +71,10 @@ public class Header {
     header.setHgrow(playButton, Priority.ALWAYS);
 
     return header;
+  }
+
+  private Button makeButton(String key, EventHandler event) {
+    Button
   }
 
   public boolean getPlayStatus() {
