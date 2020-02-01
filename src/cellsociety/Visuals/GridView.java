@@ -1,8 +1,10 @@
-package cellsociety;
+package cellsociety.Visuals;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import cellsociety.Cell;
+import cellsociety.Grid;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
