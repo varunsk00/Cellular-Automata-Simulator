@@ -37,7 +37,7 @@ public class Main extends Application {
 
     grid = new PercGrid(100,100);
 
-    GUIController = new Header(SCENE_WIDTH);
+    GUIController = new Header(SCENE_WIDTH, "Standard");
     gridView = new GridView(grid,SCENE_WIDTH,SCENE_HEIGHT);
     root.getChildren().addAll(gridView.getRenderGrid());
 
