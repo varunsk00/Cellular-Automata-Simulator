@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class Main extends Application {
 
-  private static final int FRAMES_PER_SECOND = 60;
+  private static final int FRAMES_PER_SECOND = 2;
   private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private static double SCENE_WIDTH = 400;
@@ -26,10 +26,16 @@ public class Main extends Application {
    * grid
    */
   @Override
+<<<<<<< Updated upstream
   public void start(Stage primaryStage) {
 
     Group root = new Group();
 
+=======
+  public void start(Stage primaryStage) throws InterruptedException {
+    XMLReader reader = new XMLReader();
+    reader.main(null);
+>>>>>>> Stashed changes
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
