@@ -1,5 +1,7 @@
 package cellsociety;
 
+import cellsociety.Visuals.GridView;
+import cellsociety.Visuals.Header;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -8,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
+import javafx.scene.paint.Color;
 
 
 public class Main extends Application {
@@ -19,33 +21,34 @@ public class Main extends Application {
   private static double SCENE_WIDTH = 400;
   private static double SCENE_HEIGHT = 500;
 
-  private Grid grid = new Grid(100, 100);
+  private Grid grid;
+  private GridView gridView;
+  private Header GUIController;
+  public static void main(String[] args) {launch(args);}
+  private Group root = new Group();
+
 
   /**
    * Begins our JavaFX application Gets the current grid and sets the stage to a scene with that
    * grid
    */
   @Override
-<<<<<<< Updated upstream
-  public void start(Stage primaryStage) {
-
-    Group root = new Group();
-
-=======
   public void start(Stage primaryStage) throws InterruptedException {
-    XMLReader reader = new XMLReader();
-    reader.main(null);
->>>>>>> Stashed changes
+
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    Grid grid = new Grid(100,100);
+    grid = new FireGrid(100,100);
+    grid.getGrid().get(98).get(98).update(Color.RED, "burning");
 
     GridView gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT - (SCENE_HEIGHT/10));
     root.getChildren().addAll(gridView.getRenderGrid());
+    GUIController = new Header(SCENE_WIDTH, "Standard");
+    gridView = new GridView(grid,SCENE_WIDTH,SCENE_HEIGHT);
+    root.getChildren().addAll(gridView.getRenderGrid());
 
-    Visualizer GUIControl = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
-    root.getChildren().add(GUIControl.createSimulator());
+    root.getChildren().addAll(GUIController.renderHeader());
+
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     primaryStage.setScene(scene);
     primaryStage.show();
@@ -59,14 +62,26 @@ public class Main extends Application {
   }
 
   private void startAnimationLoop() {
-    KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
+    KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {
+      try {
+        step(SECOND_DELAY);
+      } catch (InterruptedException ex) {
+        ex.printStackTrace();
+      }
+    });
     Timeline animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames().add(frame);
     animation.play();
   }
 
-  private void step(double elapsedTime) {
-    // TODO Add animations
+  private void step(double elapsedTime) throws InterruptedException {
+    if (GUIController.getPlayStatus()) {
+//      GUIController.renderGrid(grid);
+      //Thread.sleep(100);
+      grid.updateGrid();
+      gridView.updateGrid(grid);
+//      root.getChildren().addAll(GUIController.renderGrid(grid));
+    }
   }
 }
