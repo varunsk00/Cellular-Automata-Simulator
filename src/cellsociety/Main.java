@@ -1,5 +1,7 @@
 package cellsociety;
 
+import cellsociety.Visuals.GridView;
+import cellsociety.Visuals.Header;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -21,7 +23,7 @@ public class Main extends Application {
 
   private Grid grid;
   private GridView gridView;
-  private Visualizer GUIController;
+  private Header GUIController;
   public static void main(String[] args) {launch(args);}
   private Group root = new Group();
 
@@ -38,7 +40,7 @@ public class Main extends Application {
     grid = new FireGrid(100,100);
     grid.getGrid().get(98).get(98).update(Color.RED, "burning");
 
-    GUIController = new Visualizer(SCENE_WIDTH, SCENE_HEIGHT);
+    GUIController = new Header(SCENE_WIDTH, "Standard");
     gridView = new GridView(grid,SCENE_WIDTH,SCENE_HEIGHT);
     root.getChildren().addAll(gridView.getRenderGrid());
 

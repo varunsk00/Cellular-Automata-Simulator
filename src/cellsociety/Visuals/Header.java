@@ -1,39 +1,43 @@
-package cellsociety;
+package cellsociety.Visuals;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Visualizer {
+import java.util.ResourceBundle;
 
-  private double sceneHeight;
+public class Header {
+
   private double sceneWidth;
+
+  private static final String RESOURCES  = "Resources";
+  private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety/" + RESOURCES + ".";
+
+  private ResourceBundle myResources;
 
   private boolean playPressed;
   private boolean speedUpPressed;
   private boolean skipPressed;
 
-  private final static Color HEADER_COLOR = Color.LIGHTBLUE;
-
-  public Visualizer(double sceneWidth, double sceneHeight) {
-    this.sceneHeight = sceneHeight;
+  public Header(double sceneWidth, String language) {
     this.sceneWidth = sceneWidth;
-
+    myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     this.playPressed = false;
     this.skipPressed = false;
     this.speedUpPressed = false;
   }
 
-  public Group renderHeader() {
-    Group returnedGroup = new Group();
+  public HBox renderHeader() {
+    HBox header = new HBox();
+    header.setPrefWidth(sceneWidth);
 
-    Button playButton = new Button("Play!");
-    playButton.setLayoutX(0);
-    playButton.setLayoutY(0);
-    playButton.setPrefSize((3 * sceneWidth) / 10, sceneHeight / 10);
+    Button playButton = new Button(myResources.getString("Play"));
+    playButton.setMaxWidth(Double.MAX_VALUE);
     playButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -41,11 +45,8 @@ public class Visualizer {
       }
     });
 
-    Button speedUpButton = new Button("Speed Up");
-    speedUpButton.setLayoutX((3 * sceneWidth) / 10);
-    speedUpButton.setLayoutY(0);
-    speedUpButton.setPrefSize((4 * sceneWidth) / 10, sceneHeight / 10);
-
+    Button speedUpButton = new Button(myResources.getString("SpeedUp"));
+    speedUpButton.setMaxWidth(Double.MAX_VALUE);
     speedUpButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -53,11 +54,8 @@ public class Visualizer {
       }
     });
 
-    Button skipButton = new Button("Skip Ahead");
-    skipButton.setLayoutX((7 * sceneWidth) / 10);
-    skipButton.setLayoutY(0);
-    skipButton.setPrefSize((3 * sceneWidth) / 10, sceneHeight / 10);
-
+    Button skipButton = new Button(myResources.getString("Skip"));
+    skipButton.setMaxWidth(Double.MAX_VALUE);
     skipButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -65,18 +63,45 @@ public class Visualizer {
       }
     });
 
-    returnedGroup.getChildren().add(speedUpButton);
-    returnedGroup.getChildren().add(skipButton);
-    returnedGroup.getChildren().add(playButton);
+    header.getChildren().add(speedUpButton);
+    header.setHgrow(speedUpButton, Priority.ALWAYS);
+    header.getChildren().add(skipButton);
+    header.setHgrow(skipButton, Priority.ALWAYS);
+    header.getChildren().add(playButton);
+    header.setHgrow(playButton, Priority.ALWAYS);
 
-    return returnedGroup;
+    return header;
   }
 
+  private Button makeButton(String key, EventHandler event) {
+    Button
+  }
+
+  public boolean getPlayStatus() {
+    return playPressed;
+  }
+
+}
+
+
+
   /**
+   * NOTE: not sure what the point of this is, but leaving it in
+   */
+  /*
+    public void update(Group group){
+    for (Shape cell : myGrid) {
+      cell.setFill(Color.LIGHTBLUE);
+    }
+  }
+
+   /**
    * Takes in a grid and transforms it into a collection of shapes that can be visualized
    *
    * @return a collection of cells transformed into shapes
    **/
+
+  /*
   public Group renderGrid(Grid grid) {
     double cellWidth = sceneWidth / grid.getColumns();
     double cellHeight = (.8  * sceneHeight) / grid.getRows();
@@ -90,20 +115,5 @@ public class Visualizer {
       }
     }
     return returnedCells;
-  }
-
-  public boolean getPlayStatus() {
-    return playPressed;
-  }
-
-}
-  /**
-   * NOTE: not sure what the point of this is, but leaving it in
-   */
-  /*
-    public void update(Group group){
-    for (Shape cell : myGrid) {
-      cell.setFill(Color.LIGHTBLUE);
-    }
   }
    */

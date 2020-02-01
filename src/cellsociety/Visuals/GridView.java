@@ -1,8 +1,10 @@
-package cellsociety;
+package cellsociety.Visuals;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import cellsociety.Cell;
+import cellsociety.Grid;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
@@ -33,7 +35,7 @@ public class GridView {
         int y = row.indexOf(cell);
         Shape shape = new Rectangle(x * cellWidth, y * cellHeight, cellWidth,
             cellHeight);
-        System.out.println(x + y);
+        // System.out.println(x + y);
         shape.setFill(cell.getColor());
         rowShapes.add(shape);
       }
