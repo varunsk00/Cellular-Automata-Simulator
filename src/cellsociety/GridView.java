@@ -53,7 +53,7 @@ public class GridView {
    * Update shapeGrid based on a new grid
    * @param grid the grid used for the updated visualization
    */
-  public void updateGrid(Grid grid) {
+  public void updateGrid(Grid grid) throws InterruptedException {
     int rows = grid.getRows();
     int columns = grid.getColumns();
     for (int i = 0; i < rows; i++) {
