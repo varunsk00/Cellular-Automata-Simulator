@@ -17,6 +17,7 @@ public class Main extends Application {
 
   private static final double FRAMES_PER_SECOND = 2;
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private static double SCENE_WIDTH = 400;
   private static double SCENE_HEIGHT = 500;
@@ -34,12 +35,15 @@ public class Main extends Application {
    */
   @Override
   public void start(Stage primaryStage) throws InterruptedException {
+
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
     grid = new FireGrid(100,100, 0.4);
     grid.getGrid().get(98).get(98).update(Color.RED, "burning");
 
+    GridView gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT - (SCENE_HEIGHT/10));
+    root.getChildren().addAll(gridView.getRenderGrid());
     GUIController = new Header(SCENE_WIDTH, "Standard");
     gridView = new GridView(grid,SCENE_WIDTH,SCENE_HEIGHT);
     root.getChildren().addAll(gridView.getRenderGrid());
@@ -49,6 +53,13 @@ public class Main extends Application {
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     primaryStage.setScene(scene);
     primaryStage.show();
+
+    /**
+     * Updates a grid after it has already been added to a scene!!
+     */
+    grid.updateGrid();
+    gridView.updateGrid(grid);
+
   }
 
   private void startAnimationLoop() {
