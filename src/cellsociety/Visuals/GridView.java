@@ -35,7 +35,6 @@ public class GridView {
         int y = row.indexOf(cell);
         Shape shape = new Rectangle(x * cellWidth, y * cellHeight, cellWidth,
             cellHeight);
-        // System.out.println(x + y);
         shape.setFill(cell.getColor());
         rowShapes.add(shape);
       }
@@ -55,7 +54,7 @@ public class GridView {
    * Update shapeGrid based on a new grid
    * @param grid the grid used for the updated visualization
    */
-  public void updateGrid(Grid grid) throws InterruptedException {
+  public void updateGrid(Grid grid){
     int rows = grid.getRows();
     int columns = grid.getColumns();
     for (int i = 0; i < rows; i++) {
