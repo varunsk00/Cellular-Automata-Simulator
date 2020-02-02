@@ -72,7 +72,7 @@ public class Grid {
       for (Cell cell : row) {
         int x = grid.indexOf(row);
         int y = row.indexOf(cell);
-        if (x > 0 && y > 0 && x < getColumns() - 1 && y < getRows() - 1) {
+        if (x >0 && y > 0 && x< getColumns() && y<getRows()) {
           handleMiddleCell(x,y);
         }
         else {

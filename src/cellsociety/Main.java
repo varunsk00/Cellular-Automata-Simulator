@@ -15,7 +15,7 @@ import javafx.scene.paint.Color;
 
 public class Main extends Application {
 
-  private static final double FRAMES_PER_SECOND = 2;
+  private static final double FRAMES_PER_SECOND = 30;
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private static double SCENE_WIDTH = 400;
@@ -38,7 +38,7 @@ public class Main extends Application {
     startAnimationLoop();
 
     grid = new FireGrid(100,100, 0.6);
-    grid.getGrid().get(50).get(50).update(Color.RED, "burning");
+    grid.getGrid().get(grid.getRows()/2).get(grid.getColumns()/2).update(Color.RED, "burning");
 
     GUIController = new Header(SCENE_WIDTH, "Standard");
     gridView = new GridView(grid,SCENE_WIDTH,SCENE_HEIGHT);
