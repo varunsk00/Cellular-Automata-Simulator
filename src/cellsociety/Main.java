@@ -27,7 +27,6 @@ public class Main extends Application {
 
   private Grid grid;
   private GridView gridView;
-  private Header GUIController;
   public static void main(String[] args) {launch(args);}
   private BorderPane root;
 
@@ -43,10 +42,10 @@ public class Main extends Application {
 
     root = new BorderPane();
 
-    grid = new FireGrid(100,100);
-    grid.getGrid().get(98).get(98).update(Color.RED, "burning");
+    grid = new FireGrid(3,3, 0.6);
+    grid.getGrid().get(1).get(1).update(Color.RED, "burning");
 
-    gridView = new GridView(grid);
+    gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT - 100);
     root.setCenter(gridView.getGridPane());
 
     Header headerInput = new Header(SCENE_WIDTH, RESOURCE_LANGUAGE);
@@ -54,7 +53,6 @@ public class Main extends Application {
 
     Footer footerInput = new Footer(SCENE_WIDTH, RESOURCE_LANGUAGE);
     root.setBottom(footerInput.renderFooter());
-
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     primaryStage.setScene(scene);
     primaryStage.show();
@@ -75,12 +73,9 @@ public class Main extends Application {
   }
 
   private void step(double elapsedTime) throws InterruptedException {
-    if (GUIController.getPlayStatus()) {
-//      GUIController.renderGrid(grid);
-      //Thread.sleep(100);
+    System.out.println(grid);
       grid.updateGrid();
+    System.out.println(grid);
       gridView.updateGrid(grid);
-//      root.getChildren().addAll(GUIController.renderGrid(grid));
     }
   }
-}
