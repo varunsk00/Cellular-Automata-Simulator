@@ -6,13 +6,12 @@ import cellsociety.Visuals.Header;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import javafx.scene.paint.Color;
+import java.util.Random;
 
 
 public class Main extends Application {
@@ -28,27 +27,44 @@ public class Main extends Application {
   private Grid grid;
   private GridView gridView;
   private BorderPane root;
+  private Header inputHeader;
 
-  public static void main(String[] args) {launch(args);}
+  private Random r = new Random();
+
+  public static void main(String[] args) {
+    launch(args);
+  }
 
   /**
    * Begins our JavaFX application Gets the current grid and sets the stage to a scene with that
    * grid
    */
   @Override
-  public void start(Stage primaryStage) throws InterruptedException {
+  public void start(Stage primaryStage) {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    grid = new FireGrid(100,100, 0.6);
-    grid.getGrid().get(grid.getRows()/2).get(grid.getColumns()/2).update(Color.RED, "burning");
+    grid = new FireGrid(10, 10, 0.6);
+    grid.getGrid().get(grid.getColumns() / 2).get(grid.getColumns() / 2).update(Color.RED, "burning");
+    //random generation of Percolation blocked bricks (33% blocked)
+//    for (int i = 0; i < grid.getRows(); i++) {
+//      for (int j = 0; j < grid.getColumns(); j++) {
+//        int rr = r.nextInt(3);
+//        if (rr == 1){
+//          int ran_x = r.nextInt(grid.getColumns());
+//          int ran_y = r.nextInt(grid.getRows());
+//          grid.getGrid().get(ran_x).get(ran_y).update(Color.BLACK, "blocked");
+//        }
+//      }
+//    }
+
     root = new BorderPane();
 
     gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT - 100);
     root.setCenter(gridView.getGridPane());
 
-    Header headerInput = new Header(SCENE_WIDTH, RESOURCE_LANGUAGE);
-    root.setTop(headerInput.renderHeader());
+    inputHeader = new Header(SCENE_WIDTH, RESOURCE_LANGUAGE);
+    root.setTop(inputHeader.renderHeader());
 
     Footer footerInput = new Footer(SCENE_WIDTH, RESOURCE_LANGUAGE);
     root.setBottom(footerInput.renderFooter());
@@ -72,7 +88,9 @@ public class Main extends Application {
   }
 
   private void step(double elapsedTime) throws InterruptedException {
+    if (inputHeader.getPlayStatus()) {
       grid.updateGrid();
       gridView.updateGrid(grid);
     }
   }
+}

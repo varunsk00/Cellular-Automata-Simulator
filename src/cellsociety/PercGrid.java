@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class PercGrid extends Grid {
+    private Random r = new Random();
     /**
      * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
      * based on given rows and columns
@@ -30,12 +31,71 @@ public class PercGrid extends Grid {
 
     @Override
     public void handleMiddleCell(int x, int y){
-        if(   ((getGrid().get(x).get(y+1).getState() == "full") ||
-                getGrid().get(x).get(y-1).getState() == "full"||
-                getGrid().get(x+1).get(y).getState() == "full"||
-                getGrid().get(x-1).get(y).getState() == "full")){
+        if (getGrid().get(x).get(y).getState() == "empty" && checkNeighbors(x,y,"full")) {
             getGrid().get(x).get(y).update(Color.BLUE, "full");
             System.out.println("leaked: " + (x) + ", " + (y));
         }
     }
+
+    //TODO: HEAVY REFACTORING!!! THIS IS DISGUSTING ATM
+    @Override
+    public void handleEdgeCell(int x, int y){
+        if(y==0 && getGrid().get(x).get(y).getState() == "empty"){
+            if(x==0){
+                if(checkRight(x,y,"full") || checkDown(x,y,"full")){
+                    getGrid().get(x).get(y).update(Color.BLUE, "full");
+                    System.out.println("leaked: " + (x) + ", " + (y));
+                }
+            }
+            else if(x==getColumns()-1){
+                if(checkLeft(x,y,"full") || checkDown(x,y,"full")){
+                    getGrid().get(x).get(y).update(Color.BLUE, "full");
+                    System.out.println("leaked: " + (x) + ", " + (y));
+                }
+            }
+            else{
+                if(checkLeft(x,y,"full") || checkRight(x,y,"full") || checkDown(x,y,"full")){
+                    getGrid().get(x).get(y).update(Color.BLUE, "full");
+                    System.out.println("leaked: " + (x) + ", " + (y));
+                }
+            }
+        }
+        if(y==getRows()-1 && getGrid().get(x).get(y).getState() == "empty"){
+            if(x==0){
+                if(checkRight(x,y,"full") || checkUp(x,y,"full")){
+                    getGrid().get(x).get(y).update(Color.BLUE, "full");
+                    System.out.println("leaked: " + (x) + ", " + (y));
+                }
+            }
+            else if(x==getColumns()-1){
+                if(checkLeft(x,y,"full") || checkUp(x,y,"full")){
+                    getGrid().get(x).get(y).update(Color.BLUE, "full");
+                    System.out.println("leaked: " + (x) + ", " + (y));
+                }
+            }
+            else{
+                if(checkLeft(x,y,"full") || checkRight(x,y,"full") || checkUp(x,y,"full")){
+                    getGrid().get(x).get(y).update(Color.BLUE, "full");
+                    System.out.println("leaked: " + (x) + ", " + (y));
+                }
+            }
+        }
+        if(x==0 && getGrid().get(x).get(y).getState() == "empty"){
+            if(y!=0 && y!= getRows()-1){
+                if(checkRight(x,y,"full") || checkDown(x,y,"full") || checkUp(x,y,"full")){
+                    getGrid().get(x).get(y).update(Color.BLUE, "full");
+                    System.out.println("leaked: " + (x) + ", " + (y));
+                }
+            }
+        }
+        if(x==getColumns()-1 && getGrid().get(x).get(y).getState() == "empty"){
+            if(y!=0 && y!= getRows()-1){
+                if(checkLeft(x,y,"full") || checkDown(x,y,"full") || checkUp(x,y,"full")){
+                    getGrid().get(x).get(y).update(Color.BLUE, "full");
+                    System.out.println("leaked: " + (x) + ", " + (y));
+                }
+            }
+        }
+    }
 }
+

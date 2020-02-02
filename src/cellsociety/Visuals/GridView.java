@@ -1,5 +1,8 @@
 package cellsociety.Visuals;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import cellsociety.Cell;
 import cellsociety.Grid;
 import javafx.scene.layout.GridPane;
@@ -9,19 +12,12 @@ import javafx.scene.shape.Shape;
 public class GridView {
 
   private GridPane myGridPane;
-  private double cellWidth;
-  private double cellHeight;
 
   public GridView(Grid grid, double width, double height) {
 
     myGridPane = new GridPane();
-
-    cellWidth = width / grid.getColumns();
-    cellHeight = height / grid.getRows();
-    System.out.println(cellHeight);
-    System.out.println(cellWidth);
-
     renderGridPane(grid);
+
   }
 
   // assumes that the grid is the right size
@@ -29,13 +25,11 @@ public class GridView {
     for (int i = 0; i < grid.getRows(); i++) {
       for (int j = 0; j < grid.getColumns(); j++) {
         Cell tempCell = grid.getGrid().get(i).get(j);
-        Shape tempShape = new Rectangle(cellWidth, cellHeight);
+        Shape tempShape = new Rectangle(40, 40);
         tempShape.setFill(tempCell.getColor());
         myGridPane.add(tempShape, i, j);
       }
     }
-
-    System.out.println("SIZE = " + myGridPane.getChildren().size());
   }
 
   public GridPane getGridPane() {
@@ -43,16 +37,15 @@ public class GridView {
   }
 
   public void updateGrid(Grid grid){
-    myGridPane = new GridPane();
+    myGridPane.getChildren().clear();
 
     for (int i = 0; i < grid.getRows(); i++) {
       for (int j = 0; j < grid.getColumns(); j++) {
-        Shape addedShape = new Rectangle();
+        Shape addedShape = new Rectangle(40, 40);
         addedShape.setFill(grid.getGrid().get(i).get(j).getColor());
         myGridPane.add(addedShape, i, j);
         }
       }
-
   }
 }
 
@@ -65,7 +58,6 @@ public class GridView {
         int y = row.indexOf(cell);
         Shape shape = new Rectangle(x * cellWidth, y * cellHeight, cellWidth,
             cellHeight);
-        // System.out.println(x + y);
         shape.setFill(cell.getColor());
         rowShapes.add(shape);
       }
@@ -73,3 +65,11 @@ public class GridView {
     }
   }
  */
+
+  /**
+   * return a grid that can be added to scene
+   * @return a grid as a collection of shapes
+   */
+
+
+

@@ -5,8 +5,6 @@ import java.util.Random;
 
 public class FireGrid extends Grid {
     private double probability;
-    private ArrayList<Integer> nums = new ArrayList<>();
-    private int prob;
     private Random r = new Random();
     /**
      * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -18,9 +16,6 @@ public class FireGrid extends Grid {
     public FireGrid(int rows, int columns, double probCatch) {
         super(rows, columns);
         this.probability = probCatch;
-        for (int i = 0; i < (probability * 10); i++) {
-            this.nums.add(i);
-        }
     }
 
     @Override
@@ -42,25 +37,22 @@ public class FireGrid extends Grid {
     }
 
     @Override
-    public void updateGrid(){
+    public void updateGrid() {
         for (ArrayList<Cell> row : getGrid()) {
             for (Cell cell : row) {
                 int x = getGrid().indexOf(row);
                 int y = row.indexOf(cell);
-                handleBurningCell(x,y);
-                handleMiddleCell(x,y);
+                if (x > 0 && y > 0 && x < getColumns() - 1 && y < getRows() - 1) {
+                    handleBurningCell(x, y);
+                    handleMiddleCell(x, y);
+                }
             }
         }
     }
 
     @Override
     public void handleMiddleCell(int x, int y){
-        prob = r.nextInt(10);
-        if (getGrid().get(x).get(y).getState() == "tree" && nums.contains(prob) &&
-                                   (getGrid().get(x).get(y - 1).getState() == "burning"||
-                                    getGrid().get(x - 1).get(y).getState() == "burning"||
-                                    getGrid().get(x).get(y + 1).getState() == "burning" ||
-                                    getGrid().get(x + 1).get(y).getState() == "burning" )) {
+        if (checkNeighbors(x,y,"burning") && getGrid().get(x).get(y).getState() == "tree" && r.nextFloat() <= probability){
             getGrid().get(x).get(y).update(Color.RED, "burning");
             System.out.println("caught fire: " + (x) + ", " + (y));
         }
