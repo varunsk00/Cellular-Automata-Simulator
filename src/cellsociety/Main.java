@@ -60,14 +60,15 @@ public class Main extends Application {
 
     root = new BorderPane();
 
-    gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT - 100);
-    root.setCenter(gridView.getGridPane());
-
-    inputHeader = new Header(SCENE_WIDTH, RESOURCE_LANGUAGE);
+    inputHeader = new Header(SCENE_HEIGHT, RESOURCE_LANGUAGE);
     root.setTop(inputHeader.renderHeader());
 
-    Footer footerInput = new Footer(SCENE_WIDTH, RESOURCE_LANGUAGE);
+    Footer footerInput = new Footer(SCENE_HEIGHT, RESOURCE_LANGUAGE);
     root.setBottom(footerInput.renderFooter());
+
+    gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT);
+    root.setCenter(gridView.getGridPane());
+
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     primaryStage.setScene(scene);
     primaryStage.show();

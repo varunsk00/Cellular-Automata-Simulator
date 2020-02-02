@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 public class Header {
 
-  private double sceneWidth;
+  private double sceneHeight;
 
   private static final String RESOURCES  = "Resources";
   private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
@@ -25,8 +25,8 @@ public class Header {
   private boolean skipPressed;
   private boolean loadPressed;
 
-  public Header(double sceneWidth, String language) {
-    this.sceneWidth = sceneWidth;
+  public Header(double sceneHeight, String language) {
+    this.sceneHeight = sceneHeight;
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     this.playPressed = false;
     this.skipPressed = false;
@@ -36,7 +36,8 @@ public class Header {
 
   public HBox renderHeader() {
     HBox header = new HBox();
-    header.setPrefWidth(sceneWidth);
+    header.setPrefWidth(Double.MAX_VALUE);
+    header.setPrefHeight((.05) * sceneHeight);
 
     Button loadButton = new Button(myResources.getString("Load"));
     loadButton.setMaxWidth(Double.MAX_VALUE);

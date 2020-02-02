@@ -12,10 +12,17 @@ import javafx.scene.shape.Shape;
 public class GridView {
 
   private GridPane myGridPane;
+  private double cellWidth;
+  private double cellHeight;
 
-  public GridView(Grid grid, double width, double height) {
+  public GridView(Grid grid, double sceneWidth, double sceneHeight) {
 
     myGridPane = new GridPane();
+    myGridPane.setPrefHeight((.9) * sceneHeight);
+
+    cellWidth = sceneWidth / grid.getColumns();
+    cellHeight = myGridPane.getPrefHeight() / grid.getRows();
+
     renderGridPane(grid);
 
   }
@@ -25,7 +32,7 @@ public class GridView {
     for (int i = 0; i < grid.getRows(); i++) {
       for (int j = 0; j < grid.getColumns(); j++) {
         Cell tempCell = grid.getGrid().get(i).get(j);
-        Shape tempShape = new Rectangle(40, 40);
+        Shape tempShape = new Rectangle(cellWidth, cellHeight);
         tempShape.setFill(tempCell.getColor());
         myGridPane.add(tempShape, i, j);
       }
