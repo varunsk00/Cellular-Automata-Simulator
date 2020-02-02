@@ -68,8 +68,7 @@ public class Grid {
    * @return a grid (2D array of cells) with updated state
    */
   public void updateGrid() throws InterruptedException {
-    ArrayList<ArrayList<Cell>> newGrid = grid;
-    for (ArrayList<Cell> row : newGrid) {
+    for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
         int x = grid.indexOf(row);
         int y = row.indexOf(cell);
@@ -81,12 +80,13 @@ public class Grid {
         }
       }
     }
-    this.grid = newGrid;
+    this.grid = getGrid();
   }
 
   public void handleMiddleCell(int x, int y) {
   }
 
-  private void handleEdgeCell(int x, int y) {
+  public void handleEdgeCell(int x, int y) {
   }
+
 }

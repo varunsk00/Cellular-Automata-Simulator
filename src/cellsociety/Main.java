@@ -67,11 +67,8 @@ public class Main extends Application {
 
   private void step(double elapsedTime) throws InterruptedException {
     if (GUIController.getPlayStatus()) {
-//      GUIController.renderGrid(grid);
-      //Thread.sleep(100);
       grid.updateGrid();
       gridView.updateGrid(grid);
-//      root.getChildren().addAll(GUIController.renderGrid(grid));
     }
   }
 }
