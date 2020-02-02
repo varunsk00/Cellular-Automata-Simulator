@@ -100,6 +100,10 @@ public class Header {
 
   public void setLoadOff() {loadPressed = false;}
 
+  public boolean getSkipStatus() {return skipPressed;}
+
+  public void setSkipOff() {skipPressed = false;}
+
 }
 
 
