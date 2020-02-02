@@ -1,10 +1,24 @@
 package cellsociety;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class FireGrid extends Grid {
-    private double probability;
+  // name in data file that will indicate it represents data for this type of object
+  public static final String DATA_TYPE = "Grid";
+  // field names expected to appear in data file holding values for this object
+  public static final List<String> DATA_FIELDS = List.of(
+      "rows",
+      "columns",
+      "probCatch"
+  );
+  private Map<String, String> myDataValues;
+  private Map<Integer, Integer> startingCell;
+
+  private double probability;
     private Random r = new Random();
     /**
      * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -16,7 +30,16 @@ public class FireGrid extends Grid {
     public FireGrid(int rows, int columns, double probCatch) {
         super(rows, columns);
         this.probability = probCatch;
+        myDataValues = new HashMap<>();
+//        this.getGrid().get(this.getColumns()/2).get(this.getColumns()/2).update(Color.RED, "burning");
     }
+
+  public FireGrid(Map<String, String> dataValues) {
+    this(Integer.parseInt(dataValues.get(DATA_FIELDS.get(0))),
+        Integer.parseInt(dataValues.get(DATA_FIELDS.get(1))),
+        Double.parseDouble(dataValues.get(DATA_FIELDS.get(2))));
+    this.myDataValues = dataValues;
+  }
 
     @Override
     public ArrayList<ArrayList<Cell>> createGrid() {
