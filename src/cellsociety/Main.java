@@ -37,8 +37,8 @@ public class Main extends Application {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    grid = new FireGrid(100,100, 0.4);
-    grid.getGrid().get(98).get(98).update(Color.RED, "burning");
+    grid = new FireGrid(100,100, 0.6);
+    grid.getGrid().get(50).get(50).update(Color.RED, "burning");
 
     GUIController = new Header(SCENE_WIDTH, "Standard");
     gridView = new GridView(grid,SCENE_WIDTH,SCENE_HEIGHT);
@@ -67,11 +67,8 @@ public class Main extends Application {
 
   private void step(double elapsedTime) throws InterruptedException {
     if (GUIController.getPlayStatus()) {
-//      GUIController.renderGrid(grid);
-      //Thread.sleep(100);
       grid.updateGrid();
       gridView.updateGrid(grid);
-//      root.getChildren().addAll(GUIController.renderGrid(grid));
     }
   }
 }
