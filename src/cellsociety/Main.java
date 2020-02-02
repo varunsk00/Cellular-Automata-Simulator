@@ -12,6 +12,8 @@ import javafx.util.Duration;
 
 import javafx.scene.paint.Color;
 
+import java.util.Random;
+
 
 public class Main extends Application {
 
@@ -26,6 +28,7 @@ public class Main extends Application {
   private Header GUIController;
   public static void main(String[] args) {launch(args);}
   private Group root = new Group();
+  private Random r = new Random();
 
 
   /**
@@ -33,12 +36,24 @@ public class Main extends Application {
    * grid
    */
   @Override
-  public void start(Stage primaryStage) throws InterruptedException {
+  public void start(Stage primaryStage) {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
     grid = new FireGrid(100,100, 0.6);
-    grid.getGrid().get(grid.getRows()/2).get(grid.getColumns()/2).update(Color.RED, "burning");
+    grid.getGrid().get(grid.getColumns()/2).get(grid.getColumns()/2).update(Color.RED, "burning");
+    //random generation of Percolation blocked bricks (33% blocked)
+//    for (int i = 0; i < grid.getRows(); i++) {
+//      for (int j = 0; j < grid.getColumns(); j++) {
+//        int rr = r.nextInt(3);
+//        if (rr == 1){
+//          int ran_x = r.nextInt(grid.getColumns());
+//          int ran_y = r.nextInt(grid.getRows());
+//          grid.getGrid().get(ran_x).get(ran_y).update(Color.BLACK, "blocked");
+//        }
+//      }
+//    }
+
 
     GUIController = new Header(SCENE_WIDTH, "Standard");
     gridView = new GridView(grid,SCENE_WIDTH,SCENE_HEIGHT);
@@ -53,11 +68,7 @@ public class Main extends Application {
 
   private void startAnimationLoop() {
     KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {
-      try {
-        step(SECOND_DELAY);
-      } catch (InterruptedException ex) {
-        ex.printStackTrace();
-      }
+      step(SECOND_DELAY);
     });
     Timeline animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
@@ -65,7 +76,7 @@ public class Main extends Application {
     animation.play();
   }
 
-  private void step(double elapsedTime) throws InterruptedException {
+  private void step(double elapsedTime) {
     if (GUIController.getPlayStatus()) {
       grid.updateGrid();
       gridView.updateGrid(grid);
