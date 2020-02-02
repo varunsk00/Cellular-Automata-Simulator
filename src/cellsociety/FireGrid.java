@@ -42,13 +42,15 @@ public class FireGrid extends Grid {
     }
 
     @Override
-    public void updateGrid(){
+    public void updateGrid() {
         for (ArrayList<Cell> row : getGrid()) {
             for (Cell cell : row) {
                 int x = getGrid().indexOf(row);
                 int y = row.indexOf(cell);
-                handleBurningCell(x,y);
-                handleMiddleCell(x,y);
+                if (x > 0 && y > 0 && x < getColumns() - 1 && y < getRows() - 1) {
+                    handleBurningCell(x, y);
+                    handleMiddleCell(x, y);
+                }
             }
         }
     }
@@ -56,11 +58,7 @@ public class FireGrid extends Grid {
     @Override
     public void handleMiddleCell(int x, int y){
         prob = r.nextInt(10);
-        if (getGrid().get(x).get(y).getState() == "tree" && nums.contains(prob) &&
-                                   (getGrid().get(x).get(y - 1).getState() == "burning"||
-                                    getGrid().get(x - 1).get(y).getState() == "burning"||
-                                    getGrid().get(x).get(y + 1).getState() == "burning" ||
-                                    getGrid().get(x + 1).get(y).getState() == "burning" )) {
+        if (checkNeighbors(x,y,"burning") && getGrid().get(x).get(y).getState() == "tree" && nums.contains(prob)){
             getGrid().get(x).get(y).update(Color.RED, "burning");
             System.out.println("caught fire: " + (x) + ", " + (y));
         }
