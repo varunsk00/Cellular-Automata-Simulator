@@ -57,7 +57,7 @@ public class Main extends Application {
 
     GUIController = new Header(SCENE_WIDTH, "Standard");
     gridView = new GridView(grid,SCENE_WIDTH,SCENE_HEIGHT);
-    root.getChildren().addAll(gridView.getRenderGrid());
+    root.getChildren().add(gridView.getGridPane());
 
     root.getChildren().addAll(GUIController.renderHeader());
 
@@ -80,6 +80,7 @@ public class Main extends Application {
     if (GUIController.getPlayStatus()) {
       grid.updateGrid();
       gridView.updateGrid(grid);
+      gridView.renderGrid();
     }
   }
 }
