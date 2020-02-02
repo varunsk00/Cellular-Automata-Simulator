@@ -68,44 +68,25 @@ public class Grid {
    * @return a grid (2D array of cells) with updated state
    */
   public void updateGrid() throws InterruptedException {
-    ArrayList<ArrayList<Cell>> newGrid = grid;
-    for (ArrayList<Cell> row : newGrid) {
+    for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
         int x = grid.indexOf(row);
         int y = row.indexOf(cell);
-        if (x % 2 == 0 && y % 2 != 0) {
-          cell.update(Color.BLACK, "full");
+        if (x >0 && y > 0 && x< getColumns() && y<getRows()) {
+          handleMiddleCell(x,y);
         }
-        if (x % 2 != 0 && y % 2 == 0) {
-          cell.update(Color.BLACK, "full");
+        else {
+          handleEdgeCell(x,y);
         }
       }
     }
-    this.grid = newGrid;
+    this.grid = getGrid();
   }
-}
-//  private Cell updateMiddleCell(int x, int y) {
-//    Cell cell = grid.get(x).get(y);
-//    String state = "burning";
-//    //Check cell neighbors
-//    for (int i = x - 1; i < x + 1; i++) {
-//      for (int j = y - 1; j < y + 1; j++) {
-//        if (getCellState(i, j) == state) {
-//          cell.update(Color.RED, "burning");
-//        }
-//      }
-//    }
-//
-//    return cell;
-//  }
 
-//  private Cell updateEdgeCell(int x, int y) {
-//    //TODO
-//    Cell cell = grid.get(x).get(y);;
-//    return cell;
-//  }
-//
-//  private String getCellState(int i, int j) {
-//    Cell cell = grid.get(i).get(j);;
-//    return cell.getState();
-//  }
+  public void handleMiddleCell(int x, int y) {
+  }
+
+  public void handleEdgeCell(int x, int y) {
+  }
+
+}
