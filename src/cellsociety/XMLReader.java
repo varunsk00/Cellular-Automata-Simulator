@@ -1,5 +1,6 @@
 package cellsociety;
 
+import java.io.File;
 import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,9 +16,10 @@ public class XMLReader {
   private static double SCENE_WIDTH = 400;
   private static double SCENE_HEIGHT = 500;
 
-  public void main(String[] argv)  {
+  public void read()  {
     try{
-      InputStream file = this.getClass().getClassLoader().getResourceAsStream("test.xml");
+//      InputStream file = this.getClass().getClassLoader().getResourceAsStream("perc.xml");
+      File file = new File("/Users/jaidharosenblatt/Documents/CS308/simulation_team04/src/cellsociety/Resources/perc.xml");
       DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
       DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
       Document doc = dBuilder.parse(file);
@@ -25,7 +27,7 @@ public class XMLReader {
       doc.getDocumentElement().normalize();
       System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
       System.out.println("----------------------------");
-      NodeList nList = doc.getElementsByTagName("staff");
+      NodeList nList = doc.getElementsByTagName("details");
 
       for (int temp = 0; temp < nList.getLength(); temp++) {
 
