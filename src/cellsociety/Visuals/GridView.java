@@ -43,7 +43,6 @@ public class GridView {
   }
 
   public void updateGrid(Grid grid){
-    System.out.println("updating");
     myGridPane = new GridPane();
 
     for (int i = 0; i < grid.getRows(); i++) {

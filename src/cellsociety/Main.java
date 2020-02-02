@@ -19,7 +19,7 @@ public class Main extends Application {
 
   private static final String RESOURCE_LANGUAGE = "Standard";
 
-  private static final double FRAMES_PER_SECOND = 60;
+  private static final double FRAMES_PER_SECOND = 30;
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private static double SCENE_WIDTH = 400;
@@ -27,9 +27,9 @@ public class Main extends Application {
 
   private Grid grid;
   private GridView gridView;
-  public static void main(String[] args) {launch(args);}
   private BorderPane root;
 
+  public static void main(String[] args) {launch(args);}
 
   /**
    * Begins our JavaFX application Gets the current grid and sets the stage to a scene with that
@@ -40,10 +40,9 @@ public class Main extends Application {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
+    grid = new FireGrid(100,100, 0.6);
+    grid.getGrid().get(grid.getRows()/2).get(grid.getColumns()/2).update(Color.RED, "burning");
     root = new BorderPane();
-
-    grid = new FireGrid(3,3, 0.6);
-    grid.getGrid().get(1).get(1).update(Color.RED, "burning");
 
     gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT - 100);
     root.setCenter(gridView.getGridPane());
@@ -73,9 +72,7 @@ public class Main extends Application {
   }
 
   private void step(double elapsedTime) throws InterruptedException {
-    System.out.println(grid);
       grid.updateGrid();
-    System.out.println(grid);
       gridView.updateGrid(grid);
     }
   }
