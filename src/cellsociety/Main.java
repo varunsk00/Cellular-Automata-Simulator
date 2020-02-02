@@ -51,7 +51,7 @@ public class Main extends Application {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    grid = new FireGrid(30, 30, 0.6);
+    grid = new FireGrid(10, 10, 0.6);
     grid.getGrid().get(grid.getColumns() / 2).get(grid.getColumns() / 2).update(Color.RED, "burning");
     //random generation of Percolation blocked bricks (33% blocked)
 //    for (int i = 0; i < grid.getRows(); i++) {
@@ -102,8 +102,6 @@ public class Main extends Application {
       grid.updateGrid();
       gridView.updateGrid(grid);
     }
-
-    System.out.println(myXMLFile);
   }
 
   private void uploadFile() {
