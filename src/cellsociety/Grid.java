@@ -67,12 +67,12 @@ public class Grid {
    *
    * @return a grid (2D array of cells) with updated state
    */
-  public void updateGrid() throws InterruptedException {
+  public void updateGrid(){
     for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
         int x = grid.indexOf(row);
         int y = row.indexOf(cell);
-        if (x >0 && y > 0 && x< getColumns() && y<getRows()) {
+        if (isMiddleCell(x,y)) {
           handleMiddleCell(x,y);
         }
         else {
@@ -87,6 +87,30 @@ public class Grid {
   }
 
   public void handleEdgeCell(int x, int y) {
+  }
+
+  public boolean isMiddleCell(int x, int y){
+    return x >0 && y > 0 && x< getColumns()-1 && y<getRows()-1;
+  }
+
+  public boolean checkNeighbors(int x, int y, String state){
+    return checkUp(x,y,state) || checkDown(x,y,state) || checkLeft(x,y,state) || checkRight(x,y,state);
+  }
+
+  public boolean checkLeft(int x, int y, String state){
+    return getGrid().get(x-1).get(y).getState() == state;
+  }
+
+  public boolean checkRight(int x, int y, String state){
+    return getGrid().get(x+1).get(y).getState() == state;
+  }
+
+  public boolean checkUp(int x, int y, String state){
+    return getGrid().get(x).get(y-1).getState() == state;
+  }
+
+  public boolean checkDown(int x, int y, String state){
+    return getGrid().get(x).get(y+1).getState() == state;
   }
 
 }
