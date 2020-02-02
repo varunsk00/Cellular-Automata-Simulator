@@ -40,7 +40,7 @@ public class Main extends Application {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    grid = new FireGrid(100,100, 0.6);
+    grid = new FireGrid(50,50, 1);
     grid.getGrid().get(grid.getColumns()/2).get(grid.getColumns()/2).update(Color.RED, "burning");
     //random generation of Percolation blocked bricks (33% blocked)
 //    for (int i = 0; i < grid.getRows(); i++) {
@@ -80,7 +80,6 @@ public class Main extends Application {
     if (GUIController.getPlayStatus()) {
       grid.updateGrid();
       gridView.updateGrid(grid);
-      gridView.renderGrid();
     }
   }
 }

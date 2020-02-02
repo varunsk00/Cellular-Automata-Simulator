@@ -5,46 +5,23 @@ import java.util.Collection;
 
 import cellsociety.Cell;
 import cellsociety.Grid;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class GridView {
 
-  private double cellWidth;
-  private double cellHeight;
-  private Grid grid;
-  private ArrayList<ArrayList<Shape>> shapeGrid;
+  private int cellWidth;
+  private int cellHeight;
   private GridPane gridPane;
 
   public GridView(Grid grid, double sceneWidth, double sceneHeight) {
-    this.cellWidth = sceneWidth / grid.getColumns();
-    this.cellHeight = sceneHeight / grid.getRows();
-    this.shapeGrid = new ArrayList<>();
-    this.grid = grid;
-    createShapeGrid();
+    this.cellWidth = (int) sceneWidth / grid.getColumns();
+    this.cellHeight = (int) sceneHeight / grid.getRows();
     gridPane = new GridPane();
-    gridPane.setHgap(0.5);
-    gridPane.setVgap(0.5);
-    renderGrid();
-  }
-
-  /**
-   * creates a 2D ArrayList of shapes from a grid
-   */
-  private void createShapeGrid() {
-    for (ArrayList<Cell> row : grid.getGrid()) {
-      ArrayList<Shape> rowShapes = new ArrayList<>();
-      for (Cell cell : row) {
-        int x = grid.getGrid().indexOf(row);
-        int y = row.indexOf(cell);
-        Shape shape = new Rectangle(x * cellWidth, y * cellHeight, cellWidth,
-            cellHeight);
-        shape.setFill(cell.getColor());
-        rowShapes.add(shape);
-      }
-      shapeGrid.add(rowShapes);
-    }
+    createGrid(grid);
   }
 
   /**
@@ -61,26 +38,35 @@ public class GridView {
    *
    * @param newGrid the grid used for the updated visualization
    */
+  public void createGrid(Grid newGrid) {
+    for (int i = 0; i < newGrid.getRows(); i++) {
+      for (int j = 0; j < newGrid.getColumns(); j++) {
+        Cell cell = newGrid.getGrid().get(i).get(j);
+        Shape shape = new Rectangle(cellWidth, cellHeight, cell.getColor());
+        gridPane.add(shape, j, i);
+      }
+    }
+  }
+
+  private Shape getShapeByRowColumnIndex(final int row, final int column) {
+    Shape result = null;
+    for (Node node : gridPane.getChildren()) {
+      if (gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+        result = (Shape) node;
+        break;
+      }
+    }
+    return result;
+  }
+
   public void updateGrid(Grid newGrid) {
-    this.grid = newGrid;
-    for (int i = 0; i < grid.getRows(); i++) {
-      for (int j = 0; j < grid.getColumns(); j++) {
-        Cell cell = grid.getGrid().get(i).get(j);
-        Shape shape = shapeGrid.get(i).get(j);
+    for (int i = 0; i < newGrid.getRows(); i++) {
+      for (int j = 0; j < newGrid.getColumns(); j++) {
+        Cell cell = newGrid.getGrid().get(i).get(j);
+        Shape shape = getShapeByRowColumnIndex(i, j);
+        System.out.println(shape);
         shape.setFill(cell.getColor());
       }
     }
   }
-
-  public void renderGrid() {
-    gridPane.getChildren().clear();
-    for (int i = 0; i < grid.getRows(); i++) {
-      for (int j = 0; j < grid.getColumns(); j++) {
-        gridPane.add(shapeGrid.get(i).get(j),i,j);
-      }
-    }
-    System.out.println(gridPane);
-  }
-
-
 }
