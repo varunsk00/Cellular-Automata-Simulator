@@ -18,7 +18,7 @@ public class GridView {
   public GridView(Grid grid, double sceneWidth, double sceneHeight) {
 
     myGridPane = new GridPane();
-    myGridPane.setPrefHeight((.9) * sceneHeight);
+    myGridPane.setMaxHeight((.9) * sceneHeight);
 
     cellWidth = sceneWidth / grid.getColumns();
     cellHeight = myGridPane.getPrefHeight() / grid.getRows();
