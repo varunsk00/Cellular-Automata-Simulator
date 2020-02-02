@@ -16,7 +16,7 @@ public class Header {
   private double sceneWidth;
 
   private static final String RESOURCES  = "Resources";
-  private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety/" + RESOURCES + ".";
+  private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
 
   private ResourceBundle myResources;
 

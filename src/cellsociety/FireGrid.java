@@ -71,7 +71,7 @@ public class FireGrid extends Grid {
                     }
                     if(newGrid.get(x+1).get(y).getState() == "burning" && nums.contains(prob) ){
                         cell.update(Color.RED, "burning");
-                        System.out.println("caught fire: " + (x) + ", " + (y));
+                        //System.out.println("caught fire: " + (x) + ", " + (y));
                     }
                 }
                 //
