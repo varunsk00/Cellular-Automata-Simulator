@@ -20,7 +20,7 @@ public class GridView {
     myGridPane = new GridPane();
 
     cellWidth = sceneWidth / grid.getColumns();
-    cellHeight = (.9) * sceneHeight / grid.getRows();
+    cellHeight = (.85) * sceneHeight / grid.getRows();
 
     renderGridPane(grid);
 
