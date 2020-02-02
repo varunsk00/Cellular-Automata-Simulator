@@ -1,11 +1,11 @@
-package cellsociety.Visuals;
+package cellsociety;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import cellsociety.Cell;
-import cellsociety.Grid;
-import javafx.scene.layout.GridPane;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
@@ -13,26 +13,22 @@ public class GridView {
 
   private double cellWidth;
   private double cellHeight;
-  private Grid grid;
   private ArrayList<ArrayList<Shape>> shapeGrid;
-  private GridPane gridPane;
+  private ArrayList<Shape> renderGrid;
 
   public GridView(Grid grid, double sceneWidth, double sceneHeight) {
     this.cellWidth = sceneWidth / grid.getColumns();
     this.cellHeight = sceneHeight / grid.getRows();
     this.shapeGrid = new ArrayList<>();
-    this.grid = grid;
-    createShapeGrid();
-    gridPane = new GridPane();
-    gridPane.setHgap(0.5);
-    gridPane.setVgap(0.5);
-    renderGrid();
+    createShapeGrid(grid);
+    renderGrid = renderGrid();
   }
 
   /**
    * creates a 2D ArrayList of shapes from a grid
+   * @param grid to visualize
    */
-  private void createShapeGrid() {
+  public void createShapeGrid(Grid grid) {
     for (ArrayList<Cell> row : grid.getGrid()) {
       ArrayList<Shape> rowShapes = new ArrayList<>();
       for (Cell cell : row) {
@@ -49,37 +45,37 @@ public class GridView {
 
   /**
    * return a grid that can be added to scene
-   *
    * @return a grid as a collection of shapes
    */
-  public GridPane getGridPane() {
-    return gridPane;
+  public Collection<Shape> getRenderGrid() {
+    return renderGrid;
   }
 
   /**
    * Update shapeGrid based on a new grid
-   *
-   * @param newGrid the grid used for the updated visualization
+   * @param grid the grid used for the updated visualization
    */
-  public void updateGrid(Grid newGrid) {
-    this.grid = newGrid;
-    for (int i = 0; i < grid.getRows(); i++) {
-      for (int j = 0; j < grid.getColumns(); j++) {
+  public void updateGrid(Grid grid) {
+    int rows = grid.getRows();
+    int columns = grid.getColumns();
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < columns; j++) {
         Cell cell = grid.getGrid().get(i).get(j);
         Shape shape = shapeGrid.get(i).get(j);
         shape.setFill(cell.getColor());
       }
     }
+    renderGrid();
   }
 
-  public void renderGrid() {
-    gridPane.getChildren().clear();
-    for (int i = 0; i < grid.getRows(); i++) {
-      for (int j = 0; j < grid.getColumns(); j++) {
-        gridPane.add(shapeGrid.get(i).get(j),i,j);
+  private ArrayList<Shape> renderGrid() {
+    ArrayList<Shape> render = new ArrayList<>();
+    for (Collection<Shape> row : shapeGrid) {
+      for (Shape shape : row) {
+        render.add(shape);
       }
     }
-    System.out.println(gridPane);
+    return render;
   }
 
 

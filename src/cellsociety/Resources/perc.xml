@@ -1,0 +1,24 @@
+<simulation>
+  <details>
+    <type>Simulation</type>
+    <title>Percolation</title>
+    <author>Jaidha</author>
+  </details>
+  <parameters>
+    <percentBlocked>50</percentBlocked>
+    <colors>
+      <empty>FFFFFF</empty>
+      <filled>0000ff</filled>
+      <blocked>000000</blocked>
+    </colors>
+  </parameters>
+  <state>
+    <sceneHeight>500</sceneHeight>
+    <sceneWidth>500</sceneWidth>
+    <initialState>
+      <filled>0,1</filled>
+      <filled>0,2</filled>
+      <filled>0,5</filled>
+    </initialState>
+  </state>
+</simulation>
