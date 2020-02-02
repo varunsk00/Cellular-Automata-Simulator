@@ -31,6 +31,7 @@ public class Main extends Application {
   private GridView gridView;
   private BorderPane root;
   private Header inputHeader;
+  private Footer inputFooter;
 
   private Stage myStage;
 
@@ -70,8 +71,8 @@ public class Main extends Application {
     inputHeader = new Header(SCENE_HEIGHT, SCENE_WIDTH, RESOURCE_LANGUAGE);
     root.setTop(inputHeader.renderHeader());
 
-    Footer footerInput = new Footer(SCENE_HEIGHT, RESOURCE_LANGUAGE);
-    root.setBottom(footerInput.renderFooter());
+    inputFooter = new Footer(SCENE_HEIGHT, RESOURCE_LANGUAGE);
+    root.setBottom(inputFooter.renderFooter());
 
     gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT);
     root.setCenter(gridView.getGridPane());
@@ -98,10 +99,18 @@ public class Main extends Application {
 
   private void step(double elapsedTime) throws InterruptedException {
     if (inputHeader.getLoadStatus()) uploadFile();
-    if (inputHeader.getPlayStatus()) {
-      grid.updateGrid();
-      gridView.updateGrid(grid);
+    else if (inputHeader.getSkipStatus()) skipAhead();
+    else if (inputHeader.getPlayStatus()) updateState();
     }
+
+
+  private void skipAhead() {
+    System.out.println(inputFooter.getSkipJump().getValue());
+    for (int i = 0; i < inputFooter.getSkipJump().getValue(); i++) {
+      grid.updateGrid();
+    }
+    gridView.updateGrid(grid);
+    inputHeader.setSkipOff();
   }
 
   private void uploadFile() {
@@ -113,5 +122,10 @@ public class Main extends Application {
       myXMLFile = file;
     }
     inputHeader.setLoadOff();
+  }
+
+  private void updateState() {
+    grid.updateGrid();
+    gridView.updateGrid(grid);
   }
 }

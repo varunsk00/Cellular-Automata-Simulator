@@ -23,6 +23,9 @@ public class Footer {
     private static final String RESOURCES  = "Resources";
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
 
+    private Slider frameSpeed;
+    private Slider skipJump;
+
     public Footer(double sceneHeight, String language) {
         this.sceneHeight = sceneHeight;
         this.myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
@@ -31,10 +34,12 @@ public class Footer {
     public HBox renderFooter() {
         HBox footer = new HBox();
         footer.setPrefWidth(Double.MAX_VALUE);
-        footer.setPrefHeight((.05) * sceneHeight);
+        footer.setPrefHeight((.1) * sceneHeight);
 
-        Slider frameSpeed = new Slider(MIN_FRAME_SPEED,  MAX_FRAME_SPEED, DEFAULT_FRAME_SPEED);
-        Slider skipJump = new Slider(MIN_SKIP, MAX_SKIP, DEFAULT_SKIP);
+        frameSpeed = new Slider(MIN_FRAME_SPEED,  MAX_FRAME_SPEED, DEFAULT_FRAME_SPEED);
+        setSliderTicks(frameSpeed);
+        skipJump = new Slider(MIN_SKIP, MAX_SKIP, DEFAULT_SKIP);
+        setSliderTicks(skipJump);
 
         footer.getChildren().add(frameSpeed);
         footer.setHgrow(frameSpeed, Priority.ALWAYS);
@@ -43,6 +48,21 @@ public class Footer {
         footer.setHgrow(skipJump, Priority.ALWAYS);
 
         return footer;
+    }
+
+    private void setSliderTicks(Slider slider) {
+        slider.setBlockIncrement(1);
+        slider.setMajorTickUnit(1);
+        slider.setMinorTickCount(0);
+        slider.setShowTickLabels(true);
+        slider.setSnapToTicks(true);
+    }
+    public Slider getFrameSpeed() {
+        return frameSpeed;
+    }
+
+    public Slider getSkipJump() {
+        return skipJump;
     }
 
 }
