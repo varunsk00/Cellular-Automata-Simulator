@@ -8,9 +8,12 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.paint.Color;
+
+import java.io.File;
 import java.util.Random;
 
 
@@ -29,7 +32,11 @@ public class Main extends Application {
   private BorderPane root;
   private Header inputHeader;
 
+  private Stage myStage;
+
   private Random r = new Random();
+
+  private File myXMLFile;
 
   public static void main(String[] args) {
     launch(args);
@@ -44,7 +51,7 @@ public class Main extends Application {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    grid = new FireGrid(10, 10, 0.6);
+    grid = new FireGrid(30, 30, 0.6);
     grid.getGrid().get(grid.getColumns() / 2).get(grid.getColumns() / 2).update(Color.RED, "burning");
     //random generation of Percolation blocked bricks (33% blocked)
 //    for (int i = 0; i < grid.getRows(); i++) {
@@ -60,7 +67,7 @@ public class Main extends Application {
 
     root = new BorderPane();
 
-    inputHeader = new Header(SCENE_HEIGHT, RESOURCE_LANGUAGE);
+    inputHeader = new Header(SCENE_HEIGHT, SCENE_WIDTH, RESOURCE_LANGUAGE);
     root.setTop(inputHeader.renderHeader());
 
     Footer footerInput = new Footer(SCENE_HEIGHT, RESOURCE_LANGUAGE);
@@ -70,6 +77,7 @@ public class Main extends Application {
     root.setCenter(gridView.getGridPane());
 
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
+    myStage = primaryStage;
     primaryStage.setScene(scene);
     primaryStage.show();
   }
@@ -89,9 +97,23 @@ public class Main extends Application {
   }
 
   private void step(double elapsedTime) throws InterruptedException {
+    if (inputHeader.getLoadStatus()) uploadFile();
     if (inputHeader.getPlayStatus()) {
       grid.updateGrid();
       gridView.updateGrid(grid);
     }
+
+    System.out.println(myXMLFile);
+  }
+
+  private void uploadFile() {
+    FileChooser fc = new FileChooser();
+    File file = fc.showOpenDialog(myStage);
+    if (file == null) System.out.println("Please pick a file!");
+    else if (!file.getName().substring(file.getName().length() - 4).equals(".xml")) System.out.println("Please pick an XML File!");
+    else {
+      myXMLFile = file;
+    }
+    inputHeader.setLoadOff();
   }
 }
