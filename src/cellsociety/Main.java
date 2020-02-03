@@ -7,13 +7,21 @@ import java.io.File;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.paint.Color;
+
 
 import java.util.Random;
 import xml.XMLException;
@@ -61,6 +69,7 @@ public class Main extends Application {
 
     grid = new Grid(30,30);
     root = new BorderPane();
+    root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
     root.setMaxHeight(SCENE_HEIGHT);
     root.setMaxWidth(SCENE_WIDTH);
 
@@ -70,7 +79,7 @@ public class Main extends Application {
     inputFooter = new Footer(SCENE_HEIGHT, SCENE_WIDTH, RESOURCE_LANGUAGE);
     root.setBottom(inputFooter.renderFooter());
 
-    gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT);
+    gridView = new GridView(SCENE_WIDTH, SCENE_HEIGHT);
     root.setCenter(gridView.getGridPane());
 
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
@@ -127,7 +136,7 @@ public class Main extends Application {
     try {
       grid = new XMLParser("grid").getGrid(dataFile);
       gridView.updateGrid(grid);
-    }
+      }
     catch (XMLException e) {
       System.out.println(e.getMessage());
     }

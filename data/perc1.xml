@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data grid="Percolation">
-  <rows>30</rows>
-  <columns>30</columns>
+  <rows>50</rows>
+  <columns>50</columns>
   <percentBlocked>0.4</percentBlocked>
 </data>

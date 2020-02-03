@@ -1,42 +1,26 @@
 package cellsociety.Visuals;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import cellsociety.Cell;
 import cellsociety.Grid;
-import javafx.scene.layout.GridPane;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 public class GridView {
 
   private GridPane myGridPane;
-  private double cellWidth;
-  private double cellHeight;
 
-  public GridView(Grid grid, double sceneWidth, double sceneHeight) {
+  public GridView(double sceneWidth, double sceneHeight) {
 
     myGridPane = new GridPane();
     myGridPane.setHgap(1);
     myGridPane.setVgap(1);
 
-    cellWidth = sceneWidth / grid.getColumns();
-    cellHeight = ((.8) * sceneHeight) / grid.getRows();
+    myGridPane.setPrefHeight(.8 * sceneHeight);
+    myGridPane.setPrefWidth(sceneWidth);
 
-    renderGridPane(grid);
-  }
-
-  // assumes that the grid is the right size
-  private void renderGridPane(Grid grid) {
-    for (int i = 0; i < grid.getRows(); i++) {
-      for (int j = 0; j < grid.getColumns(); j++) {
-        Cell tempCell = grid.getGrid().get(i).get(j);
-        Rectangle tempShape = new Rectangle(cellWidth, cellHeight);
-        tempShape.setFill(tempCell.getColor());
-        myGridPane.add(tempShape, i, j);
-      }
-    }
   }
 
   public GridPane getGridPane() {
@@ -45,11 +29,14 @@ public class GridView {
 
   public void updateGrid(Grid grid){
     myGridPane.getChildren().clear();
-    for (int i = 0; i < grid.getRows(); i++) {
-      for (int j = 0; j < grid.getColumns(); j++) {
-        Rectangle addedShape = new Rectangle(cellWidth, cellHeight);
-        addedShape.setFill(grid.getGrid().get(i).get(j).getColor());
+
+    for (int i = 0; i < grid.getColumns(); i++) {
+      for (int j = 0; j < grid.getRows(); j++) {
+        Region addedShape = new Region();
+        addedShape.setBackground(new Background(new BackgroundFill(grid.getGrid().get(j).get(i).getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
         myGridPane.add(addedShape, i, j);
+        myGridPane.setHgrow(addedShape, Priority.ALWAYS);
+        myGridPane.setVgrow(addedShape, Priority.ALWAYS);
       }
     }
   }
