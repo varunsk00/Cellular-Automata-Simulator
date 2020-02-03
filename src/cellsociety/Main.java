@@ -57,20 +57,9 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Simulation");
 
-    grid = new SegGrid(30, 30);
-    for (int i = 0; i < grid.getRows(); i++) {
-      for (int j = 0; j < grid.getColumns(); j++) {
-        if (r.nextFloat() <= 0.25){
-          grid.current(i,j).update(Color.BLUE, "X");
-        }
-        if (r.nextFloat() <= 0.25){
-          grid.current(i,j).update(Color.RED, "O");
-        }
-      }
-    }
-
     startAnimationLoop();
 
+    grid = new Grid(30,30);
     root = new BorderPane();
     root.setMaxHeight(SCENE_HEIGHT);
     root.setMaxWidth(SCENE_WIDTH);

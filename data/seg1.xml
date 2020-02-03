@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data grid="Segregation">
+  <rows>30</rows>
+  <columns>30</columns>
+  <satisfiedThreshold>0.4</satisfiedThreshold>
+  <percentFull>0.5</percentFull>
+</data>
