@@ -1,7 +1,11 @@
 package cellsociety;
 
+import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class Pred_PreyGrid extends Grid {
 
@@ -19,6 +23,7 @@ public class Pred_PreyGrid extends Grid {
   private static int predatorGenerationRate;
   private static double percentPredator;
   private static double percentPrey;
+  private Random r = new Random();
 
   public Pred_PreyGrid(int rows, int columns, int predatorEnergy, int preyGenerationRate,
       int predatorGenerationRate, double percentPredator, double percentPrey) {
@@ -40,5 +45,23 @@ public class Pred_PreyGrid extends Grid {
         Double.parseDouble(dataValues.get(DATA_FIELDS.get(6))));
   }
 
+    @Override
+    public void handleMiddleCell(int x, int y) {
+        ArrayList<Cell> neighbors = getNeighbors(x, y);
+
+        if(current(x,y).getState().equals("prey")){
+            int rng = r.nextInt(4);
+            while(getNeighbors(x,y).get(rng).equals("empty"))
+            {
+
+            }
+            for (Cell c : neighbors) {
+                if (c.getState().equals("empty")) {
+                    c.update(Color.GREEN, "prey" + "1");
+                    current(x,y).update(Color.WHITE,"empty");
+                }
+            }
+        }
+    }
 
 }
