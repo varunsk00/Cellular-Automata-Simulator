@@ -41,7 +41,92 @@ public class SegGrid extends Grid {
                 similar_count++;
             }
         }
-        if (similar_count >= prob){
+        if (similar_count >= 4){
+            System.out.println("satisfied: " + (x) + ", " + (y));
+        }
+        else{
+            System.out.println("unsatisfied: " + (x) + ", " + (y));
+            int ran_x = r.nextInt(getColumns());
+            int ran_y = r.nextInt(getRows());
+            while(current(ran_x,ran_y).getState().equals("empty")){
+                current(ran_x,ran_y).update(current(x,y).getColor(),current(x,y).getState());
+                System.out.println("relocated to: " + (ran_x) + ", " + (y));
+                ran_x = r.nextInt(getColumns());
+                ran_y = r.nextInt(getRows());
+            }
+            current(x,y).update(Color.WHITE, "empty");
+        }
+    }
+
+    @Override
+    public void handleEdgeCell(int x, int y){
+        ArrayList<Cell> neighbors = new ArrayList<>();
+        if(y==0){
+            if(x==0){
+                neighbors.add(getGrid().get(x+1).get(y+1));
+                neighbors.add(getGrid().get(x).get(y+1));
+                neighbors.add(getGrid().get(x+1).get(y));
+            }
+            else if (x==getColumns()-1){
+                neighbors.add(getGrid().get(x-1).get(y));
+                neighbors.add(getGrid().get(x-1).get(y+1));
+                neighbors.add(getGrid().get(x).get(y+1));
+            }
+            else{
+                neighbors.add(getGrid().get(x-1).get(y));
+                neighbors.add(getGrid().get(x-1).get(y+1));
+                neighbors.add(getGrid().get(x).get(y+1));
+                neighbors.add(getGrid().get(x+1).get(y+1));
+                neighbors.add(getGrid().get(x).get(y+1));
+                neighbors.add(getGrid().get(x+1).get(y));
+            }
+        }
+        if(y==getRows()-1){
+            if(x==0){
+                neighbors.add(getGrid().get(x).get(y-1));
+                neighbors.add(getGrid().get(x+1).get(y-1));
+                neighbors.add(getGrid().get(x+1).get(y));
+            }
+            else if (x==getColumns()-1){
+                neighbors.add(getGrid().get(x-1).get(y));
+                neighbors.add(getGrid().get(x-1).get(y-1));
+                neighbors.add(getGrid().get(x).get(y-1));
+            }
+            else{
+                neighbors.add(getGrid().get(x-1).get(y));
+                neighbors.add(getGrid().get(x-1).get(y-1));
+                neighbors.add(getGrid().get(x).get(y-1));
+                neighbors.add(getGrid().get(x+1).get(y-1));
+                neighbors.add(getGrid().get(x).get(y-1));
+                neighbors.add(getGrid().get(x+1).get(y));
+            }
+        }
+        if(x==0){
+            if(y!=0 && y!= getRows()-1){
+                neighbors.add(getGrid().get(x).get(y-1));
+                neighbors.add(getGrid().get(x+1).get(y-1));
+                neighbors.add(getGrid().get(x+1).get(y));
+                neighbors.add(getGrid().get(x+1).get(y+1));
+                neighbors.add(getGrid().get(x).get(y+1));
+            }
+        }
+        if(x==getColumns()-1){
+            if(y!=0 && y!= getRows()-1){
+                neighbors.add(getGrid().get(x).get(y-1));
+                neighbors.add(getGrid().get(x-1).get(y-1));
+                neighbors.add(getGrid().get(x-1).get(y));
+                neighbors.add(getGrid().get(x-1).get(y+1));
+                neighbors.add(getGrid().get(x).get(y+1));
+            }
+        }
+
+        int similar_count= 0;
+        for (Cell c: neighbors){
+            if (c.getState().equals(current(x,y).getState())){
+                similar_count++;
+            }
+        }
+        if (similar_count >= 4){
             System.out.println("satisfied: " + (x) + ", " + (y));
         }
         else{
