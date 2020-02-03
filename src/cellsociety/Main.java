@@ -81,7 +81,7 @@ public class Main extends Application {
     inputFooter = new Footer(SCENE_HEIGHT, SCENE_WIDTH, RESOURCE_LANGUAGE);
     root.setBottom(inputFooter.renderFooter());
 
-    gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT);
+    gridView = new GridView(SCENE_WIDTH, SCENE_HEIGHT);
     root.setCenter(gridView.getGridPane());
 
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
