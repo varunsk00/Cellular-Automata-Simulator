@@ -55,8 +55,8 @@ public class Main extends Application {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    grid = new FireGrid(30, 30, .7);
-    grid.getGrid().get(grid.getColumns() / 2).get(grid.getColumns() / 2).update(Color.RED, "burning");
+    grid = new FireGrid(10, 30, .7);
+    grid.getGrid().get(grid.getRows() / 2).get(grid.getColumns() / 2).update(Color.RED, "burning");
 
     root = new BorderPane();
     root.setMaxHeight(SCENE_HEIGHT);
