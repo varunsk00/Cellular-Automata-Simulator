@@ -42,6 +42,7 @@ public class Main extends Application {
   private Footer inputFooter;
 
   private Stage myStage;
+  private Random r = new Random();
 
 
   public static void main(String[] args) {
@@ -56,7 +57,17 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Simulation");
 
-    grid = new Grid(100, 100);
+    grid = new SegGrid(30, 30);
+    for (int i = 0; i < grid.getRows(); i++) {
+      for (int j = 0; j < grid.getColumns(); j++) {
+        if (r.nextFloat() <= 0.25){
+          grid.current(i,j).update(Color.BLUE, "X");
+        }
+        if (r.nextFloat() <= 0.25){
+          grid.current(i,j).update(Color.RED, "O");
+        }
+      }
+    }
 
     startAnimationLoop();
 
