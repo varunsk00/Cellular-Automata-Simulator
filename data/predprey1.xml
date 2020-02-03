@@ -3,7 +3,7 @@
   <rows>30</rows>
   <columns>30</columns>
   <predatorEnergy>1</predatorEnergy>
-  <preyGenerationRate>3</preyGenerationRate>
+  <preyGenerationRate>10</preyGenerationRate>
   <predatorGenerationRate>1</predatorGenerationRate>
   <percentPredator>0.1</percentPredator>
   <percentPrey>0.1</percentPrey>

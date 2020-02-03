@@ -49,14 +49,13 @@ public class PredPreyGrid extends Grid {
   }
 
   private void setInits() {
-    for (int i = 0; i < this.getRows(); i++) {
-      for (int j = 0; j < this.getColumns(); j++) {
-
+    for (int i = 0; i < getRows(); i++) {
+      for (int j = 0; j < getColumns(); j++) {
         if (r.nextFloat() <= percentPredator / 2) {
-          this.current(i, j).update(Color.ORANGE, "predator_0");
+          resetPredatorState(current(i, j));
         }
         if (r.nextFloat() <= percentPrey / 2) {
-          this.current(i, j).update(Color.GREEN, "prey_0");
+          resetPreyState(current(i, j));
         }
       }
     }
@@ -67,14 +66,38 @@ public class PredPreyGrid extends Grid {
     ArrayList<Cell> neighbors = getNeighbors(x, y);
     Cell currentCell = current(x, y);
     if (current(x, y).getState().contains("prey")) {
-      int rng = r.nextInt(4);
-      Cell neighbor = neighbors.get(rng);
-      while (neighbor.getState().equals(("empty"))) {
-        neighbor.update(currentCell.getColor(), updateStateString(currentCell.getState()));
-        currentCell.update(Color.WHITE, "empty");
-        System.out.println("updating " + x + "," + y);
+      moveToRandomNeighbor(neighbors, currentCell);
+    }
+  }
+
+  private void moveToRandomNeighbor(ArrayList<Cell> neighbors, Cell currentCell) {
+    Cell neighbor = getRandomBlankNeighbor(neighbors);
+    if (neighbor==null){
+      return;
+    }
+    neighbor.update(currentCell.getColor(), updateStateString(currentCell.getState()));
+    if (checkPreyReproduction(currentCell)) {
+      resetPreyState(currentCell);
+      System.out.println("Spawning new cell: " + neighbor.getState() + ", old cell: " +currentCell.getState());
+    } else {
+      currentCell.update(Color.WHITE, "empty");
+    }
+
+  }
+
+  private Cell getRandomBlankNeighbor(ArrayList<Cell> neighbors) {
+    ArrayList<Cell> blankNeighbors = new ArrayList<>();
+    for (Cell cell: neighbors){
+      if (cell.getState().equals("empty")){
+        blankNeighbors.add(cell);
       }
     }
+    //if no blankNeighbors
+    if (blankNeighbors.size()==0){
+      return null;
+    }
+    int rng = r.nextInt(blankNeighbors.size());
+    return blankNeighbors.get(rng);
   }
 
   private String updateStateString(String s) {
@@ -86,4 +109,19 @@ public class PredPreyGrid extends Grid {
     int count = Integer.parseInt(numString) + 1;
     return type + "_" + count;
   }
+
+  private Boolean checkPreyReproduction(Cell cell) {
+    String s = cell.getState();
+    int count = Integer.parseInt(s.split("_")[1]) + 1;
+    return count + 1 > preyGenerationRate;
+  }
+
+  private void resetPreyState(Cell cell) {
+    cell.update(Color.GREEN, "prey_0");
+  }
+
+  private void resetPredatorState(Cell cell) {
+    cell.update(Color.ORANGE, "predator_0");
+  }
+
 }
