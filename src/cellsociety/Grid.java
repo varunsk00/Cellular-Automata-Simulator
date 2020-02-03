@@ -1,5 +1,8 @@
 package cellsociety;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javafx.scene.paint.Color;
 
 import java.lang.reflect.Array;
@@ -8,9 +11,6 @@ import java.util.ArrayList;
 
 public class Grid {
 
-  /**
-   * TODO Make abstract, updateGrid
-   **/
   private ArrayList<ArrayList<Cell>> grid;
   private int rows;
   private int columns;
@@ -69,16 +69,15 @@ public class Grid {
    *
    * @return a grid (2D array of cells) with updated state
    */
-  public void updateGrid(){
+  public void updateGrid() {
     for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
         int x = grid.indexOf(row);
         int y = row.indexOf(cell);
-        if (isMiddleCell(x,y)) {
-          handleMiddleCell(x,y);
-        }
-        else {
-          handleEdgeCell(x,y);
+        if (isMiddleCell(x, y)) {
+          handleMiddleCell(x, y);
+        } else {
+          handleEdgeCell(x, y);
         }
       }
     }
@@ -91,28 +90,29 @@ public class Grid {
   public void handleEdgeCell(int x, int y) {
   }
 
-  public boolean isMiddleCell(int x, int y){
-    return x >0 && y > 0 && x< getColumns()-1 && y<getRows()-1;
+  public boolean isMiddleCell(int x, int y) {
+    return x > 0 && y > 0 && x < getColumns() - 1 && y < getRows() - 1;
   }
 
-  public boolean checkNeighbors(int x, int y, String state){
-    return checkUp(x,y,state) || checkDown(x,y,state) || checkLeft(x,y,state) || checkRight(x,y,state);
+  public boolean checkNeighbors(int x, int y, String state) {
+    return checkUp(x, y, state) || checkDown(x, y, state) || checkLeft(x, y, state) || checkRight(x,
+        y, state);
   }
 
-  public boolean checkLeft(int x, int y, String state){
-    return getGrid().get(x-1).get(y).getState() == state;
+  public boolean checkLeft(int x, int y, String state) {
+    return getGrid().get(x - 1).get(y).getState() == state;
   }
 
-  public boolean checkRight(int x, int y, String state){
-    return getGrid().get(x+1).get(y).getState() == state;
+  public boolean checkRight(int x, int y, String state) {
+    return getGrid().get(x + 1).get(y).getState() == state;
   }
 
-  public boolean checkUp(int x, int y, String state){
-    return getGrid().get(x).get(y-1).getState() == state;
+  public boolean checkUp(int x, int y, String state) {
+    return getGrid().get(x).get(y - 1).getState() == state;
   }
 
-  public boolean checkDown(int x, int y, String state){
-    return getGrid().get(x).get(y+1).getState() == state;
+  public boolean checkDown(int x, int y, String state) {
+    return getGrid().get(x).get(y + 1).getState() == state;
   }
 
   public ArrayList<Cell> getAllNeighbors(int x, int y){

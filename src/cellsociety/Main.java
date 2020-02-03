@@ -3,18 +3,21 @@ package cellsociety;
 import cellsociety.Visuals.Footer;
 import cellsociety.Visuals.GridView;
 import cellsociety.Visuals.Header;
+import java.io.File;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.paint.Color;
 
-import java.io.File;
 import java.util.Random;
+import xml.XMLException;
+import xml.XMLParser;
 
 
 public class Main extends Application {
@@ -27,8 +30,13 @@ public class Main extends Application {
   private static double SCENE_WIDTH = 400;
   private static double SCENE_HEIGHT = 500;
 
+  public static final String DATA_FILE_EXTENSION = "*.xml";
+  public final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
+  
   private Grid grid;
   private GridView gridView;
+  private Header GUIController;
+
   private BorderPane root;
   private Header inputHeader;
   private Footer inputFooter;
@@ -36,8 +44,6 @@ public class Main extends Application {
   private Stage myStage;
 
   private Random r = new Random();
-
-  private File myXMLFile;
 
   public static void main(String[] args) {
     launch(args);
@@ -50,9 +56,10 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Simulation");
+
     startAnimationLoop();
 
-    grid = new FireGrid(10, 10, 0.6);
+    grid = new FireGrid(100, 100, 0.6);
     grid.getGrid().get(grid.getColumns() / 2).get(grid.getColumns() / 2).update(Color.RED, "burning");
     //random generation of Percolation blocked bricks (33% blocked)
 //    for (int i = 0; i < grid.getRows(); i++) {
@@ -65,6 +72,7 @@ public class Main extends Application {
 //        }
 //      }
 //    }
+
 
     root = new BorderPane();
 
@@ -98,7 +106,7 @@ public class Main extends Application {
   }
 
   private void step(double elapsedTime) throws InterruptedException {
-    if (inputHeader.getLoadStatus()) uploadFile();
+    if (inputHeader.getLoadStatus()) xmlToGrid();
     else if (inputHeader.getSkipStatus()) skipAhead();
     else if (inputHeader.getPlayStatus()) updateState();
   }
@@ -113,19 +121,43 @@ public class Main extends Application {
     inputHeader.setSkipOff();
   }
 
-  private void uploadFile() {
-    FileChooser fc = new FileChooser();
-    File file = fc.showOpenDialog(myStage);
-    if (file == null) System.out.println("Please pick a file!");
-    else if (!file.getName().substring(file.getName().length() - 4).equals(".xml")) System.out.println("Please pick an XML File!");
-    else {
-      myXMLFile = file;
+//  private void uploadFile() {
+//    FileChooser fc = new FileChooser();
+//    File file = fc.showOpenDialog(myStage);
+//    if (file == null) System.out.println("Please pick a file!");
+//    else if (!file.getName().substring(file.getName().length() - 4).equals(".xml")) System.out.println("Please pick an XML File!");
+//    else {
+//      myXMLFile = file;
+//    }
+//
+//    inputHeader.setLoadOff();
+//  }
+
+  private static FileChooser makeChooser (String extensionAccepted) {
+    FileChooser result = new FileChooser();
+    result.setTitle("Open Data File");
+    // pick a reasonable place to start searching for files
+    result.setInitialDirectory(new File(System.getProperty("user.dir")));
+    result.getExtensionFilters().setAll(new ExtensionFilter("Text Files", extensionAccepted));
+    return result;
+  }
+
+  private void xmlToGrid(){
+    File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
+    try {
+      grid = new XMLParser("grid").getGrid(dataFile);
+    }
+    catch (XMLException e) {
+      System.out.println(e.getMessage());
     }
     inputHeader.setLoadOff();
   }
-
   private void updateState() {
     grid.updateGrid();
     gridView.updateGrid(grid);
   }
+
+
+
 }
+
