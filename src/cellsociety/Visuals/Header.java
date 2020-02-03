@@ -1,16 +1,16 @@
 package cellsociety.Visuals;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
 import java.util.ResourceBundle;
 
+/**
+ * Header Class serves as a controller unit, taking in input from the user to pause/play the game, skip ahead, speed up, or load a file.
+ * Works in conjunction with the Footer class, since the Footer class determines new speed/frames to jump
+ *
+ */
 public class Header {
 
   private static final String RESOURCES  = "Resources";
@@ -23,116 +23,59 @@ public class Header {
   private boolean skipPressed;
   private boolean loadPressed;
 
-  public Header(double sceneHeight, double sceneWidth, String language) {
+  private HBox myHeader;
+
+  public Header(String language) {
 
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     this.playPressed = false;
     this.skipPressed = false;
     this.speedUpPressed = false;
     this.loadPressed = false;
+
+    renderHeader();
   }
 
-  public HBox renderHeader() {
-    HBox header = new HBox();
+  private void renderHeader() {
+    myHeader = new HBox();
 
-    Button loadButton = new Button(myResources.getString("Load"));
-    loadButton.setMaxWidth(Double.MAX_VALUE);
-    loadButton.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent event) {
-        loadPressed = true;
-      }
-    });
+    Button loadButton = makeButton("LoadButton", event -> loadPressed = true);
+    Button skipButton = makeButton("SkipButton", event -> skipPressed = true);
+    Button speedButton = makeButton("SpeedButton", event -> speedUpPressed = true);
+    Button playButton = makeButton("PlayButton", event -> playPressed = (playPressed) ? false : true);
 
-    Button playButton = new Button(myResources.getString("Play"));
-    playButton.setMaxWidth(Double.MAX_VALUE);
-    playButton.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent event) {
-        playPressed = (playPressed) ? false : true;
-      }
-    });
-
-    Button speedUpButton = new Button(myResources.getString("SpeedUp"));
-    speedUpButton.setMaxWidth(Double.MAX_VALUE);
-    speedUpButton.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent event) {
-        speedUpPressed = (speedUpPressed) ? false : true;
-      }
-    });
-
-    Button skipButton = new Button(myResources.getString("Skip"));
-    skipButton.setMaxWidth(Double.MAX_VALUE);
-    skipButton.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent event) {
-        skipPressed = (skipPressed) ? false : true;
-      }
-    });
-
-    header.getChildren().add(loadButton);
-    header.setHgrow(loadButton, Priority.ALWAYS);
-    header.getChildren().add(speedUpButton);
-    header.setHgrow(speedUpButton, Priority.ALWAYS);
-    header.getChildren().add(skipButton);
-    header.setHgrow(skipButton, Priority.ALWAYS);
-    header.getChildren().add(playButton);
-    header.setHgrow(playButton, Priority.ALWAYS);
-
-    return header;
+    myHeader.getChildren().addAll(loadButton, speedButton, skipButton, playButton);
+    formatButtons(loadButton, speedButton, skipButton, playButton);
   }
 
-  public boolean getPlayStatus() {
-    return playPressed;
+
+  private Button makeButton(String key, EventHandler e) {
+    Button tempButton = new Button(myResources.getString(key));
+    tempButton.setMaxWidth(Double.MAX_VALUE);
+    tempButton.setOnAction(e);
+    return tempButton;
   }
 
-  public boolean getLoadStatus() {
-    return loadPressed;
+  private void formatButtons(Button load, Button speed, Button skip, Button play) {
+    myHeader.setHgrow(load, Priority.ALWAYS);
+    myHeader.setHgrow(speed, Priority.ALWAYS);
+    myHeader.setHgrow(skip, Priority.ALWAYS);
+    myHeader.setHgrow(play, Priority.ALWAYS);
   }
 
-  public void setLoadOff() {loadPressed = false;}
+  public HBox getHeader() {return myHeader;}
+
+  public boolean getPlayStatus() {return playPressed;}
+
+  public boolean getLoadStatus() {return loadPressed;}
 
   public boolean getSkipStatus() {return skipPressed;}
 
-  public void setSkipOff() {skipPressed = false;}
-
   public boolean getSpeedStatus() {return speedUpPressed;}
+
+  public void setLoadOff() {loadPressed = false;}
+
+  public void setSkipOff() {skipPressed = false;}
 
   public void setSpeedOff() {speedUpPressed = false;}
 }
-
-
-
-  /**
-   * NOTE: not sure what the point of this is, but leaving it in
-   */
-  /*
-    public void update(Group group){
-    for (Shape cell : myGrid) {
-      cell.setFill(Color.LIGHTBLUE);
-    }
-  }
-
-   /**
-   * Takes in a grid and transforms it into a collection of shapes that can be visualized
-   *
-   * @return a collection of cells transformed into shapes
-   **/
-
-  /*
-  public Group renderGrid(Grid grid) {
-    double cellWidth = sceneWidth / grid.getColumns();
-    double cellHeight = (.8  * sceneHeight) / grid.getRows();
-    Group returnedCells = new Group();
-    System.out.println("rendering grid");
-    for (int i = 0; i < grid.getColumns(); i++) {
-      for (int j = 0; j < grid.getRows(); j++) {
-        Rectangle addedCell = new Rectangle(i * cellWidth, (sceneHeight / 10) + j * cellHeight, cellWidth, cellHeight);
-        addedCell.setFill(grid.getGrid().get(i).get(j).getColor());
-        returnedCells.getChildren().add(addedCell);
-      }
-    }
-    return returnedCells;
-  }
-   */
