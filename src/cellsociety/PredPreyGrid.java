@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class Pred_PreyGrid extends Grid {
+public class PredPreyGrid extends Grid {
 
   public static final List<String> DATA_FIELDS = List.of(
       "preyDeathRate",
@@ -25,7 +25,7 @@ public class Pred_PreyGrid extends Grid {
   private static double percentPrey;
   private Random r = new Random();
 
-  public Pred_PreyGrid(int rows, int columns, int predatorEnergy, int preyGenerationRate,
+  public PredPreyGrid(int rows, int columns, int predatorEnergy, int preyGenerationRate,
       int predatorGenerationRate, double percentPredator, double percentPrey) {
     super(rows, columns);
     this.predatorEnergy = predatorEnergy;
@@ -35,7 +35,7 @@ public class Pred_PreyGrid extends Grid {
     this.percentPrey = percentPrey;
   }
 
-  public Pred_PreyGrid(Map<String, String> dataValues) {
+  public PredPreyGrid(Map<String, String> dataValues) {
     this(Integer.parseInt(dataValues.get(DATA_FIELDS.get(0))),
         Integer.parseInt(dataValues.get(DATA_FIELDS.get(1))),
         Integer.parseInt(dataValues.get(DATA_FIELDS.get(2))),
