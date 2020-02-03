@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 public class Footer {
 
     private double sceneHeight;
+    private double sceneWidth;
 
     private ResourceBundle myResources;
 
@@ -26,8 +27,10 @@ public class Footer {
     private Slider frameSpeed;
     private Slider skipJump;
 
-    public Footer(double sceneHeight, String language) {
+    public Footer(double sceneHeight, double sceneWidth, String language) {
         this.sceneHeight = sceneHeight;
+        this.sceneWidth = sceneWidth;
+
         this.myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     }
 
@@ -57,12 +60,13 @@ public class Footer {
         slider.setShowTickLabels(true);
         slider.setSnapToTicks(true);
     }
-    public Slider getFrameSpeed() {
-        return frameSpeed;
+
+    public double getSpeed() {
+        return frameSpeed.getValue();
     }
 
-    public Slider getSkipJump() {
-        return skipJump;
+    public double getJumpValue() {
+        return skipJump.getValue();
     }
 
 }
