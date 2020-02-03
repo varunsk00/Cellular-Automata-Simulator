@@ -32,8 +32,8 @@ public class Main extends Application {
   private static double SCENE_WIDTH = 500;
   private static double SCENE_HEIGHT = 500;
 
-  public static final String DATA_FILE_EXTENSION = "*.xml";
-  public final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
+  private static final String DATA_FILE_EXTENSION = "*.xml";
+  private final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
 
   private Grid grid;
   private GridView gridView;
@@ -42,8 +42,8 @@ public class Main extends Application {
   private Footer inputFooter;
 
   private Stage myStage;
-  private Random r = new Random();
 
+  private Random r = new Random();
 
   public static void main(String[] args) {
     launch(args);
@@ -56,20 +56,9 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Simulation");
-
-    grid = new SegGrid(30, 30);
-    for (int i = 0; i < grid.getRows(); i++) {
-      for (int j = 0; j < grid.getColumns(); j++) {
-        if (r.nextFloat() <= 0.25){
-          grid.current(i,j).update(Color.BLUE, "X");
-        }
-        if (r.nextFloat() <= 0.25){
-          grid.current(i,j).update(Color.RED, "O");
-        }
-      }
-    }
-
     startAnimationLoop();
+
+    grid = new Grid(30,30);
 
     root = new BorderPane();
     root.setMaxHeight(SCENE_HEIGHT);
@@ -85,17 +74,15 @@ public class Main extends Application {
     root.setCenter(gridView.getGridPane());
 
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
-    scene.getStylesheets()
-        .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
+    scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
     myStage = primaryStage;
     primaryStage.setScene(scene);
-    startAnimationLoop();
     primaryStage.show();
   }
 
   private void startAnimationLoop() {
     KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {
-      step(SECOND_DELAY);
+        step(SECOND_DELAY);
     });
     Timeline animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
@@ -103,17 +90,12 @@ public class Main extends Application {
     animation.play();
   }
 
-  private void step(double elapsedTime) {
-    if (inputHeader.getLoadStatus()) {
-      xmlToGrid();
-    } else if (inputHeader.getSkipStatus()) {
-      skipAhead();
-    } else if (inputHeader.getSpeedStatus()) {
-      updateSpeed();
-    } else if (inputHeader.getPlayStatus()) {
-      updateState();
+  private void step(double elapsedTime){
+    if (inputHeader.getLoadStatus()) xmlToGrid();
+    else if (inputHeader.getSkipStatus()) skipAhead();
+    else if (inputHeader.getSpeedStatus()) updateSpeed();
+    else if (inputHeader.getPlayStatus()) updateState();
     }
-  }
 
 
   private void skipAhead() {
@@ -124,7 +106,19 @@ public class Main extends Application {
     inputHeader.setSkipOff();
   }
 
-  private static FileChooser makeChooser(String extensionAccepted) {
+//  private void uploadFile() {
+//    FileChooser fc = new FileChooser();
+//    File file = fc.showOpenDialog(myStage);
+//    if (file == null) System.out.println("Please pick a file!");
+//    else if (!file.getName().substring(file.getName().length() - 4).equals(".xml")) System.out.println("Please pick an XML File!");
+//    else {
+//      myXMLFile = file;
+//    }
+//
+//    inputHeader.setLoadOff();
+//  }
+
+  private static FileChooser makeChooser (String extensionAccepted) {
     FileChooser result = new FileChooser();
     result.setTitle("Open Data File");
     // pick a reasonable place to start searching for files
@@ -133,12 +127,12 @@ public class Main extends Application {
     return result;
   }
 
-  private void xmlToGrid() {
+  private void xmlToGrid(){
     File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
     try {
       grid = new XMLParser("grid").getGrid(dataFile);
-      gridView.updateGrid(grid);
-    } catch (XMLException e) {
+    }
+    catch (XMLException e) {
       System.out.println(e.getMessage());
     }
     inputHeader.setLoadOff();
