@@ -2,5 +2,5 @@
 <data grid="Fire">
   <rows>30</rows>
   <columns>30</columns>
-  <probCatch>0.5</probCatch>
+  <probCatch>0.6</probCatch>
 </data>
