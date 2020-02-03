@@ -1,9 +1,19 @@
 package cellsociety;
+import java.util.List;
+import java.util.Map;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class PercGrid extends Grid {
+  // field names expected to appear in data file holding values for this object
+  public static final List<String> DATA_FIELDS = List.of(
+      "rows",
+      "columns",
+      "percentBlocked"
+  );
+
+  private static double percentBlocked;
   private Random r = new Random();
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -12,10 +22,39 @@ public class PercGrid extends Grid {
    * @param row    the number of rows to generate in our grid
    * @param column the number of columns to generate in our grid
    **/
-  public PercGrid(int row, int column) {
+  public PercGrid(int row, int column, double percentBlocked) {
     super(row, column);
+    this.percentBlocked = percentBlocked;
+    setFullCells();
+    setBlockedCells();
   }
 
+
+  public PercGrid(Map<String, String> dataValues) {
+    this(Integer.parseInt(dataValues.get(DATA_FIELDS.get(0))),
+        Integer.parseInt(dataValues.get(DATA_FIELDS.get(1))),
+        Double.parseDouble(dataValues.get(DATA_FIELDS.get(2))));
+  }
+
+  private void setFullCells(){
+    for (int i = 0; i < this.getColumns(); i++) {
+      if (this.current(i, 0).getState() != "blocked") {
+        this.current(i, 0).update(Color.BLUE, "full");
+      }
+    }
+
+  }
+
+  private void setBlockedCells(){
+    for (int i = 0; i < this.getRows(); i++) {
+      for (int j = 0; j < this.getColumns(); j++) {
+        if (r.nextFloat() <= percentBlocked){
+          this.getGrid().get(i).get(j).update(Color.BLACK, "blocked");
+        }
+      }
+    }
+
+  }
   @Override
   public ArrayList<ArrayList<Cell>> createGrid() {
     ArrayList<ArrayList<Cell>> ret = new ArrayList<>();

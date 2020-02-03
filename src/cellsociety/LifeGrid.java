@@ -1,21 +1,50 @@
 package cellsociety;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
 public class LifeGrid extends Grid {
-    /**
+  public static final List<String> DATA_FIELDS = List.of(
+      "rows",
+      "columns",
+      "percentAlive"
+  );
+  private Random r = new Random();
+  private static double percentAlive;
+
+  /**
      * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
      * based on given rows and columns
      *
      * @param rows    the number of rows to generate in our grid
      * @param columns the number of columns to generate in our grid
      **/
-    public LifeGrid(int rows, int columns) {
+    public LifeGrid(int rows, int columns, double percentAlive) {
         super(rows, columns);
+        this.percentAlive = percentAlive;
+        setAliveCells();
     }
 
+  public LifeGrid(Map<String, String> dataValues) {
+    this(Integer.parseInt(dataValues.get(DATA_FIELDS.get(0))),
+        Integer.parseInt(dataValues.get(DATA_FIELDS.get(1))),
+        Double.parseDouble(dataValues.get(DATA_FIELDS.get(2))));
+  }
+
+
+  private void setAliveCells(){
+    for (int i = 0; i < this.getRows(); i++) {
+      for (int j = 0; j < this.getColumns(); j++) {
+        if (r.nextFloat() <= percentAlive){
+          this.getGrid().get(i).get(j).update(Color.BLACK, "alive");
+        }
+      }
+    }
+  }
     @Override
     public ArrayList<ArrayList<Cell>> createGrid() {
         ArrayList<ArrayList<Cell>> ret = new ArrayList<>();

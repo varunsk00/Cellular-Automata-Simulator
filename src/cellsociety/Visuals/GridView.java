@@ -50,8 +50,8 @@ public class GridView {
         Rectangle addedShape = new Rectangle(cellWidth, cellHeight);
         addedShape.setFill(grid.getGrid().get(i).get(j).getColor());
         myGridPane.add(addedShape, i, j);
-        }
       }
+    }
   }
 }
 
@@ -72,10 +72,10 @@ public class GridView {
   }
  */
 
-  /**
-   * return a grid that can be added to scene
-   * @return a grid as a collection of shapes
-   */
+/**
+ * return a grid that can be added to scene
+ * @return a grid as a collection of shapes
+ */
 
 
 
