@@ -115,6 +115,15 @@ public class Grid {
     return getGrid().get(x).get(y + 1).getState() == state;
   }
 
+  public ArrayList<Cell> getNeighbors(int x, int y){
+    ArrayList<Cell> ret = new ArrayList<>();
+    ret.add(getGrid().get(x-1).get(y));
+    ret.add(getGrid().get(x+1).get(y));
+    ret.add(getGrid().get(x).get(y+1));
+    ret.add(getGrid().get(x).get(y-1));
+    return ret;
+  }
+
   public ArrayList<Cell> getAllNeighbors(int x, int y){
     ArrayList<Cell> ret = new ArrayList<>();
     ret.add(getGrid().get(x-1).get(y));
