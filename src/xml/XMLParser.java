@@ -4,7 +4,7 @@ import cellsociety.FireGrid;
 import cellsociety.Grid;
 import cellsociety.LifeGrid;
 import cellsociety.PercGrid;
-import cellsociety.Pred_PreyGrid;
+import cellsociety.PredPreyGrid;
 import cellsociety.SegGrid;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,11 +69,11 @@ public class XMLParser {
         dataFields = SegGrid.DATA_FIELDS;
         break;
       case "PredPray":
-        dataFields = Pred_PreyGrid.DATA_FIELDS;
+        dataFields = PredPreyGrid.DATA_FIELDS;
         break;
     }
 
-    System.out.println(dataFields);
+//    System.out.println(dataFields);
     // read data associated with the fields given by the object
     Map<String, String> results = new HashMap<>();
     for (String field : dataFields) {
@@ -90,7 +90,7 @@ public class XMLParser {
       case "Segregation":
         return new SegGrid(results);
       case "PredPray":
-        return new Pred_PreyGrid(results);
+        return new PredPreyGrid(results);
     }
 
     return new Grid(0, 0);
