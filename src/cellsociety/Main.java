@@ -34,7 +34,7 @@ public class Main extends Application {
   private static final String STYLESHEET = "default.css";
   private static final String RESOURCE_LANGUAGE = "Standard";
 
-  private static final double FRAMES_PER_SECOND = 20;
+  private static double FRAMES_PER_SECOND = 2;
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private double SCENE_WIDTH = 500;
@@ -51,6 +51,7 @@ public class Main extends Application {
 
   private Stage myStage;
   private Random r = new Random();
+  private Timeline animation;
 
 
   public static void main(String[] args) {
@@ -95,7 +96,7 @@ public class Main extends Application {
     KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {
       step(SECOND_DELAY);
     });
-    Timeline animation = new Timeline();
+    animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames().add(frame);
     animation.play();
@@ -148,6 +149,7 @@ public class Main extends Application {
   }
 
   private void updateSpeed() {
+    animation.setRate(inputFooter.getSpeed());
     inputHeader.setSpeedOff();
   }
 

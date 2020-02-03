@@ -1,15 +1,15 @@
 package cellsociety.Visuals;
 
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 import java.util.ResourceBundle;
 
 public class Footer {
-
-    private double sceneHeight;
-    private double sceneWidth;
 
     private ResourceBundle myResources;
 
@@ -28,27 +28,37 @@ public class Footer {
     private Slider skipJump;
 
     public Footer(double sceneHeight, double sceneWidth, String language) {
-        this.sceneHeight = sceneHeight;
-        this.sceneWidth = sceneWidth;
 
         this.myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     }
 
-    public HBox renderFooter() {
-        HBox footer = new HBox();
-        footer.setPrefWidth(Double.MAX_VALUE);
-        footer.setPrefHeight((.1) * sceneHeight);
+    public VBox renderFooter() {
+        VBox footer = new VBox();
 
+        HBox labels = new HBox();
+        Label speed = new Label("Speed of Game");
+        speed.setMaxWidth(Double.MAX_VALUE);
+        speed.setAlignment(Pos.CENTER);
+        Label skip = new Label("Frames to Skip");
+        skip.setAlignment(Pos.CENTER);
+        skip.setMaxWidth(Double.MAX_VALUE);
+
+        labels.getChildren().addAll(speed, skip);
+        labels.setHgrow(speed, Priority.ALWAYS);
+        labels.setHgrow(skip, Priority.ALWAYS);
+        footer.getChildren().add(labels);
+
+        HBox sliders = new HBox();
         frameSpeed = new Slider(MIN_FRAME_SPEED,  MAX_FRAME_SPEED, DEFAULT_FRAME_SPEED);
         setSliderTicks(frameSpeed);
         skipJump = new Slider(MIN_SKIP, MAX_SKIP, DEFAULT_SKIP);
         setSliderTicks(skipJump);
 
-        footer.getChildren().add(frameSpeed);
-        footer.setHgrow(frameSpeed, Priority.ALWAYS);
+        sliders.getChildren().addAll(frameSpeed, skipJump);
+        sliders.setHgrow(frameSpeed, Priority.ALWAYS);
+        sliders.setHgrow(skipJump, Priority.ALWAYS);
 
-        footer.getChildren().add(skipJump);
-        footer.setHgrow(skipJump, Priority.ALWAYS);
+        footer.getChildren().add(sliders);
 
         return footer;
     }

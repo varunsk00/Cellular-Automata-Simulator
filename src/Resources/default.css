@@ -1,11 +1,4 @@
-.button {
-    -fx-text-fill: #0000ff;
-    -fx-background-color: #ff9999;
-    -fx-border-radius: 20;
-    -fx-background-radius: 20;
-    -fx-padding: 8;
+.root {
+    -fx-font-family: "American Typewriter";
 }
 
-.slider {
-    -fx-background-color: #ffffcc;
-}
