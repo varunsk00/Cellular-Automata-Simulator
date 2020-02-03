@@ -38,8 +38,8 @@ public class PercGrid extends Grid {
 
   private void setFullCells(){
     for (int i = 0; i < this.getColumns(); i++) {
-      if (this.current(0, i).getState() != "blocked") {
-        this.current(0, i).update(Color.BLUE, "full");
+      if (this.current(i, 0).getState() != "blocked") {
+        this.current(i, 0).update(Color.BLUE, "full");
       }
     }
 
