@@ -52,15 +52,17 @@ public class XMLParser {
     String type = getAttribute(root, TYPE_ATTRIBUTE);
 
     List<String> dataFields = new ArrayList<>();
-    if (type.equals("Fire")) {
-      dataFields = FireGrid.DATA_FIELDS;
-    }
-    if (type.equals("Percolation")) {
-      dataFields = PercGrid.DATA_FIELDS;
-    }
 
-    if (type.equals("Life")) {
-      dataFields = LifeGrid.DATA_FIELDS;
+    switch (type){
+      case "Fire":
+        dataFields = FireGrid.DATA_FIELDS;
+        break;
+      case "Percolation":
+        dataFields = PercGrid.DATA_FIELDS;
+        break;
+      case "Life":
+        dataFields = LifeGrid.DATA_FIELDS;
+        break;
     }
 
     System.out.println(dataFields);
@@ -70,16 +72,13 @@ public class XMLParser {
       results.put(field, getTextValue(root, field));
     }
 
-    if (type.equals("Fire")) {
-      return new FireGrid(results);
-    }
-
-    if (type.equals("Percolation")) {
-      return new PercGrid(results);
-    }
-
-    if (type.equals("Life")) {
-      return new LifeGrid(results);
+    switch (type){
+      case "Fire":
+        return new FireGrid(results);
+      case "Percolation":
+        return new PercGrid(results);
+      case "Life":
+        return new LifeGrid(results);
     }
 
     return new Grid(0, 0);
@@ -94,11 +93,6 @@ public class XMLParser {
     } catch (SAXException | IOException e) {
       throw new XMLException(e);
     }
-  }
-
-  // returns if this is a valid XML file for the specified object type
-  private boolean isValidFile(Element root, String type) {
-    return getAttribute(root, TYPE_ATTRIBUTE).equals(type);
   }
 
   // get value of Element's attribute
