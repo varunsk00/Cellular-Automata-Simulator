@@ -96,14 +96,14 @@ public class FireGrid extends Grid {
     if (checkNeighbors(x, y) && current(x, y).getState().equals("tree")
         && r.nextFloat() <= probability) {
       current(x, y).update(Color.RED, "burning");
-      System.out.println("caught fire: " + (x) + ", " + (y));
+      //System.out.println("caught fire: " + (x) + ", " + (y));
     }
   }
 
   public void handleBurningCell(int x, int y) {
     if (current(x, y).getState().equals("burning")) {
       current(x, y).update(Color.YELLOW, "empty");
-      System.out.println("extinguished: " + (x) + ", " + (y));
+      //System.out.println("extinguished: " + (x) + ", " + (y));
     }
   }
 
