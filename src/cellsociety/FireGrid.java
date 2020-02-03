@@ -6,6 +6,7 @@ import java.util.Random;
 public class FireGrid extends Grid {
     private double probability;
     private Random r = new Random();
+    private int neighborCount;
     /**
      * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
      * based on given rows and columns
@@ -52,15 +53,15 @@ public class FireGrid extends Grid {
 
     @Override
     public void handleMiddleCell(int x, int y){
-        if (checkNeighbors(x,y,"burning") && getGrid().get(x).get(y).getState() == "tree" && r.nextFloat() <= probability){
-            getGrid().get(x).get(y).update(Color.RED, "burning");
+        if (checkNeighbors(x,y,"burning") && current(x,y).getState().equals("tree") && r.nextFloat() <= probability){
+            current(x,y).update(Color.RED, "burning");
             System.out.println("caught fire: " + (x) + ", " + (y));
         }
     }
 
     public void handleBurningCell(int x, int y){
-        if (getGrid().get(x).get(y).getState() == "burning") {
-            getGrid().get(x).get(y).update(Color.YELLOW, "empty");
+        if (current(x,y).getState().equals("burning")) {
+            current(x,y).update(Color.YELLOW, "empty");
             System.out.println("extinguished: " + (x) + ", " + (y));
         }
     }
