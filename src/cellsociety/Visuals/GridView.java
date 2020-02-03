@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public class GridView {
@@ -18,7 +19,7 @@ public class GridView {
     myGridPane.setHgap(1);
     myGridPane.setVgap(1);
 
-    myGridPane.setPrefHeight(.8 * sceneHeight);
+    myGridPane.setPrefHeight(.9 * sceneHeight);
     myGridPane.setPrefWidth(sceneWidth);
 
   }
