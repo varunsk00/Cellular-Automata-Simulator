@@ -40,19 +40,18 @@ public class Main extends Application {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    grid = new FireGrid(100,100, 0.6);
-    grid.getGrid().get(grid.getColumns()/2).get(grid.getColumns()/2).update(Color.RED, "burning");
-    //random generation of Percolation blocked bricks (33% blocked)
-//    for (int i = 0; i < grid.getRows(); i++) {
-//      for (int j = 0; j < grid.getColumns(); j++) {
-//        int rr = r.nextInt(3);
-//        if (rr == 1){
-//          int ran_x = r.nextInt(grid.getColumns());
-//          int ran_y = r.nextInt(grid.getRows());
-//          grid.getGrid().get(ran_x).get(ran_y).update(Color.BLACK, "blocked");
-//        }
-//      }
-//    }
+    grid = new LifeGrid(50,50);
+    //random generation of Percolation blocked bricks and LIFE alive bricks (33% blocked/alive)
+    for (int i = 0; i < grid.getRows(); i++) {
+      for (int j = 0; j < grid.getColumns(); j++) {
+        if (r.nextFloat() <= 0.2){
+          int ran_x = r.nextInt(grid.getColumns());
+          int ran_y = r.nextInt(grid.getRows());
+          grid.getGrid().get(ran_x).get(ran_y).update(Color.BLACK, "alive");
+          //grid.getGrid().get(ran_x).get(ran_y).update(Color.BLACK, "blocked");
+        }
+      }
+    }
 
 
     GUIController = new Header(SCENE_WIDTH, "Standard");
