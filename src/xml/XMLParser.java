@@ -4,6 +4,7 @@ import cellsociety.FireGrid;
 import cellsociety.Grid;
 import cellsociety.LifeGrid;
 import cellsociety.PercGrid;
+import cellsociety.Pred_PreyGrid;
 import cellsociety.SegGrid;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,9 @@ public class XMLParser {
       case "Segregation":
         dataFields = SegGrid.DATA_FIELDS;
         break;
+      case "PredPray":
+        dataFields = Pred_PreyGrid.DATA_FIELDS;
+        break;
     }
 
     System.out.println(dataFields);
@@ -85,6 +89,8 @@ public class XMLParser {
         return new LifeGrid(results);
       case "Segregation":
         return new SegGrid(results);
+      case "PredPray":
+        return new Pred_PreyGrid(results);
     }
 
     return new Grid(0, 0);
