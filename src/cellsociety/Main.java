@@ -32,8 +32,8 @@ public class Main extends Application {
   private static double SCENE_WIDTH = 500;
   private static double SCENE_HEIGHT = 500;
 
-  public static final String DATA_FILE_EXTENSION = "*.xml";
-  public final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
+  private static final String DATA_FILE_EXTENSION = "*.xml";
+  private final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
 
   private Grid grid;
   private GridView gridView;
@@ -58,10 +58,29 @@ public class Main extends Application {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    grid = new FireGrid(30, 30, .7);
-    grid.getGrid().get(grid.getRows() / 2).get(grid.getColumns() / 2).update(Color.RED, "burning");
+    grid = new LifeGrid(30, 30);
 
-    root = new BorderPane();
+    //Initial state for Burning
+    //grid.getGrid().get(grid.getRows() / 2).get(grid.getColumns() / 2).update(Color.RED, "burning");
+
+    //First row water case for percolation
+//    for(int i= 0; i<grid.getColumns(); i++){
+//      if(grid.current(i,0).getState() != "blocked") {
+//        grid.current(i,0).update(Color.BLUE, "full");
+//      }
+//    }
+
+    //intiialization of perc/lifegrid, change "blocked" to alive"
+    for (int i = 0; i < grid.getRows(); i++) {
+      for (int j = 0; j < grid.getColumns(); j++) {
+        if (r.nextFloat() <= 0.33){
+          grid.getGrid().get(i).get(j).update(Color.BLACK, "blocked");
+        }
+      }
+    }
+
+
+      root = new BorderPane();
     root.setMaxHeight(SCENE_HEIGHT);
     root.setMaxWidth(SCENE_WIDTH);
 
@@ -83,11 +102,7 @@ public class Main extends Application {
 
   private void startAnimationLoop() {
     KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {
-      try {
         step(SECOND_DELAY);
-      } catch (InterruptedException ex) {
-        ex.printStackTrace();
-      }
     });
     Timeline animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
@@ -95,7 +110,7 @@ public class Main extends Application {
     animation.play();
   }
 
-  private void step(double elapsedTime) throws InterruptedException {
+  private void step(double elapsedTime){
     if (inputHeader.getLoadStatus()) xmlToGrid();
     else if (inputHeader.getSkipStatus()) skipAhead();
     else if (inputHeader.getSpeedStatus()) updateSpeed();
