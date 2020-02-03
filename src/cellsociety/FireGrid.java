@@ -112,10 +112,6 @@ public class FireGrid extends Grid {
     if (burnedCells.contains(new Point(x - 1, y))) return true;
     if (burnedCells.contains(new Point(x, y + 1))) return true;
     if (burnedCells.contains(new Point(x, y - 1))) return true;
-    if (burnedCells.contains(new Point(x + 1, y + 1))) return true;
-    if (burnedCells.contains(new Point(x - 1, y + 1))) return true;
-    if (burnedCells.contains(new Point(x + 1, y - 1))) return true;
-    if (burnedCells.contains(new Point(x - 1, y - 1))) return true;
     return false;
   }
 }
