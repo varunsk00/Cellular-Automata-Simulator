@@ -133,6 +133,10 @@ public class Main extends Application {
 
   private void xmlToGrid() {
     File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
+    if (dataFile==null){
+      inputHeader.setLoadOff();
+      return;
+    }
     try {
       grid = new XMLParser("grid").getGrid(dataFile);
       gridView.updateGrid(grid);
