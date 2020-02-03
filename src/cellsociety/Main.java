@@ -57,10 +57,10 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Simulation");
 
-    startAnimationLoop();
 
-    grid = new FireGrid(100, 100, 0.6);
-    grid.getGrid().get(grid.getColumns() / 2).get(grid.getColumns() / 2).update(Color.RED, "burning");
+
+    grid = new Grid(30, 30);
+//    grid.getGrid().get(grid.getColumns() / 2).get(grid.getColumns() / 2).update(Color.RED, "burning");
     //random generation of Percolation blocked bricks (33% blocked)
 //    for (int i = 0; i < grid.getRows(); i++) {
 //      for (int j = 0; j < grid.getColumns(); j++) {
@@ -88,6 +88,7 @@ public class Main extends Application {
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     myStage = primaryStage;
     primaryStage.setScene(scene);
+    startAnimationLoop();
     primaryStage.show();
   }
 
@@ -146,6 +147,7 @@ public class Main extends Application {
     File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
     try {
       grid = new XMLParser("grid").getGrid(dataFile);
+      gridView.updateGrid(grid);
     }
     catch (XMLException e) {
       System.out.println(e.getMessage());

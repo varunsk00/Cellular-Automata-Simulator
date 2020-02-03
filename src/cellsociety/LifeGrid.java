@@ -1,10 +1,17 @@
 package cellsociety;
 
+import java.util.List;
+import java.util.Map;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
 public class LifeGrid extends Grid {
+  public static final List<String> DATA_FIELDS = List.of(
+      "rows",
+      "columns",
+      "percentAlive"
+  );
     /**
      * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
      * based on given rows and columns
@@ -12,9 +19,15 @@ public class LifeGrid extends Grid {
      * @param rows    the number of rows to generate in our grid
      * @param columns the number of columns to generate in our grid
      **/
-    public LifeGrid(int rows, int columns) {
+    public LifeGrid(int rows, int columns, double percentAlive) {
         super(rows, columns);
     }
+
+  public LifeGrid(Map<String, String> dataValues) {
+    this(Integer.parseInt(dataValues.get(DATA_FIELDS.get(0))),
+        Integer.parseInt(dataValues.get(DATA_FIELDS.get(1))),
+        Double.parseDouble(dataValues.get(DATA_FIELDS.get(2))));
+  }
 
     @Override
     public ArrayList<ArrayList<Cell>> createGrid() {

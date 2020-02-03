@@ -2,7 +2,10 @@ package xml;
 
 import cellsociety.FireGrid;
 import cellsociety.Grid;
+import cellsociety.LifeGrid;
 import cellsociety.PercGrid;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,6 +26,7 @@ import org.xml.sax.SAXException;
  * @author Robert C. Duvall
  */
 public class XMLParser {
+
   // Readable error message that can be displayed by the GUI
   public static final String ERROR_MESSAGE = "XML file does not represent %s";
   // name of root attribute that notes the type of file expecting to parse
@@ -34,7 +38,7 @@ public class XMLParser {
   /**
    * Create parser for XML files of given type.
    */
-  public XMLParser (String type) {
+  public XMLParser(String type) {
     DOCUMENT_BUILDER = getDocumentBuilder();
     TYPE_ATTRIBUTE = type;
   }
@@ -42,59 +46,82 @@ public class XMLParser {
   /**
    * Get data contained in this XML file as an object
    */
-  public Grid getGrid (File dataFile) {
+  public Grid getGrid(File dataFile) {
     Element root = getRootElement(dataFile);
-    if (! isValidFile(root, FireGrid.DATA_TYPE)) {
-      throw new XMLException(ERROR_MESSAGE, FireGrid.DATA_TYPE);
+
+    String type = getAttribute(root, TYPE_ATTRIBUTE);
+
+    List<String> dataFields = new ArrayList<>();
+    if (type.equals("Fire")) {
+      dataFields = FireGrid.DATA_FIELDS;
     }
+    if (type.equals("Percolation")) {
+      dataFields = PercGrid.DATA_FIELDS;
+    }
+
+    if (type.equals("Life")) {
+      dataFields = LifeGrid.DATA_FIELDS;
+    }
+
+    System.out.println(dataFields);
     // read data associated with the fields given by the object
     Map<String, String> results = new HashMap<>();
-    for (String field : FireGrid.DATA_FIELDS) {
+    for (String field : dataFields) {
       results.put(field, getTextValue(root, field));
     }
-    return new FireGrid(results);
+
+    if (type.equals("Fire")) {
+      return new FireGrid(results);
+    }
+
+    if (type.equals("Percolation")) {
+      return new PercGrid(results);
+    }
+
+    if (type.equals("Life")) {
+      return new LifeGrid(results);
+    }
+
+    return new Grid(0, 0);
   }
 
   // get root element of an XML file
-  private Element getRootElement (File xmlFile) {
+  private Element getRootElement(File xmlFile) {
     try {
       DOCUMENT_BUILDER.reset();
       Document xmlDocument = DOCUMENT_BUILDER.parse(xmlFile);
       return xmlDocument.getDocumentElement();
-    }
-    catch (SAXException | IOException e) {
+    } catch (SAXException | IOException e) {
       throw new XMLException(e);
     }
   }
 
   // returns if this is a valid XML file for the specified object type
-  private boolean isValidFile (Element root, String type) {
+  private boolean isValidFile(Element root, String type) {
     return getAttribute(root, TYPE_ATTRIBUTE).equals(type);
   }
 
   // get value of Element's attribute
-  private String getAttribute (Element e, String attributeName) {
+  private String getAttribute(Element e, String attributeName) {
     return e.getAttribute(attributeName);
   }
 
   // get value of Element's text
-  private String getTextValue (Element e, String tagName) {
+  private String getTextValue(Element e, String tagName) {
     NodeList nodeList = e.getElementsByTagName(tagName);
     if (nodeList != null && nodeList.getLength() > 0) {
       return nodeList.item(0).getTextContent();
-    }
-    else {
+    } else {
       // FIXME: empty string or exception? In some cases it may be an error to not find any text
       return "";
     }
   }
 
   // boilerplate code needed to make a documentBuilder
-  private DocumentBuilder getDocumentBuilder () {
+  private DocumentBuilder getDocumentBuilder() {
     try {
       return DocumentBuilderFactory.newInstance().newDocumentBuilder();
-    }
-    catch (ParserConfigurationException e) {
+    } catch (ParserConfigurationException e) {
       throw new XMLException(e);
     }
   }

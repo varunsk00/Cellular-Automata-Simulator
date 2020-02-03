@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class FireGrid extends Grid {
-  // name in data file that will indicate it represents data for this type of object
-  public static final String DATA_TYPE = "Fire";
   // field names expected to appear in data file holding values for this object
   public static final List<String> DATA_FIELDS = List.of(
       "rows",
