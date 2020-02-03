@@ -1,6 +1,8 @@
 package cellsociety;
 
 import javafx.scene.paint.Color;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -111,6 +113,23 @@ public class Grid {
 
   public boolean checkDown(int x, int y, String state){
     return getGrid().get(x).get(y+1).getState() == state;
+  }
+
+  public ArrayList<Cell> getAllNeighbors(int x, int y){
+    ArrayList<Cell> ret = new ArrayList<>();
+    ret.add(getGrid().get(x-1).get(y));
+    ret.add(getGrid().get(x+1).get(y));
+    ret.add(getGrid().get(x).get(y+1));
+    ret.add(getGrid().get(x).get(y-1));
+    ret.add(getGrid().get(x-1).get(y-1));
+    ret.add(getGrid().get(x-1).get(y+1));
+    ret.add(getGrid().get(x+1).get(y-1));
+    ret.add(getGrid().get(x+1).get(y+1));
+    return ret;
+  }
+
+  public Cell current(int x, int y){
+    return this.grid.get(x).get(y);
   }
 
 }
