@@ -18,7 +18,8 @@ public class GridView {
   public GridView(Grid grid, double sceneWidth, double sceneHeight) {
 
     myGridPane = new GridPane();
-    myGridPane.setGridLinesVisible(true);
+    myGridPane.setHgap(1);
+    myGridPane.setVgap(1);
 
     cellWidth = sceneWidth / grid.getColumns();
     cellHeight = ((.8) * sceneHeight) / grid.getRows();
@@ -44,7 +45,6 @@ public class GridView {
 
   public void updateGrid(Grid grid){
     myGridPane.getChildren().clear();
-
     for (int i = 0; i < grid.getRows(); i++) {
       for (int j = 0; j < grid.getColumns(); j++) {
         Rectangle addedShape = new Rectangle(cellWidth, cellHeight);
