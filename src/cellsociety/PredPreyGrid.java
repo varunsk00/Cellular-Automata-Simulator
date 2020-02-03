@@ -10,10 +10,11 @@ import java.util.Random;
 public class PredPreyGrid extends Grid {
 
   public static final List<String> DATA_FIELDS = List.of(
-      "preyDeathRate",
-      "predatorDeathRate",
-      "preyBirthRate",
-      "predatorBirthRate",
+      "rows",
+      "columns",
+      "predatorEnergy",
+      "preyGenerationRate",
+      "predatorGenerationRate",
       "percentPredator",
       "percentPrey"
   );
@@ -33,6 +34,8 @@ public class PredPreyGrid extends Grid {
     this.predatorGenerationRate = predatorGenerationRate;
     this.percentPredator = percentPredator;
     this.percentPrey = percentPrey;
+    createGrid();
+    setInits();
   }
 
   public PredPreyGrid(Map<String, String> dataValues) {
@@ -45,23 +48,42 @@ public class PredPreyGrid extends Grid {
         Double.parseDouble(dataValues.get(DATA_FIELDS.get(6))));
   }
 
-    @Override
-    public void handleMiddleCell(int x, int y) {
-        ArrayList<Cell> neighbors = getNeighbors(x, y);
+  private void setInits() {
+    for (int i = 0; i < this.getRows(); i++) {
+      for (int j = 0; j < this.getColumns(); j++) {
 
-        if(current(x,y).getState().equals("prey")){
-            int rng = r.nextInt(4);
-            while(getNeighbors(x,y).get(rng).equals("empty"))
-            {
-
-            }
-            for (Cell c : neighbors) {
-                if (c.getState().equals("empty")) {
-                    c.update(Color.GREEN, "prey" + "1");
-                    current(x,y).update(Color.WHITE,"empty");
-                }
-            }
+        if (r.nextFloat() <= percentPredator / 2) {
+          this.current(i, j).update(Color.ORANGE, "predator_0");
         }
+        if (r.nextFloat() <= percentPrey / 2) {
+          this.current(i, j).update(Color.GREEN, "prey_0");
+        }
+      }
     }
+  }
 
+  @Override
+  public void handleMiddleCell(int x, int y) {
+    ArrayList<Cell> neighbors = getNeighbors(x, y);
+    Cell currentCell = current(x, y);
+    if (current(x, y).getState().contains("prey")) {
+      int rng = r.nextInt(4);
+      Cell neighbor = neighbors.get(rng);
+      while (neighbor.getState().equals(("empty"))) {
+        neighbor.update(currentCell.getColor(), updateStateString(currentCell.getState()));
+        currentCell.update(Color.WHITE, "empty");
+        System.out.println("updating " + x + "," + y);
+      }
+    }
+  }
+
+  private String updateStateString(String s) {
+    if (!s.contains("_")) {
+      return s;
+    }
+    String type = s.split("_")[0];
+    String numString = s.split("_")[1];
+    int count = Integer.parseInt(numString) + 1;
+    return type + "_" + count;
+  }
 }

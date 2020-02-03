@@ -73,7 +73,7 @@ public class XMLParser {
         break;
     }
 
-    System.out.println(dataFields);
+//    System.out.println(dataFields);
     // read data associated with the fields given by the object
     Map<String, String> results = new HashMap<>();
     for (String field : dataFields) {
