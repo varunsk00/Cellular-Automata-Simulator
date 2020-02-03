@@ -74,13 +74,13 @@ public class Main extends Application {
     root.setMaxHeight(SCENE_HEIGHT);
     root.setMaxWidth(SCENE_WIDTH);
 
-    inputHeader = new Header(SCENE_HEIGHT, SCENE_WIDTH, RESOURCE_LANGUAGE);
-    root.setTop(inputHeader.renderHeader());
+    inputHeader = new Header(RESOURCE_LANGUAGE);
+    root.setTop(inputHeader.getHeader());
 
     inputFooter = new Footer(SCENE_HEIGHT, SCENE_WIDTH, RESOURCE_LANGUAGE);
     root.setBottom(inputFooter.renderFooter());
 
-    gridView = new GridView(SCENE_WIDTH, SCENE_HEIGHT);
+    gridView = new GridView();
     root.setCenter(gridView.getGridPane());
 
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
@@ -113,7 +113,6 @@ public class Main extends Application {
       updateState();
     }
   }
-
 
   private void skipAhead() {
     for (int i = 0; i < inputFooter.getJumpValue(); i++) {

@@ -13,7 +13,7 @@ public class Footer {
 
     private ResourceBundle myResources;
 
-    private static int MIN_FRAME_SPEED = 1;
+    private static double MIN_FRAME_SPEED = 1;
     private static int MAX_FRAME_SPEED = 10;
     private static int DEFAULT_FRAME_SPEED = 1;
 
@@ -36,10 +36,10 @@ public class Footer {
         VBox footer = new VBox();
 
         HBox labels = new HBox();
-        Label speed = new Label("Speed of Game");
+        Label speed = new Label(myResources.getString("SpeedSlider"));
         speed.setMaxWidth(Double.MAX_VALUE);
         speed.setAlignment(Pos.CENTER);
-        Label skip = new Label("Frames to Skip");
+        Label skip = new Label(myResources.getString("SkipSlider"));
         skip.setAlignment(Pos.CENTER);
         skip.setMaxWidth(Double.MAX_VALUE);
 
