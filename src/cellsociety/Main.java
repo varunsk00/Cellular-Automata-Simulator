@@ -29,11 +29,11 @@ public class Main extends Application {
   private static final double FRAMES_PER_SECOND = 5;
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-  private static double SCENE_WIDTH = 500;
-  private static double SCENE_HEIGHT = 500;
+  private double SCENE_WIDTH = 500;
+  private double SCENE_HEIGHT = 500;
 
   private static final String DATA_FILE_EXTENSION = "*.xml";
-  private final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
+  private static final FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
 
   private Grid grid;
   private GridView gridView;
@@ -57,8 +57,6 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
-
-    grid = new Grid(30,30);
 
     root = new BorderPane();
     root.setMaxHeight(SCENE_HEIGHT);
@@ -131,6 +129,7 @@ public class Main extends Application {
     File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
     try {
       grid = new XMLParser("grid").getGrid(dataFile);
+      gridView.updateGrid(grid);
     }
     catch (XMLException e) {
       System.out.println(e.getMessage());
