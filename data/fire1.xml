@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data grid="Fire">
-<<<<<<< HEAD
   <rows>30</rows>
   <columns>30</columns>
   <probCatch>0.5</probCatch>
-=======
-  <rows>100</rows>
-  <columns>100</columns>
-  <probCatch>0.6</probCatch>
->>>>>>> 1513d4ba60c88db8b5a01dd11750b8475dbb72bb
 </data>
