@@ -25,7 +25,10 @@ public class PercGrid extends Grid {
   public PercGrid(int row, int column, double percentBlocked) {
     super(row, column);
     this.percentBlocked = percentBlocked;
+    setFullCells();
+    setBlockedCells();
   }
+
 
   public PercGrid(Map<String, String> dataValues) {
     this(Integer.parseInt(dataValues.get(DATA_FIELDS.get(0))),
@@ -33,6 +36,25 @@ public class PercGrid extends Grid {
         Double.parseDouble(dataValues.get(DATA_FIELDS.get(2))));
   }
 
+  private void setFullCells(){
+    for (int i = 0; i < this.getColumns(); i++) {
+      if (this.current(i, 0).getState() != "blocked") {
+        this.current(i, 0).update(Color.BLUE, "full");
+      }
+    }
+
+  }
+
+  private void setBlockedCells(){
+    for (int i = 0; i < this.getRows(); i++) {
+      for (int j = 0; j < this.getColumns(); j++) {
+        if (r.nextFloat() <= percentBlocked){
+          this.getGrid().get(i).get(j).update(Color.BLACK, "blocked");
+        }
+      }
+    }
+
+  }
   @Override
   public ArrayList<ArrayList<Cell>> createGrid() {
     ArrayList<ArrayList<Cell>> ret = new ArrayList<>();

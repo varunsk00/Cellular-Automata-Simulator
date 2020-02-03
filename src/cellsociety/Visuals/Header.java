@@ -104,6 +104,9 @@ public class Header {
 
   public void setSkipOff() {skipPressed = false;}
 
+  public boolean getSpeedStatus() {return speedUpPressed;}
+
+  public void setSpeedOff() {speedUpPressed = false;}
 }
 
 
