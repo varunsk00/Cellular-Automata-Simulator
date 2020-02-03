@@ -1,27 +1,22 @@
 package cellsociety.Visuals;
 
-import cellsociety.Cell;
 import cellsociety.Grid;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Priority;
 
 public class GridView {
 
   private GridPane myGridPane;
 
-  public GridView(double sceneWidth, double sceneHeight) {
-
+  public GridView() {
     myGridPane = new GridPane();
     myGridPane.setHgap(1);
     myGridPane.setVgap(1);
-
-    myGridPane.setPrefHeight(.9 * sceneHeight);
-    myGridPane.setPrefWidth(sceneWidth);
-
   }
 
   public GridPane getGridPane() {
@@ -43,27 +38,27 @@ public class GridView {
   }
 }
 
+
 /*
- public void createShapeGrid(Grid grid) {
-    for (ArrayList<Cell> row : grid.getGrid()) {
-      ArrayList<Shape> rowShapes = new ArrayList<>();
-      for (Cell cell : row) {
-        int x = grid.getGrid().indexOf(row);
-        int y = row.indexOf(cell);
-        Shape shape = new Rectangle(x * cellWidth, y * cellHeight, cellWidth,
-            cellHeight);
-        shape.setFill(cell.getColor());
-        rowShapes.add(shape);
-      }
-      shapesGrid.add(rowShapes);
-    }
-  }
+    for (int i = 0; i < grid.getColumns(); i++) {
+        for (int j = 0; j < grid.getRows(); j++) {
+        Color oldColor = grid.getGrid().get(j).get(i).getColor();
+        Paint newPaint = ((Region)myGridPane.getChildren().get(grid.getRows() * i + j)).getBackground().getFills().get(0).getFill();
+        Color newColor = (Color)newPaint;
+
+        if (!oldColor.equals(newColor)) {
+        System.out.println(i + ", " + j);
+        System.out.println(oldColor);
+        System.out.println(newColor);
+
+        myGridPane.getChildren().remove(grid.getRows() * i + j);
+        Region addedShape = new Region();
+        addedShape.setBackground(new Background(new BackgroundFill(grid.getGrid().get(j).get(i).getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
+        myGridPane.getChildren().add(grid.getRows() * i + j, addedShape);
+        myGridPane.setHgrow(addedShape, Priority.ALWAYS);
+        myGridPane.setVgrow(addedShape, Priority.ALWAYS);
+        }
+        }
+        }
+
  */
-
-/**
- * return a grid that can be added to scene
- * @return a grid as a collection of shapes
- */
-
-
-
