@@ -26,7 +26,7 @@ public class Main extends Application {
   private static final String STYLESHEET = "default.css";
   private static final String RESOURCE_LANGUAGE = "Standard";
 
-  private static final double FRAMES_PER_SECOND = 20;
+  private static final double FRAMES_PER_SECOND = 5;
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private static double SCENE_WIDTH = 500;
@@ -56,7 +56,7 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Simulation");
 
-    grid = new Grid(30, 30);
+    grid = new Grid(100, 100);
 
     startAnimationLoop();
 
