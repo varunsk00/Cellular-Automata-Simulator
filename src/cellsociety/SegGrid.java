@@ -56,19 +56,6 @@ public class SegGrid extends Grid {
   }
 
   @Override
-  public ArrayList<ArrayList<Cell>> createGrid() {
-    ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
-    for (int i = 0; i < getRows(); i++) {
-      ArrayList<Cell> row = new ArrayList<>();
-      for (int j = 0; j < getColumns(); j++) {
-        row.add(new Cell(Color.WHITE, "empty"));
-      }
-      ret.add(row);
-    }
-    return ret;
-  }
-
-  @Override
   public void handleMiddleCell(int x, int y) {
     ArrayList<Cell> neighbors = getAllNeighbors(x, y);
     int similar_count = 0;
