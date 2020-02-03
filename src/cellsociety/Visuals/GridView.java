@@ -1,42 +1,25 @@
 package cellsociety.Visuals;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import cellsociety.Cell;
 import cellsociety.Grid;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 public class GridView {
 
   private GridPane myGridPane;
-  private double cellWidth;
-  private double cellHeight;
+  private double sceneWidth;
+  private double sceneHeight;
 
-  public GridView(Grid grid, double sceneWidth, double sceneHeight) {
+  public GridView(double sceneWidth, double sceneHeight) {
 
     myGridPane = new GridPane();
-    myGridPane.setHgap(1);
-    myGridPane.setVgap(1);
+    myGridPane.setMaxHeight(.8 * sceneHeight);
+    myGridPane.setMaxWidth(sceneWidth);
 
-    cellWidth = sceneWidth / grid.getColumns();
-    cellHeight = ((.8) * sceneHeight) / grid.getRows();
-
-    renderGridPane(grid);
-  }
-
-  // assumes that the grid is the right size
-  private void renderGridPane(Grid grid) {
-    for (int i = 0; i < grid.getRows(); i++) {
-      for (int j = 0; j < grid.getColumns(); j++) {
-        Cell tempCell = grid.getGrid().get(i).get(j);
-        Rectangle tempShape = new Rectangle(cellWidth, cellHeight);
-        tempShape.setFill(tempCell.getColor());
-        myGridPane.add(tempShape, i, j);
-      }
-    }
   }
 
   public GridPane getGridPane() {
@@ -45,11 +28,14 @@ public class GridView {
 
   public void updateGrid(Grid grid){
     myGridPane.getChildren().clear();
+
     for (int i = 0; i < grid.getRows(); i++) {
       for (int j = 0; j < grid.getColumns(); j++) {
-        Rectangle addedShape = new Rectangle(cellWidth, cellHeight);
+        Rectangle addedShape = new Rectangle(10, 10);
+        myGridPane.add(addedShape, j, i);
         addedShape.setFill(grid.getGrid().get(i).get(j).getColor());
-        myGridPane.add(addedShape, i, j);
+        GridPane.setFillWidth(addedShape, true);
+        GridPane.setFillHeight(addedShape, true);
       }
     }
   }

@@ -1,11 +1,13 @@
 package cellsociety;
 
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.Random;
+
 
 public class FireGrid extends Grid {
 
@@ -15,6 +17,9 @@ public class FireGrid extends Grid {
       "columns",
       "probCatch"
   );
+
+  private ArrayList<Point> burnedCells;
+
 
   private double probability;
   private Random r = new Random();
@@ -30,6 +35,7 @@ public class FireGrid extends Grid {
   public FireGrid(int rows, int columns, double probCatch) {
     super(rows, columns);
     this.probability = probCatch;
+    burnedCells = new ArrayList<Point>();
     setBurningCell();
   }
 
@@ -63,6 +69,16 @@ public class FireGrid extends Grid {
 
   @Override
   public void updateGrid() {
+    burnedCells.clear();
+
+    for (ArrayList<Cell> row : getGrid()) {
+      for (Cell cell : row) {
+        if (cell.getState().equals("burning")) {
+          burnedCells.add(new Point(getGrid().indexOf(row), row.indexOf(cell)));
+        }
+      }
+    }
+
     for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
         int x = getGrid().indexOf(row);
@@ -77,7 +93,7 @@ public class FireGrid extends Grid {
 
   @Override
   public void handleMiddleCell(int x, int y) {
-    if (checkNeighbors(x, y, "burning") && current(x, y).getState().equals("tree")
+    if (checkNeighbors(x, y) && current(x, y).getState().equals("tree")
         && r.nextFloat() <= probability) {
       current(x, y).update(Color.RED, "burning");
       System.out.println("caught fire: " + (x) + ", " + (y));
@@ -89,5 +105,17 @@ public class FireGrid extends Grid {
       current(x, y).update(Color.YELLOW, "empty");
       System.out.println("extinguished: " + (x) + ", " + (y));
     }
+  }
+
+  private boolean checkNeighbors(int x, int y) {
+    if (burnedCells.contains(new Point(x + 1, y))) return true;
+    if (burnedCells.contains(new Point(x - 1, y))) return true;
+    if (burnedCells.contains(new Point(x, y + 1))) return true;
+    if (burnedCells.contains(new Point(x, y - 1))) return true;
+    if (burnedCells.contains(new Point(x + 1, y + 1))) return true;
+    if (burnedCells.contains(new Point(x - 1, y + 1))) return true;
+    if (burnedCells.contains(new Point(x + 1, y - 1))) return true;
+    if (burnedCells.contains(new Point(x - 1, y - 1))) return true;
+    return false;
   }
 }

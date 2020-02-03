@@ -26,7 +26,7 @@ public class Main extends Application {
   private static final String STYLESHEET = "default.css";
   private static final String RESOURCE_LANGUAGE = "Standard";
 
-  private static final double FRAMES_PER_SECOND = 20;
+  private static final double FRAMES_PER_SECOND = 5;
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   private static double SCENE_WIDTH = 500;
@@ -70,7 +70,7 @@ public class Main extends Application {
     inputFooter = new Footer(SCENE_HEIGHT, SCENE_WIDTH, RESOURCE_LANGUAGE);
     root.setBottom(inputFooter.renderFooter());
 
-    gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT);
+    gridView = new GridView(SCENE_WIDTH, SCENE_HEIGHT);
     root.setCenter(gridView.getGridPane());
 
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);

@@ -2,6 +2,7 @@ package cellsociety.Visuals;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -39,8 +40,9 @@ public class Header {
 
   public HBox renderHeader() {
     HBox header = new HBox();
-    header.setPrefWidth(sceneWidth);
-    header.setPrefHeight((.05) * sceneHeight);
+    header.setPadding(new Insets(10, 0, 10, 0));
+    header.setMaxWidth(sceneWidth);
+    header.setMaxHeight((.1) * sceneHeight);
 
     Button loadButton = new Button(myResources.getString("Load"));
     loadButton.setMaxWidth(Double.MAX_VALUE);
