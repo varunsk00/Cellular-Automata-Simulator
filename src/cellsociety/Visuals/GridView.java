@@ -18,12 +18,12 @@ public class GridView {
   public GridView(Grid grid, double sceneWidth, double sceneHeight) {
 
     myGridPane = new GridPane();
+    myGridPane.setGridLinesVisible(true);
 
     cellWidth = sceneWidth / grid.getColumns();
-    cellHeight = (.85) * sceneHeight / grid.getRows();
+    cellHeight = ((.8) * sceneHeight) / grid.getRows();
 
     renderGridPane(grid);
-
   }
 
   // assumes that the grid is the right size
@@ -31,7 +31,7 @@ public class GridView {
     for (int i = 0; i < grid.getRows(); i++) {
       for (int j = 0; j < grid.getColumns(); j++) {
         Cell tempCell = grid.getGrid().get(i).get(j);
-        Shape tempShape = new Rectangle(cellWidth, cellHeight);
+        Rectangle tempShape = new Rectangle(cellWidth, cellHeight);
         tempShape.setFill(tempCell.getColor());
         myGridPane.add(tempShape, i, j);
       }
@@ -47,7 +47,7 @@ public class GridView {
 
     for (int i = 0; i < grid.getRows(); i++) {
       for (int j = 0; j < grid.getColumns(); j++) {
-        Shape addedShape = new Rectangle(cellWidth, cellHeight);
+        Rectangle addedShape = new Rectangle(cellWidth, cellHeight);
         addedShape.setFill(grid.getGrid().get(i).get(j).getColor());
         myGridPane.add(addedShape, i, j);
         }

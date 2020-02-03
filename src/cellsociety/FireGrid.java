@@ -29,7 +29,6 @@ public class FireGrid extends Grid {
     public FireGrid(int rows, int columns, double probCatch) {
         super(rows, columns);
         this.probability = probCatch;
-//        this.getGrid().get(this.getColumns()/2).get(this.getColumns()/2).update(Color.RED, "burning");
     }
 
   public FireGrid(Map<String, String> dataValues) {
