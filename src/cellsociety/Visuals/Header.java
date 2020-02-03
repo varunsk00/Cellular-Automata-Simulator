@@ -78,4 +78,7 @@ public class Header {
   public void setSkipOff() {skipPressed = false;}
 
   public void setSpeedOff() {speedUpPressed = false;}
+
+  public void setPlayOff() {playPressed = false;}
+
 }

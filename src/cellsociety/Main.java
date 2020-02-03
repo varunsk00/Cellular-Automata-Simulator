@@ -139,6 +139,7 @@ public class Main extends Application {
     }
     try {
       grid = new XMLParser("grid").getGrid(dataFile);
+      inputHeader.setPlayOff();
       gridView.updateGrid(grid);
       }
     catch (XMLException e) {
