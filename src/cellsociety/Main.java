@@ -19,12 +19,13 @@ import java.util.Random;
 
 public class Main extends Application {
 
+  private static final String DEFAULT_RESOURCE_FOLDER = "/Resources/";
   private static final String RESOURCE_LANGUAGE = "Standard";
 
-  private static final double FRAMES_PER_SECOND = 30;
+  private static final double FRAMES_PER_SECOND = 20;
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-  private static double SCENE_WIDTH = 400;
+  private static double SCENE_WIDTH = 500;
   private static double SCENE_HEIGHT = 500;
 
   private Grid grid;
@@ -39,6 +40,8 @@ public class Main extends Application {
 
   private File myXMLFile;
 
+  private static final String STYLESHEET = "default.css";
+
   public static void main(String[] args) {
     launch(args);
   }
@@ -52,32 +55,25 @@ public class Main extends Application {
     primaryStage.setTitle("Simulation");
     startAnimationLoop();
 
-    grid = new FireGrid(10, 10, 0.6);
+    grid = new FireGrid(30, 30, .7);
     grid.getGrid().get(grid.getColumns() / 2).get(grid.getColumns() / 2).update(Color.RED, "burning");
-    //random generation of Percolation blocked bricks (33% blocked)
-//    for (int i = 0; i < grid.getRows(); i++) {
-//      for (int j = 0; j < grid.getColumns(); j++) {
-//        int rr = r.nextInt(3);
-//        if (rr == 1){
-//          int ran_x = r.nextInt(grid.getColumns());
-//          int ran_y = r.nextInt(grid.getRows());
-//          grid.getGrid().get(ran_x).get(ran_y).update(Color.BLACK, "blocked");
-//        }
-//      }
-//    }
 
     root = new BorderPane();
+    root.setMaxHeight(SCENE_HEIGHT);
+    root.setMaxWidth(SCENE_WIDTH);
 
     inputHeader = new Header(SCENE_HEIGHT, SCENE_WIDTH, RESOURCE_LANGUAGE);
     root.setTop(inputHeader.renderHeader());
 
-    inputFooter = new Footer(SCENE_HEIGHT, RESOURCE_LANGUAGE);
+    inputFooter = new Footer(SCENE_HEIGHT, SCENE_WIDTH, RESOURCE_LANGUAGE);
     root.setBottom(inputFooter.renderFooter());
 
     gridView = new GridView(grid, SCENE_WIDTH, SCENE_HEIGHT);
     root.setCenter(gridView.getGridPane());
 
+
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
+    scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
     myStage = primaryStage;
     primaryStage.setScene(scene);
     primaryStage.show();
@@ -100,13 +96,13 @@ public class Main extends Application {
   private void step(double elapsedTime) throws InterruptedException {
     if (inputHeader.getLoadStatus()) uploadFile();
     else if (inputHeader.getSkipStatus()) skipAhead();
+    else if (inputHeader.getSpeedStatus()) updateSpeed();
     else if (inputHeader.getPlayStatus()) updateState();
     }
 
 
   private void skipAhead() {
-    System.out.println(inputFooter.getSkipJump().getValue());
-    for (int i = 0; i < inputFooter.getSkipJump().getValue(); i++) {
+    for (int i = 0; i < inputFooter.getJumpValue(); i++) {
       grid.updateGrid();
     }
     gridView.updateGrid(grid);
@@ -124,8 +120,24 @@ public class Main extends Application {
     inputHeader.setLoadOff();
   }
 
+  private void updateSpeed() {
+    inputHeader.setSpeedOff();
+  }
+
   private void updateState() {
     grid.updateGrid();
     gridView.updateGrid(grid);
   }
 }
+
+//random generation of Percolation blocked bricks (33% blocked)
+//    for (int i = 0; i < grid.getRows(); i++) {
+//      for (int j = 0; j < grid.getColumns(); j++) {
+//        int rr = r.nextInt(3);
+//        if (rr == 1){
+//          int ran_x = r.nextInt(grid.getColumns());
+//          int ran_y = r.nextInt(grid.getRows());
+//          grid.getGrid().get(ran_x).get(ran_y).update(Color.BLACK, "blocked");
+//        }
+//      }
+//    }
