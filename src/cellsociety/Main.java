@@ -29,8 +29,8 @@ public class Main extends Application {
   private static final double FRAMES_PER_SECOND = 20;
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-  private static double SCENE_WIDTH = 500;
-  private static double SCENE_HEIGHT = 500;
+  private double SCENE_WIDTH = 500;
+  private double SCENE_HEIGHT = 500;
 
   public static final String DATA_FILE_EXTENSION = "*.xml";
   public final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
@@ -127,7 +127,8 @@ public class Main extends Application {
     try {
       grid = new XMLParser("grid").getGrid(dataFile);
       gridView.updateGrid(grid);
-    } catch (XMLException e) {
+    }
+    catch (XMLException e) {
       System.out.println(e.getMessage());
     }
     inputHeader.setLoadOff();
