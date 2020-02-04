@@ -1,5 +1,6 @@
 package cellsociety;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,11 +95,6 @@ public class Grid {
     return x > 0 && y > 0 && x < getColumns() - 1 && y < getRows() - 1;
   }
 
-  public boolean checkNeighbors(int x, int y, String state) {
-    return checkUp(x, y, state) || checkDown(x, y, state) || checkLeft(x, y, state) || checkRight(x,
-        y, state);
-  }
-
   public boolean checkLeft(int x, int y, String state) {
     return getGrid().get(x - 1).get(y).getState() == state;
   }
@@ -137,8 +133,27 @@ public class Grid {
     return ret;
   }
 
+  public boolean checkNeighbors(int x, int y, ArrayList<Point> neighbors) {
+    if (neighbors.contains(new Point(x + 1, y))) return true;
+    if (neighbors.contains(new Point(x - 1, y))) return true;
+    if (neighbors.contains(new Point(x, y + 1))) return true;
+    if (neighbors.contains(new Point(x, y - 1))) return true;
+    return false;
+  }
+
   public Cell current(int x, int y){
     return this.grid.get(x).get(y);
+  }
+
+  public void handleNeigbors(ArrayList<Point> neighborCells, String state){
+    neighborCells.clear();
+    for (ArrayList<Cell> row : getGrid()) {
+      for (Cell cell : row) {
+        if (cell.getState().equals(state)) {
+          neighborCells.add(new Point(getGrid().indexOf(row), row.indexOf(cell)));
+        }
+      }
+    }
   }
 
 }
