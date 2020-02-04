@@ -66,47 +66,69 @@ public class PredPreyGrid extends Grid {
     ArrayList<Cell> neighbors = getNeighbors(x, y);
     Cell currentCell = current(x, y);
     if (current(x, y).getState().contains("prey")) {
-      moveToRandomNeighbor(neighbors, currentCell);
+      handlePrey(neighbors, currentCell);
+    }
+    if (current(x, y).getState().contains("predator")) {
+      handlePredator(neighbors, currentCell);
     }
   }
 
-  private void moveToRandomNeighbor(ArrayList<Cell> neighbors, Cell currentCell) {
-    Cell neighbor = getRandomBlankNeighbor(neighbors);
-    if (neighbor==null){
+  private void handlePrey(ArrayList<Cell> neighbors, Cell currentCell) {
+    //first check if there is a prey, then check if there are blank spaces
+    Cell neighbor = getRandomNeighborByState(neighbors, "empty");
+    if (neighbor != null) {
+      moveToRandomNeighborByState(neighbor, currentCell, "empty");
+    }
+  }
+
+  private void handlePredator(ArrayList<Cell> neighbors, Cell currentCell) {
+    //first check if prey
+    Cell neighbor = getRandomNeighborByState(neighbors, "prey");
+    if (neighbor == null) {
+      neighbor = getRandomNeighborByState(neighbors, "empty");
+    }
+    if (neighbor != null) {
+      moveToRandomNeighborByState(neighbor, currentCell, "prey");
+    }
+  }
+
+  private void moveToRandomNeighborByState(Cell neighbor, Cell currentCell, String state) {
+    if (neighbor == null) {
       return;
     }
-    neighbor.update(currentCell.getColor(), updateStateString(currentCell.getState()));
+    neighbor.update(currentCell.getColor(), updateStateString(currentCell.getState(), 1));
     if (checkPreyReproduction(currentCell)) {
       resetPreyState(currentCell);
-      System.out.println("Spawning new cell: " + neighbor.getState() + ", old cell: " +currentCell.getState());
+      System.out.println(
+          "Spawning new cell: " + neighbor.getState() + ", old cell: " + currentCell.getState());
     } else {
       currentCell.update(Color.WHITE, "empty");
     }
 
   }
 
-  private Cell getRandomBlankNeighbor(ArrayList<Cell> neighbors) {
-    ArrayList<Cell> blankNeighbors = new ArrayList<>();
-    for (Cell cell: neighbors){
-      if (cell.getState().equals("empty")){
-        blankNeighbors.add(cell);
+  private Cell getRandomNeighborByState(ArrayList<Cell> neighbors, String state) {
+    ArrayList<Cell> stateNeighbors = new ArrayList<>();
+    for (Cell cell : neighbors) {
+      if (cell.getState().equals(state)) {
+        stateNeighbors.add(cell);
       }
     }
-    //if no blankNeighbors
-    if (blankNeighbors.size()==0){
+    //if no neighbors matching state
+    if (stateNeighbors.size() == 0) {
       return null;
     }
-    int rng = r.nextInt(blankNeighbors.size());
-    return blankNeighbors.get(rng);
+    int rng = r.nextInt(stateNeighbors.size());
+    return stateNeighbors.get(rng);
   }
 
-  private String updateStateString(String s) {
+  private String updateStateString(String s, int change) {
     if (!s.contains("_")) {
       return s;
     }
     String type = s.split("_")[0];
     String numString = s.split("_")[1];
-    int count = Integer.parseInt(numString) + 1;
+    int count = Integer.parseInt(numString) + change;
     return type + "_" + count;
   }
 
