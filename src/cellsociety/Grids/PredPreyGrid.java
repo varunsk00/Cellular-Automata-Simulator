@@ -201,4 +201,6 @@ public class PredPreyGrid extends Grid {
     cell.update(Color.ORANGE, "predator_0");
   }
 
+  public void handleEdgeCell(int x, int y) {}
+
 }

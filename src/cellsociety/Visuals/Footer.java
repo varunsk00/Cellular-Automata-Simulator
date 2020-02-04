@@ -6,8 +6,17 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
 import java.util.ResourceBundle;
 
+/**
+ * Footer class serves as a controller unit, allowing the user to input two variables: simulation speed and number of frames to skip.
+ * Footer works in conjunction with Header via the Main class. Once a value has been set in the Footer through a Slider,
+ * the main class has a button to press to add the effect of the value into the simulation.
+ * Display is dynamic and shrinks/grows to increases/decreases in the width of the Window
+ * Every simulation needs a Footer, which should be instantiated in the start() method in Main and added to the bottom of the BorderPane
+ * @author Eric Doppelt
+ */
 public class Footer {
 
     private ResourceBundle myResources;
@@ -21,28 +30,44 @@ public class Footer {
     private static int MAX_SKIP = 10;
     private static int DEFAULT_SKIP = 1;
 
-    private static final String RESOURCES  = "Resources";
-    private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
-
     private Slider frameSpeed;
-    private Slider skipJump;
+    private Slider framesSkipped;
 
     private VBox footer;
 
+    /**
+     * Constructor for a Footer that sets the language of the Footer and calls renderFooter()
+     * renderFooter() adds Labels and Sliders to set values as mentioned in class description
+     * @param language is the String that represents the language for the ResourceBundle
+     */
     public Footer(String language) {
         this.myResources = ResourceBundle.getBundle(language);
         renderFooter();
     }
 
+    /**
+     * Basic getter method that returns the value from the Slider determining the speed of the simulation
+     * @return the value in the frameSpeed slider
+     */
     public double getSpeed() {
         return frameSpeed.getValue();
     }
 
-    public double getJumpValue() {
-        return skipJump.getValue();
+    /**
+     * Basic getter method that returns the value from the Slider determing the number of frames to skip ahead
+     * @return the value in the framesSkipped slider
+     */
+    public double getSkipValue() {
+        return framesSkipped.getValue();
     }
 
-    public VBox getFooter() {return footer;}
+    /**
+     * Basic getter method that returns the Footer VBox containing the Labels and Sliders
+     * @return the VBox private instance variable footer
+     */
+    public VBox getFooter() {
+        return footer;
+    }
 
     private void renderFooter() {
         footer = new VBox();
@@ -54,7 +79,7 @@ public class Footer {
         //addReturnSlider() adds the Sliders to the frame and then returns them as instance variables for later access
         HBox allSliders = new HBox();
         frameSpeed = addAndReturnSlider(MIN_FRAME_SPEED, MAX_FRAME_SPEED, DEFAULT_FRAME_SPEED, allSliders);
-        skipJump = addAndReturnSlider(MIN_SKIP, MAX_SKIP, DEFAULT_SKIP, allSliders);
+        framesSkipped = addAndReturnSlider(MIN_SKIP, MAX_SKIP, DEFAULT_SKIP, allSliders);
 
         footer.getChildren().add(allLabels);
         footer.getChildren().add(allSliders);

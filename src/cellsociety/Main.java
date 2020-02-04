@@ -25,6 +25,15 @@ import java.util.Random;
 import cellsociety.xml.XMLException;
 import cellsociety.xml.XMLParser;
 
+/**
+ * Main class of the program runs the JavaFX Application
+ * Creates a JavaFX program based on a chosen XML file via a FileChooser that creates a Cellular Automaton simulation
+ * Depends on a Footer and Header to get User Input, and then a Grid Subclass and GridViewer to create, update, and visualize the Grid
+ * Depends on XMLException and XMLParser to load in the grid via an XML file
+ * Assumes that the Grid Size won't be too large, since lag begins to start for simulations at 100x100 Grid size
+ * Once grids become bigger than 100x100, they begin to skip frames since the computer is too slow to render each frame
+ * @author Eric Doppelt, Jaidha Rosenblatt, Varun Kosgi
+ */
 
 public class Main extends Application {
 
@@ -39,7 +48,7 @@ public class Main extends Application {
   private double SCENE_WIDTH = 500;
   private double SCENE_HEIGHT = 500;
 
-  public static final String DATA_FILE_EXTENSION = "*.cellsociety.xml";
+  public static final String DATA_FILE_EXTENSION = "*.xml";
   public final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
 
   private Grid grid;
@@ -54,13 +63,19 @@ public class Main extends Application {
 
   private static final Color BACKGROUND_COLOR = Color.ALICEBLUE;
 
+  /**
+   * Launches the JavaFX program
+   * @param args Usual String Array passed to Main
+   */
+
   public static void main(String[] args) {
     launch(args);
   }
 
   /**
-   * Begins our JavaFX application Gets the current grid and sets the stage to a scene with that
-   * grid
+   * Begins our JavaFX application
+   * Starts the Animation Loop and sets the Border Pane, filling it with a Header, Footer, and Gridview
+   * Sets the stage and scene and shows it
    */
   @Override
   public void start(Stage primaryStage) {
@@ -122,7 +137,7 @@ public class Main extends Application {
   }
 
   private void skipAhead() {
-    for (int i = 0; i < footer.getJumpValue(); i++) {
+    for (int i = 0; i < footer.getSkipValue(); i++) {
       grid.updateGrid();
     }
     gridView.updateGrid(grid);

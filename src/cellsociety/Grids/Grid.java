@@ -1,14 +1,8 @@
 package cellsociety.Grids;
 
-import java.awt.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.awt.Point;
 import cellsociety.Cell;
 import javafx.scene.paint.Color;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -47,7 +41,7 @@ public class Grid {
   }
 
   /**
-   * @return 2D array Cells
+   * @return ArrayList of ArrayLists of Cells representing Grid
    */
   public ArrayList<ArrayList<Cell>> getGrid() {
     return this.grid;
@@ -64,7 +58,7 @@ public class Grid {
    * @return the number of columns in our grid
    */
   public int getColumns() {
-    return columns;
+    return this.columns;
   }
 
   /**
@@ -87,19 +81,36 @@ public class Grid {
     this.grid = getGrid();
   }
 
-  public void handleMiddleCell(int x, int y) {
-    return;
-  }
+  /**
+   * Empty method to handle an middle cell in the grid
+   * @param x the x coordinate of the cell to handle
+   * @param y the y coordinate of the cell to handle
+   */
+  public void handleMiddleCell(int x, int y) {}
 
-  public void handleEdgeCell(int x, int y)
-  {
-    return;
-  }
+  /**
+   * Empty method to handle an edge cell in the grid
+   * @param x the x coordinate of the cell to handle
+   * @param y the y coordinate of the cell to handle
+   */
+  public void handleEdgeCell(int x, int y) {}
 
+  /**
+   * Returns true if the cell at x, y is a middle cell in the grid (not on the border)
+   * @param x
+   * @param y
+   * @return
+   */
   public boolean isMiddleCell(int x, int y) {
     return x > 0 && y > 0 && x < getColumns() - 1 && y < getRows() - 1;
   }
 
+  /**
+   * Returns the neighboring cells of a given index that represent the cell on top, bottom, left, right
+   * @param x the x coordinate of the cell
+   * @param y the y coordinate of the cell
+   * @return
+   */
   public ArrayList<Cell> getNeighbors(int x, int y){
     ArrayList<Cell> ret = new ArrayList<>();
     ret.add(getGrid().get(x-1).get(y));
@@ -109,6 +120,12 @@ public class Grid {
     return ret;
   }
 
+  /**
+   * Returns the neighboring cells of a given index that represent the cell on top, bottom, left, right and diagonals
+   * @param x the x coordinate of the cell
+   * @param y the y coordinate of the cell
+   * @return
+   */
   public ArrayList<Cell> getAllNeighbors(int x, int y){
     ArrayList<Cell> ret = new ArrayList<>();
     ret.add(getGrid().get(x-1).get(y));
@@ -122,6 +139,13 @@ public class Grid {
     return ret;
   }
 
+  /**
+   * Returns a boolean representing if neighbors contains a point that is a neighbor of (x,y)
+   * @param x the x coordinate of the cell to check for neighbors
+   * @param y the y coordinate of the cell to check for neighbors
+   * @param neighbors an ArrayList of points to check if any contain a neighboring point to (x,y)
+   * @return a boolean if the list contains a neighbor or not
+   */
   public boolean checkNeighbors(int x, int y, ArrayList<Point> neighbors) {
     if (neighbors.contains(new Point(x + 1, y))) return true;
     if (neighbors.contains(new Point(x - 1, y))) return true;
@@ -160,4 +184,107 @@ public class Grid {
   public boolean checkDown(int x, int y, String state) {
     return getGrid().get(x).get(y + 1).getState() == state;
   }
+
+  public ArrayList<Cell> handleEdgeCases(int x, int y){
+      ArrayList<Cell> neighbors = new ArrayList<Cell>();
+        if(y==0){
+            handleTopRow(x,y, neighbors);
+        }
+        if(y==getRows()-1){
+            handleBottomRow(x,y, neighbors);
+        }
+        if(x==0){
+            subtractLeftCol(x,y, neighbors);
+        }
+        if(x==getColumns()-1){
+            subtractRightCol(x,y, neighbors);
+        }
+        return neighbors;
+    }
+
+  public void handleTopRow(int x, int y, ArrayList<Cell> neighbors){
+        if(x==0){
+            subtractTopLeftCorner(x,y,neighbors);
+        }
+        else if (x==getColumns()-1){
+            subtractTopRightCorner(x,y,neighbors);
+        }
+        else{
+            subtractTopRow(x,y,neighbors);
+        }
+    }
+
+  public void subtractTopLeftCorner(int x, int y, ArrayList<Cell> neighbors){
+        neighbors.add(current(x+1, y+1));
+        neighbors.add(current(x, y+1));
+        neighbors.add(current(x+1, y));
+    }
+
+  public void subtractTopRightCorner(int x, int y, ArrayList<Cell> neighbors){
+        neighbors.add(current(x-1, y));
+        neighbors.add(current(x-1, y+1));
+        neighbors.add(current(x, y+1));
+    }
+
+  public void subtractTopRow(int x, int y, ArrayList<Cell> neighbors){
+        neighbors.add(current(x-1, y));
+        neighbors.add(current(x-1, y+1));
+        neighbors.add(current(x, y+1));
+        neighbors.add(current(x+1, y+1));
+        neighbors.add(current(x, y+1));
+        neighbors.add(current(x+1, y));
+    }
+
+  public void handleBottomRow(int x, int y, ArrayList<Cell> neighbors){
+        if(x==0){
+            subtractBottomLeftCorner(x,y,neighbors);
+        }
+        else if (x==getColumns()-1){
+            subtractBottomRightCorner(x,y,neighbors);
+        }
+        else{
+            subtractBottomRow(x,y,neighbors);
+        }
+    }
+
+  public void subtractBottomLeftCorner(int x, int y, ArrayList<Cell> neighbors){
+        neighbors.add(current(x,y-1));
+        neighbors.add(current(x+1,y-1));
+        neighbors.add(current(x+1,y));
+    }
+
+  public void subtractBottomRightCorner(int x, int y, ArrayList<Cell> neighbors){
+        neighbors.add(current(x-1,y));
+        neighbors.add(current(x-1,y-1));
+        neighbors.add(current(x,y-1));
+    }
+
+  public void subtractBottomRow(int x, int y, ArrayList<Cell> neighbors){
+        neighbors.add(current(x,y-1));
+        neighbors.add(current(x+1,y-1));
+        neighbors.add(current(x+1,y));
+        neighbors.add(current(x-1,y));
+        neighbors.add(current(x-1,y-1));
+        neighbors.add(current(x,y-1));
+    }
+
+  public void subtractLeftCol(int x, int y, ArrayList<Cell> neighbors){
+        if(y!=0 && y!= getRows()-1){
+            neighbors.add(current(x,y-1));
+            neighbors.add(current(x+1,y-1));
+            neighbors.add(current(x+1,y));
+            neighbors.add(current(x+1,y+1));
+            neighbors.add(current(x,y+1));
+        }
+    }
+
+  public void subtractRightCol(int x, int y, ArrayList<Cell> neighbors){
+        if(y!=0 && y!= getRows()-1){
+            neighbors.add(current(x,y-1));
+            neighbors.add(current(x-1,y-1));
+            neighbors.add(current(x-1,y));
+            neighbors.add(current(x-1,y+1));
+            neighbors.add(current(x,y+1));
+        }
+    }
 }

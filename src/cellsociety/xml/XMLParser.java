@@ -59,11 +59,21 @@ public class XMLParser {
     return returnGridByType(type, results);
   }
 
+  /**
+   * Returns the author of the file
+   * @param dataFile File to be read
+   * @return the String associated with the author tag
+   */
   public String getAuthors(File dataFile) {
     Element root = getRootElement(dataFile);
     return getTextValue(root, "author");
   }
 
+  /**
+   * Returns the title of the file
+   * @param dataFile File to be read
+   * @return the String associated with the title tag
+   */
   public String getTitle(File dataFile) {
     Element root = getRootElement(dataFile);
     return getTextValue(root, "title");
@@ -138,7 +148,6 @@ public class XMLParser {
         return new PredPreyGrid(results);
     }
 
-    return new Grid(0, 0);
+    return null;
   }
-
 }

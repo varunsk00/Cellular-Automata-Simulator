@@ -104,4 +104,7 @@ public class FireGrid extends Grid {
     current(x, y).update(Color.YELLOW, "empty");
     System.out.println("extinguished: " + (x) + ", " + (y));
   }
+
+  // No edge cases by nature of FireGrid, but needed for abstraction
+  public void handleEdgeCell(int x, int y) {}
 }
