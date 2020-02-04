@@ -95,26 +95,19 @@ public class XMLParser {
   }
 
   private List<String> setDataFieldsByGridType(String type) {
-    List<String> dataFields = new ArrayList<>();
-
     switch (type) {
       case "Fire":
-        dataFields = FireGrid.DATA_FIELDS;
-        break;
+        return FireGrid.DATA_FIELDS;
       case "Percolation":
-        dataFields = PercGrid.DATA_FIELDS;
-        break;
+        return PercGrid.DATA_FIELDS;
       case "Life":
-        dataFields = LifeGrid.DATA_FIELDS;
-        break;
+        return LifeGrid.DATA_FIELDS;
       case "Segregation":
-        dataFields = SegGrid.DATA_FIELDS;
-        break;
-      case "PredPray":
-        dataFields = PredPreyGrid.DATA_FIELDS;
-        break;
+        return SegGrid.DATA_FIELDS;
+      case "PredPrey":
+        return PredPreyGrid.DATA_FIELDS;
     }
-    return dataFields;
+    return null;
   }
 
   private Grid returnGridByType(String type, Map<String, String> results) {

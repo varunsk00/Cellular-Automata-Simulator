@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<data grid="PredPray">
+<data grid="PredPrey">
   <rows>30</rows>
   <columns>30</columns>
   <predatorEnergy>1</predatorEnergy>
