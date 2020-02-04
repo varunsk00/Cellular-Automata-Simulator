@@ -25,6 +25,8 @@ public class Header {
 
   private HBox myHeader;
 
+  private Button playButton;
+
   public Header(String language) {
 
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
@@ -36,18 +38,50 @@ public class Header {
     renderHeader();
   }
 
+  public HBox getHeader() {return myHeader;}
+
+  public boolean getPlayStatus() {return playPressed;}
+
+  public boolean getLoadStatus() {return loadPressed;}
+
+  public boolean getSkipStatus() {return skipPressed;}
+
+  public boolean getSpeedStatus() {return speedUpPressed;}
+
+  public void setPlayOff() {
+    if (playPressed) playButton.fire();
+  }
+
+  public void setLoadOff() {loadPressed = false;}
+
+  public void setSkipOff() {skipPressed = false;}
+
+  public void setSpeedOff() {speedUpPressed = false;}
+
   private void renderHeader() {
     myHeader = new HBox();
+
+    playButton = makePlayButton();
 
     Button loadButton = makeButton("LoadButton", event -> loadPressed = true);
     Button skipButton = makeButton("SkipButton", event -> skipPressed = true);
     Button speedButton = makeButton("SpeedButton", event -> speedUpPressed = true);
-    Button playButton = makeButton("PlayButton", event -> playPressed = (playPressed) ? false : true);
 
-    myHeader.getChildren().addAll(loadButton, speedButton, skipButton, playButton);
-    formatButtons(loadButton, speedButton, skipButton, playButton);
+    myHeader.getChildren().addAll(loadButton, playButton, speedButton, skipButton);
+    formatButtons(loadButton, playButton, speedButton, skipButton);
   }
 
+  private Button makePlayButton() {
+    Button tempButton = new Button(myResources.getString("PlayButton"));
+    tempButton.setOnAction(e -> {
+      if (playPressed) tempButton.setText(myResources.getString("PlayButton"));
+      else tempButton.setText(myResources.getString("PauseButton"));
+
+      playPressed = !playPressed;
+    });
+    tempButton.setMaxWidth(Double.MAX_VALUE);
+    return tempButton;
+  }
 
   private Button makeButton(String key, EventHandler e) {
     Button tempButton = new Button(myResources.getString(key));
@@ -62,23 +96,4 @@ public class Header {
     myHeader.setHgrow(skip, Priority.ALWAYS);
     myHeader.setHgrow(play, Priority.ALWAYS);
   }
-
-  public HBox getHeader() {return myHeader;}
-
-  public boolean getPlayStatus() {return playPressed;}
-
-  public boolean getLoadStatus() {return loadPressed;}
-
-  public boolean getSkipStatus() {return skipPressed;}
-
-  public boolean getSpeedStatus() {return speedUpPressed;}
-
-  public void setLoadOff() {loadPressed = false;}
-
-  public void setSkipOff() {skipPressed = false;}
-
-  public void setSpeedOff() {speedUpPressed = false;}
-
-  public void setPlayOff() {playPressed = false;}
-
 }

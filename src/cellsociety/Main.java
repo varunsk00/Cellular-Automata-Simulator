@@ -8,14 +8,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.layout.BorderPane;
@@ -77,8 +74,8 @@ public class Main extends Application {
     inputHeader = new Header(RESOURCE_LANGUAGE);
     root.setTop(inputHeader.getHeader());
 
-    inputFooter = new Footer(SCENE_HEIGHT, SCENE_WIDTH, RESOURCE_LANGUAGE);
-    root.setBottom(inputFooter.renderFooter());
+    inputFooter = new Footer(RESOURCE_LANGUAGE);
+    root.setBottom(inputFooter.getFooter());
 
     gridView = new GridView();
     root.setCenter(gridView.getGridPane());

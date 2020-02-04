@@ -6,16 +6,16 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
 import java.util.ResourceBundle;
 
 public class Footer {
 
     private ResourceBundle myResources;
 
-    private static double MIN_FRAME_SPEED = 1;
-    private static int MAX_FRAME_SPEED = 10;
+    private static int MIN_FRAME_SPEED = 1;
+    private static int MAX_FRAME_SPEED = 5;
     private static int DEFAULT_FRAME_SPEED = 1;
+
 
     private static int MIN_SKIP = 1;
     private static int MAX_SKIP = 10;
@@ -27,48 +27,11 @@ public class Footer {
     private Slider frameSpeed;
     private Slider skipJump;
 
-    public Footer(double sceneHeight, double sceneWidth, String language) {
+    private VBox footer;
 
+    public Footer(String language) {
         this.myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
-    }
-
-    public VBox renderFooter() {
-        VBox footer = new VBox();
-
-        HBox labels = new HBox();
-        Label speed = new Label(myResources.getString("SpeedSlider"));
-        speed.setMaxWidth(Double.MAX_VALUE);
-        speed.setAlignment(Pos.CENTER);
-        Label skip = new Label(myResources.getString("SkipSlider"));
-        skip.setAlignment(Pos.CENTER);
-        skip.setMaxWidth(Double.MAX_VALUE);
-
-        labels.getChildren().addAll(speed, skip);
-        labels.setHgrow(speed, Priority.ALWAYS);
-        labels.setHgrow(skip, Priority.ALWAYS);
-        footer.getChildren().add(labels);
-
-        HBox sliders = new HBox();
-        frameSpeed = new Slider(MIN_FRAME_SPEED,  MAX_FRAME_SPEED, DEFAULT_FRAME_SPEED);
-        setSliderTicks(frameSpeed);
-        skipJump = new Slider(MIN_SKIP, MAX_SKIP, DEFAULT_SKIP);
-        setSliderTicks(skipJump);
-
-        sliders.getChildren().addAll(frameSpeed, skipJump);
-        sliders.setHgrow(frameSpeed, Priority.ALWAYS);
-        sliders.setHgrow(skipJump, Priority.ALWAYS);
-
-        footer.getChildren().add(sliders);
-
-        return footer;
-    }
-
-    private void setSliderTicks(Slider slider) {
-        slider.setBlockIncrement(1);
-        slider.setMajorTickUnit(1);
-        slider.setMinorTickCount(0);
-        slider.setShowTickLabels(true);
-        slider.setSnapToTicks(true);
+        renderFooter();
     }
 
     public double getSpeed() {
@@ -79,4 +42,45 @@ public class Footer {
         return skipJump.getValue();
     }
 
+    public VBox getFooter() {return footer;}
+
+    private void renderFooter() {
+        footer = new VBox();
+
+        HBox allLabels = new HBox();
+        addLabel("SpeedSlider", allLabels);
+        addLabel("SkipSlider", allLabels);
+
+        //addReturnSlider() adds the Sliders to the frame and then returns them as instance variables for later access
+        HBox allSliders = new HBox();
+        frameSpeed = addAndReturnSlider(MIN_FRAME_SPEED, MAX_FRAME_SPEED, DEFAULT_FRAME_SPEED, allSliders);
+        skipJump = addAndReturnSlider(MIN_SKIP, MAX_SKIP, DEFAULT_SKIP, allSliders);
+
+        footer.getChildren().add(allLabels);
+        footer.getChildren().add(allSliders);
+    }
+
+    private void addLabel(String key, HBox text) {
+        Label tempLabel = new Label(myResources.getString(key));
+        tempLabel.setMaxWidth(Double.MAX_VALUE);
+        tempLabel.setAlignment(Pos.CENTER);
+        text.setHgrow(tempLabel, Priority.ALWAYS);
+        text.getChildren().add(tempLabel);
+    }
+
+    private Slider addAndReturnSlider(int min, int max, int def, HBox sliders) {
+        Slider tempSlider = new Slider(min, max, def);
+        sliders.setHgrow(tempSlider, Priority.ALWAYS);
+        setSliderTicks(tempSlider);
+        sliders.getChildren().add(tempSlider);
+        return tempSlider;
+    }
+
+    private void setSliderTicks(Slider slider) {
+        slider.setBlockIncrement(1);
+        slider.setMajorTickUnit(1);
+        slider.setMinorTickCount(0);
+        slider.setShowTickLabels(true);
+        slider.setSnapToTicks(true);
+    }
 }
