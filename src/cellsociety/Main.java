@@ -48,7 +48,7 @@ public class Main extends Application {
   private double SCENE_WIDTH = 500;
   private double SCENE_HEIGHT = 500;
 
-  public static final String DATA_FILE_EXTENSION = "*.cellsociety.xml";
+  public static final String DATA_FILE_EXTENSION = "*.xml";
   public final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
 
   private Grid grid;
