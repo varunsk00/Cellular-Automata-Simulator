@@ -147,6 +147,7 @@ public class Main extends Application {
       grid = new XMLParser("grid").getGrid(dataFile);
       header.setPlayOff();
       gridView.updateGrid(grid);
+      header.setAuthorTitle("A", "B");
       }
     catch (XMLException e) {
       System.out.println(e.getMessage());
@@ -160,7 +161,9 @@ public class Main extends Application {
   }
 
   private void updateState() {
-    grid.updateGrid();
-    gridView.updateGrid(grid);
+    if (grid != null) {
+      grid.updateGrid();
+      gridView.updateGrid(grid);
+    }
   }
 }

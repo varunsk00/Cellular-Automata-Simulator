@@ -1,9 +1,13 @@
 package cellsociety.Visuals;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+
 import java.util.ResourceBundle;
 
 /**
@@ -18,6 +22,8 @@ public class Header {
   private static final String RESOURCES  = "Resources";
   private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
 
+  private static final String AUTHOR_INTRO = "Author: ";
+  private static final String TITLE_INTRO = "Title: ";
   private ResourceBundle myResources;
 
   private boolean playPressed;
@@ -25,8 +31,9 @@ public class Header {
   private boolean skipPressed;
   private boolean loadPressed;
 
-  private HBox myHeader;
-
+  private VBox myHeader;
+  private HBox myButtons;
+  private HBox mySimulationInfo;
   private Button playButton;
 
   /**
@@ -48,11 +55,31 @@ public class Header {
     renderHeader();
   }
 
+  public void setAuthorTitle(String author, String title) {
+
+    mySimulationInfo.getChildren().clear();
+
+    addLabel(AUTHOR_INTRO + author, mySimulationInfo);
+    addLabel(TITLE_INTRO  + title, mySimulationInfo);
+
+  }
+
+
+  private void addLabel(String info, HBox header) {
+    Label addedLabel = new Label(info);
+    addedLabel.setMaxWidth(Double.MAX_VALUE);
+    addedLabel.setAlignment(Pos.CENTER);
+    header.setHgrow(addedLabel, Priority.ALWAYS);
+    header.getChildren().add(addedLabel);
+  }
+
+
+
   /**
    * Basic getter method for the header used in Main
    * @return the HBox private instance variable myHeader representing this header (with functional buttons)
    */
-  public HBox getHeader() {return myHeader;}
+  public VBox getHeader() {return myHeader;}
 
   /**
    * Basic getter method returning whether or not to play the simulation
@@ -92,7 +119,8 @@ public class Header {
   public void setSpeedOff() {speedUpPressed = false;}
 
   private void renderHeader() {
-    myHeader = new HBox();
+
+    myButtons = new HBox();
 
     playButton = makePlayButton();
 
@@ -100,8 +128,19 @@ public class Header {
     Button skipButton = makeButton("SkipButton", event -> skipPressed = true);
     Button speedButton = makeButton("SpeedButton", event -> speedUpPressed = true);
 
-    myHeader.getChildren().addAll(loadButton, playButton, speedButton, skipButton);
+    myButtons.getChildren().addAll(loadButton, playButton, speedButton, skipButton);
     formatButtons(loadButton, playButton, speedButton, skipButton);
+    myButtons.setMaxWidth(Double.MAX_VALUE);
+
+    mySimulationInfo = new HBox();
+
+    addLabel(AUTHOR_INTRO, mySimulationInfo);
+    addLabel(TITLE_INTRO, mySimulationInfo);
+
+    mySimulationInfo.setMaxWidth(Double.MAX_VALUE);
+
+    myHeader = new VBox();
+    myHeader.getChildren().addAll(myButtons, mySimulationInfo);
   }
 
   private Button makePlayButton() {
@@ -124,9 +163,9 @@ public class Header {
   }
 
   private void formatButtons(Button load, Button speed, Button skip, Button play) {
-    myHeader.setHgrow(load, Priority.ALWAYS);
-    myHeader.setHgrow(speed, Priority.ALWAYS);
-    myHeader.setHgrow(skip, Priority.ALWAYS);
-    myHeader.setHgrow(play, Priority.ALWAYS);
+    myButtons.setHgrow(load, Priority.ALWAYS);
+    myButtons.setHgrow(speed, Priority.ALWAYS);
+    myButtons.setHgrow(skip, Priority.ALWAYS);
+    myButtons.setHgrow(play, Priority.ALWAYS);
   }
 }
