@@ -1,9 +1,12 @@
-package cellsociety;
+package cellsociety.Grids;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import cellsociety.Cell;
+import cellsociety.Grids.Grid;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;

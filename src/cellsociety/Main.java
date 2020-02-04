@@ -1,5 +1,6 @@
 package cellsociety;
 
+import cellsociety.Grids.Grid;
 import cellsociety.Visuals.Footer;
 import cellsociety.Visuals.GridView;
 import cellsociety.Visuals.Header;
@@ -21,8 +22,8 @@ import javafx.util.Duration;
 
 
 import java.util.Random;
-import xml.XMLException;
-import xml.XMLParser;
+import cellsociety.xml.XMLException;
+import cellsociety.xml.XMLParser;
 
 
 public class Main extends Application {
@@ -38,7 +39,7 @@ public class Main extends Application {
   private double SCENE_WIDTH = 500;
   private double SCENE_HEIGHT = 500;
 
-  public static final String DATA_FILE_EXTENSION = "*.xml";
+  public static final String DATA_FILE_EXTENSION = "*.cellsociety.xml";
   public final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
 
   private Grid grid;
@@ -73,8 +74,7 @@ public class Main extends Application {
 
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     scene.getStylesheets()
-        .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
-
+        .add(getClass().getResource("/" + STYLESHEET).toExternalForm());
     myStage = primaryStage;
     myStage.setScene(scene);
     startAnimationLoop();

@@ -1,9 +1,11 @@
-package cellsociety;
+package cellsociety.Grids;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cellsociety.Cell;
 import javafx.scene.paint.Color;
 
 import java.lang.reflect.Array;
