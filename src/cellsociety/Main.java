@@ -113,6 +113,7 @@ public class Main extends Application {
     animation.play();
   }
 
+  // Talk to TA before final about whether elapsedTime is needed
   private void step(double elapsedTime) {
     if (header.getLoadStatus()) handleXML();
     else if (header.getSkipStatus()) skipAhead();
@@ -146,7 +147,7 @@ public class Main extends Application {
     try {
       XMLParser parser = new XMLParser("grid");
       grid = parser.getGrid(dataFile);
-      header.setPlayOff();
+      header.togglePause();
       gridView.updateGrid(grid);
       header.setAuthorTitle(parser.getAuthors(dataFile), parser.getTitle(dataFile));
       }

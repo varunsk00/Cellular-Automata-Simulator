@@ -7,15 +7,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
 import java.util.ResourceBundle;
 
 /**
  * Header Class serves as a controller unit, taking in input from the user to pause/play the game, skip ahead, speed up, or load a file.
  * It is displayed at the top of the BorderPane in Main and has a VBox with Buttons that affect the game and author/title info
+ * Display is dynamic and grows/shrinks to increasing/decreasing the width of the window
  * Works in conjunction with the Footer class, since the Footer class determines new speed/frames to jump
  * Every simulation needs a header, which should be instantiated in Main and added to the top of the BorderPane
- * @author ericdoppelt
+ * @author Eric Doppelt
  */
 public class Header {
 
@@ -27,7 +27,7 @@ public class Header {
   private ResourceBundle myResources;
 
   private boolean playPressed;
-  private boolean speedUpPressed;
+  private boolean speedPressed;
   private boolean skipPressed;
   private boolean loadPressed;
 
@@ -40,41 +40,40 @@ public class Header {
    * Basic constructor for a header
    * Sets its ResourceBundle to the one specified by the given language
    * Sets all instance variables to false, indicating that no buttons have been pressed
-   * Calls renderHeader() which creates the HBox with Buttons for Main
+   * Calls renderHeader() which creates the HBox with Buttons and Empty Author/Title info for Main
    * Assumes that language exists in Resources folder, otherwise throws an InvocationTargetException error
-   * @param language is the language to get the correct ResourceBundle
+   * @param language is the language of the ResourceBundle
    */
   public Header(String language) {
 
     myResources = ResourceBundle.getBundle(language);
     this.playPressed = false;
     this.skipPressed = false;
-    this.speedUpPressed = false;
+    this.speedPressed = false;
     this.loadPressed = false;
 
     renderHeader();
   }
 
   /**
-   * Sets the author and
-   * @param author
-   * @param title
+   * Sets the author and title of a given simulation in the bottom of the header
+   * @param author String telling the authors of the xml file
+   * @param title String telling the title of the simulation
    */
   public void setAuthorTitle(String author, String title) {
-
     ((Label)mySimulationInfo.getChildren().get(0)).setText(AUTHOR_INTRO + author);
     ((Label)mySimulationInfo.getChildren().get(1)).setText(TITLE_INTRO  + title);
   }
 
   /**
    * Basic getter method for the header used in Main
-   * @return the HBox private instance variable myHeader representing this header (with functional buttons)
+   * @return myHeader which is the VBox private instance variable representing the header (with functional buttons and title/author info)
    */
   public VBox getHeader() {return myHeader;}
 
   /**
    * Basic getter method returning whether or not to play the simulation
-   * This triggers the updateStatus() method in main
+   * This triggers the updateStatus() method in main if playPressed is true
    * @return the boolean private instance variable playPressed
    */
   public boolean getPlayStatus() {return playPressed;}
@@ -94,40 +93,55 @@ public class Header {
   public boolean getSkipStatus() {return skipPressed;}
 
   /**
-   * Basic getter method retuurning whether or not to speed/slow the game down
-   * @return
+   * Basic getter method returning whether or not to speed/slow the game down the simulation
+   * This triggers the updateSpeed() method in main
+   * @return the boolean private instance variable speedPressed
    */
-  public boolean getSpeedStatus() {return speedUpPressed;}
+  public boolean getSpeedStatus() {return speedPressed;}
 
-  public void setPlayOff() {
+  /**
+   * Method that pauses the simulation
+   * If game is playing, sets playPressed to false and makes playButton display Play key
+   * Called when loading a file to pause the game
+   * Does nothing if game is already Paused
+   */
+  public void togglePause() {
     if (playPressed) playButton.fire();
   }
 
+  /**
+   * Basic setter method that sets the loadPressed variable to false
+   * Called in handleXML() method to stop the load screen from rerendering
+   */
   public void setLoadOff() {loadPressed = false;}
 
+  /**
+   * Basic setter method that sets the skipPressed variable to false
+   * Called in skipAhead() method to only skip once
+   */
   public void setSkipOff() {skipPressed = false;}
 
-  public void setSpeedOff() {speedUpPressed = false;}
+  /**
+   * Basic setter method that sets the speedPressed variable to false
+   * Called in updateSpeed() to stop the speed from constantly being set to the slider value
+   */
+  public void setSpeedOff() {
+    speedPressed = false;}
 
   private void renderHeader() {
-
     myButtons = new HBox();
-
     playButton = makePlayButton();
-
     Button loadButton = makeButton("LoadButton", event -> loadPressed = true);
     Button skipButton = makeButton("SkipButton", event -> skipPressed = true);
-    Button speedButton = makeButton("SpeedButton", event -> speedUpPressed = true);
+    Button speedButton = makeButton("SpeedButton", event -> speedPressed = true);
 
     myButtons.getChildren().addAll(loadButton, playButton, speedButton, skipButton);
     formatButtons(loadButton, playButton, speedButton, skipButton);
     myButtons.setMaxWidth(Double.MAX_VALUE);
 
     mySimulationInfo = new HBox();
-
     addLabel(AUTHOR_INTRO, mySimulationInfo);
     addLabel(TITLE_INTRO, mySimulationInfo);
-
     mySimulationInfo.setMaxWidth(Double.MAX_VALUE);
 
     myHeader = new VBox();
