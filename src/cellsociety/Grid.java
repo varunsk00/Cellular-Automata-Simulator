@@ -86,29 +86,16 @@ public class Grid {
   }
 
   public void handleMiddleCell(int x, int y) {
+    return;
   }
 
-  public void handleEdgeCell(int x, int y) {
+  public void handleEdgeCell(int x, int y)
+  {
+    return;
   }
 
   public boolean isMiddleCell(int x, int y) {
     return x > 0 && y > 0 && x < getColumns() - 1 && y < getRows() - 1;
-  }
-
-  public boolean checkLeft(int x, int y, String state) {
-    return getGrid().get(x - 1).get(y).getState() == state;
-  }
-
-  public boolean checkRight(int x, int y, String state) {
-    return getGrid().get(x + 1).get(y).getState() == state;
-  }
-
-  public boolean checkUp(int x, int y, String state) {
-    return getGrid().get(x).get(y - 1).getState() == state;
-  }
-
-  public boolean checkDown(int x, int y, String state) {
-    return getGrid().get(x).get(y + 1).getState() == state;
   }
 
   public ArrayList<Cell> getNeighbors(int x, int y){
@@ -145,7 +132,7 @@ public class Grid {
     return this.grid.get(x).get(y);
   }
 
-  public void handleNeigbors(ArrayList<Point> neighborCells, String state){
+  public void storeNeigborState(ArrayList<Point> neighborCells, String state){
     neighborCells.clear();
     for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
@@ -156,4 +143,19 @@ public class Grid {
     }
   }
 
+  public boolean checkLeft(int x, int y, String state) {
+    return getGrid().get(x - 1).get(y).getState() == state;
+  }
+
+  public boolean checkRight(int x, int y, String state) {
+    return getGrid().get(x + 1).get(y).getState() == state;
+  }
+
+  public boolean checkUp(int x, int y, String state) {
+    return getGrid().get(x).get(y - 1).getState() == state;
+  }
+
+  public boolean checkDown(int x, int y, String state) {
+    return getGrid().get(x).get(y + 1).getState() == state;
+  }
 }
