@@ -4,7 +4,7 @@
   <title>Predator Prey</title>
   <rows>30</rows>
   <columns>30</columns>
-  <predatorEnergy>1</predatorEnergy>
+  <predatorEnergyPerPrey>1</predatorEnergyPerPrey>
   <preyGenerationRate>10</preyGenerationRate>
   <predatorGenerationRate>1</predatorGenerationRate>
   <percentPredator>0.1</percentPredator>
