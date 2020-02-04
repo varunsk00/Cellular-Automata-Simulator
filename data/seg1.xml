@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data grid="Segregation">
+  <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
+  <title>Predator Prey</title>
   <rows>30</rows>
   <columns>30</columns>
   <satisfiedThreshold>0.4</satisfiedThreshold>

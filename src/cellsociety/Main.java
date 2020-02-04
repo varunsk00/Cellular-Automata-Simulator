@@ -146,12 +146,9 @@ public class Main extends Application {
     try {
       XMLParser parser = new XMLParser("grid");
       grid = parser.getGrid(dataFile);
-      System.out.println(parser.getAuthors(dataFile));
-      System.out.println(parser.getTitle(dataFile));
-
       header.setPlayOff();
       gridView.updateGrid(grid);
-      header.setAuthorTitle("A", "B");
+      header.setAuthorTitle(parser.getAuthors(dataFile), parser.getTitle(dataFile));
       }
     catch (XMLException e) {
       System.out.println(e.getMessage());
