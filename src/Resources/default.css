@@ -2,3 +2,12 @@
     -fx-font-family: "American Typewriter";
 }
 
+.button {
+    -fx-background-color: #5272B2;
+    -fx-text-fill: #f9bc15;;
+}
+
+.label {
+    -fx-background-color: #000000;
+    -fx-text-fill: #ffffff;
+}
