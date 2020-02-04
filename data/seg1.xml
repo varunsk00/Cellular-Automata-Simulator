@@ -2,8 +2,8 @@
 <data grid="Segregation">
   <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
   <title>Predator Prey</title>
-  <rows>40</rows>
-  <columns>40</columns>
+  <rows>30</rows>
+  <columns>30</columns>
   <satisfiedThreshold>0.4</satisfiedThreshold>
   <percentFull>0.5</percentFull>
 </data>

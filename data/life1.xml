@@ -2,7 +2,7 @@
 <data grid="Life">
   <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
   <title>Predator Prey</title>
-  <rows>40</rows>
-  <columns>40</columns>
+  <rows>30</rows>
+  <columns>30</columns>
   <percentAlive>0.4</percentAlive>
 </data>
