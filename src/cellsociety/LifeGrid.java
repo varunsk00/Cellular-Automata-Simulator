@@ -63,7 +63,7 @@ public class LifeGrid extends Grid {
 
     @Override
     public void updateGrid(){
-        handleNeigbors(aliveCells, "alive");
+        storeNeigborState(aliveCells, "alive");
         for (ArrayList<Cell> row : getGrid()) {
             for (Cell cell : row) {
                 int x = getGrid().indexOf(row);
