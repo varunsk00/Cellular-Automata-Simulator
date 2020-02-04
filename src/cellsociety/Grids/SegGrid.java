@@ -51,7 +51,7 @@ public class SegGrid extends Grid {
   public void updateGrid(){
     int x=0;
     int y=0;
-    handleNeigbors(sameCells, getGrid().get(x).get(y).getState());
+    storeNeigborState(sameCells, getGrid().get(x).get(y).getState());
     for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
         x = getGrid().indexOf(row);

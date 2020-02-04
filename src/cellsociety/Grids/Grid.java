@@ -1,18 +1,15 @@
 package cellsociety.Grids;
 
-import java.awt.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import cellsociety.Cell;
 import javafx.scene.paint.Color;
-
-import java.lang.reflect.Array;
+import java.awt.Point;
 import java.util.ArrayList;
 
-
-public class Grid {
+/**
+ * Abstract Grid Class that every simulation type inherits for its subclass
+ * Grid contains an ArrayList of ArrayLists of Cells representing the actual grid
+ */
+public abstract class Grid {
 
   private ArrayList<ArrayList<Cell>> grid;
   private int rows;
@@ -47,7 +44,7 @@ public class Grid {
   }
 
   /**
-   * @return 2D array Cells
+   * @return ArrayList of ArrayLists of Cells representing Grid
    */
   public ArrayList<ArrayList<Cell>> getGrid() {
     return this.grid;
@@ -64,7 +61,7 @@ public class Grid {
    * @return the number of columns in our grid
    */
   public int getColumns() {
-    return columns;
+    return this.columns;
   }
 
   /**
@@ -72,29 +69,94 @@ public class Grid {
    *
    * @return a grid (2D array of cells) with updated state
    */
-  public void updateGrid() {
+  public abstract void updateGrid();
+
+  /**
+   * Empty method to handle an middle cell in the grid
+   * @param x the x coordinate of the cell to handle
+   * @param y the y coordinate of the cell to handle
+   */
+  public abstract void handleMiddleCell(int x, int y);
+
+  /**
+   * Empty method to handle an edge cell in the grid
+   * @param x the x coordinate of the cell to handle
+   * @param y the y coordinate of the cell to handle
+   */
+  public abstract void handleEdgeCell(int x, int y);
+
+  /**
+   * Returns true if the cell at x, y is a middle cell in the grid (not on the border)
+   * @param x
+   * @param y
+   * @return
+   */
+  public boolean isMiddleCell(int x, int y) {
+    return x > 0 && y > 0 && x < getColumns() - 1 && y < getRows() - 1;
+  }
+
+  /**
+   * Returns the neighboring cells of a given index that represent the cell on top, bottom, left, right
+   * @param x the x coordinate of the cell
+   * @param y the y coordinate of the cell
+   * @return
+   */
+  public ArrayList<Cell> getNeighbors(int x, int y){
+    ArrayList<Cell> ret = new ArrayList<>();
+    ret.add(getGrid().get(x-1).get(y));
+    ret.add(getGrid().get(x+1).get(y));
+    ret.add(getGrid().get(x).get(y+1));
+    ret.add(getGrid().get(x).get(y-1));
+    return ret;
+  }
+
+  /**
+   * Returns the neighboring cells of a given index that represent the cell on top, bottom, left, right and diagonals
+   * @param x the x coordinate of the cell
+   * @param y the y coordinate of the cell
+   * @return
+   */
+  public ArrayList<Cell> getAllNeighbors(int x, int y){
+    ArrayList<Cell> ret = new ArrayList<>();
+    ret.add(getGrid().get(x-1).get(y));
+    ret.add(getGrid().get(x+1).get(y));
+    ret.add(getGrid().get(x).get(y+1));
+    ret.add(getGrid().get(x).get(y-1));
+    ret.add(getGrid().get(x-1).get(y-1));
+    ret.add(getGrid().get(x-1).get(y+1));
+    ret.add(getGrid().get(x+1).get(y-1));
+    ret.add(getGrid().get(x+1).get(y+1));
+    return ret;
+  }
+
+  /**
+   * Returns a boolean representing if neighbors contains a point that is a neighbor of (x,y)
+   * @param x the x coordinate of the cell to check for neighbors
+   * @param y the y coordinate of the cell to check for neighbors
+   * @param neighbors an ArrayList of points to check if any contain a neighboring point to (x,y)
+   * @return a boolean if the list contains a neighbor or not
+   */
+  public boolean checkNeighbors(int x, int y, ArrayList<Point> neighbors) {
+    if (neighbors.contains(new Point(x + 1, y))) return true;
+    if (neighbors.contains(new Point(x - 1, y))) return true;
+    if (neighbors.contains(new Point(x, y + 1))) return true;
+    if (neighbors.contains(new Point(x, y - 1))) return true;
+    return false;
+  }
+
+  public Cell current(int x, int y){
+    return this.grid.get(x).get(y);
+  }
+
+  public void storeNeigborState(ArrayList<Point> neighborCells, String state){
+    neighborCells.clear();
     for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
-        int x = grid.indexOf(row);
-        int y = row.indexOf(cell);
-        if (isMiddleCell(x, y)) {
-          handleMiddleCell(x, y);
-        } else {
-          handleEdgeCell(x, y);
+        if (cell.getState().contains(state)) {
+          neighborCells.add(new Point(getGrid().indexOf(row), row.indexOf(cell)));
         }
       }
     }
-    this.grid = getGrid();
-  }
-
-  public void handleMiddleCell(int x, int y) {
-  }
-
-  public void handleEdgeCell(int x, int y) {
-  }
-
-  public boolean isMiddleCell(int x, int y) {
-    return x > 0 && y > 0 && x < getColumns() - 1 && y < getRows() - 1;
   }
 
   public boolean checkLeft(int x, int y, String state) {
@@ -112,50 +174,4 @@ public class Grid {
   public boolean checkDown(int x, int y, String state) {
     return getGrid().get(x).get(y + 1).getState() == state;
   }
-
-  public ArrayList<Cell> getNeighbors(int x, int y){
-    ArrayList<Cell> ret = new ArrayList<>();
-    ret.add(getGrid().get(x-1).get(y));
-    ret.add(getGrid().get(x+1).get(y));
-    ret.add(getGrid().get(x).get(y+1));
-    ret.add(getGrid().get(x).get(y-1));
-    return ret;
-  }
-
-  public ArrayList<Cell> getAllNeighbors(int x, int y){
-    ArrayList<Cell> ret = new ArrayList<>();
-    ret.add(getGrid().get(x-1).get(y));
-    ret.add(getGrid().get(x+1).get(y));
-    ret.add(getGrid().get(x).get(y+1));
-    ret.add(getGrid().get(x).get(y-1));
-    ret.add(getGrid().get(x-1).get(y-1));
-    ret.add(getGrid().get(x-1).get(y+1));
-    ret.add(getGrid().get(x+1).get(y-1));
-    ret.add(getGrid().get(x+1).get(y+1));
-    return ret;
-  }
-
-  public boolean checkNeighbors(int x, int y, ArrayList<Point> neighbors) {
-    if (neighbors.contains(new Point(x + 1, y))) return true;
-    if (neighbors.contains(new Point(x - 1, y))) return true;
-    if (neighbors.contains(new Point(x, y + 1))) return true;
-    if (neighbors.contains(new Point(x, y - 1))) return true;
-    return false;
-  }
-
-  public Cell current(int x, int y){
-    return this.grid.get(x).get(y);
-  }
-
-  public void handleNeigbors(ArrayList<Point> neighborCells, String state){
-    neighborCells.clear();
-    for (ArrayList<Cell> row : getGrid()) {
-      for (Cell cell : row) {
-        if (cell.getState().equals(state)) {
-          neighborCells.add(new Point(getGrid().indexOf(row), row.indexOf(cell)));
-        }
-      }
-    }
-  }
-
 }

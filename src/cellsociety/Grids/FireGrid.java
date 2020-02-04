@@ -21,8 +21,6 @@ public class FireGrid extends Grid {
   );
 
   private ArrayList<Point> burnedCells;
-
-
   private double probability;
   private Random r = new Random();
 
@@ -70,7 +68,7 @@ public class FireGrid extends Grid {
 
   @Override
   public void updateGrid() {
-    handleNeigbors(burnedCells, "burning");
+    storeNeigborState(burnedCells, "burning");
     for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
         int x = getGrid().indexOf(row);
@@ -87,16 +85,26 @@ public class FireGrid extends Grid {
   public void handleMiddleCell(int x, int y) {
     if (checkNeighbors(x, y, burnedCells) && current(x, y).getState().equals("tree")
         && r.nextFloat() <= probability) {
-      current(x, y).update(Color.RED, "burning");
-      //System.out.println("caught fire: " + (x) + ", " + (y));
+      burnCell(x,y);
     }
   }
 
   public void handleBurningCell(int x, int y) {
     if (current(x, y).getState().equals("burning")) {
-      current(x, y).update(Color.YELLOW, "empty");
-      //System.out.println("extinguished: " + (x) + ", " + (y));
+      extinguishCell(x,y);
     }
   }
 
+  public void burnCell(int x, int y){
+    current(x, y).update(Color.RED, "burning");
+    System.out.println("caught fire: " + (x) + ", " + (y));
+  }
+
+  public void extinguishCell(int x, int y){
+    current(x, y).update(Color.YELLOW, "empty");
+    System.out.println("extinguished: " + (x) + ", " + (y));
+  }
+
+  // No edge cases by nature of FireGrid, but needed for abstraction
+  public void handleEdgeCell(int x, int y) {}
 }

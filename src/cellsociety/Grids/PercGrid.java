@@ -49,7 +49,6 @@ public class PercGrid extends Grid {
         this.current(0, i).update(Color.BLUE, "full");
       }
     }
-
   }
 
   private void setBlockedCells(){
@@ -63,21 +62,8 @@ public class PercGrid extends Grid {
   }
 
   @Override
-  public ArrayList<ArrayList<Cell>> createGrid() {
-    ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
-    for (int i = 0; i < getRows(); i++) {
-      ArrayList<Cell> row = new ArrayList<>();
-      for (int j = 0; j < getColumns(); j++) {
-        row.add(new Cell(Color.WHITE, "empty"));
-      }
-      ret.add(row);
-    }
-    return ret;
-  }
-
-    @Override
-    public void updateGrid(){
-        handleNeigbors(fullCells, "full");
+  public void updateGrid(){
+      storeNeigborState(fullCells, "full");
         for (ArrayList<Cell> row : getGrid()) {
             for (Cell cell : row) {
                 int x = getGrid().indexOf(row);
@@ -93,71 +79,103 @@ public class PercGrid extends Grid {
 
   @Override
   public void handleMiddleCell(int x, int y){
-      if (checkNeighbors(x, y, fullCells) && current(x,y).getState().equals("empty")) {
-      current(x,y).update(Color.BLUE, "full");
-      System.out.println("leaked: " + (x) + ", " + (y));
+      if (isFillable(x,y)) {
+        leakCell(x,y);
     }
   }
 
-  //TODO: HEAVY REFACTORING!!! THIS IS DISGUSTING ATM
   @Override
   public void handleEdgeCell(int x, int y){
-    if(y==0 && current(x,y).getState().equals("empty") && checkNeighbors(x, y, fullCells)){
-      if(x==0){
-        if(checkRight(x,y,"full") || checkDown(x,y,"full")){
-          current(x,y).update(Color.BLUE, "full");
-          System.out.println("leaked: " + (x) + ", " + (y));
-        }
-      }
-      else if(x==getColumns()-1){
-        if(checkLeft(x,y,"full") || checkDown(x,y,"full")){
-          current(x,y).update(Color.BLUE, "full");
-          System.out.println("leaked: " + (x) + ", " + (y));
-        }
-      }
-      else{
-        if(checkLeft(x,y,"full") || checkRight(x,y,"full") || checkDown(x,y,"full")){
-          current(x,y).update(Color.BLUE, "full");
-          System.out.println("leaked: " + (x) + ", " + (y));
-        }
+    if(isTopRowFillable(x,y)){
+      handleTopRow(x,y,"full");
+    }
+    if(isBottomRowFillable(x,y)){
+      handleBottomRow(x,y,"full");
+    }
+    if(isLeftColFillable(x,y)){
+      handleLeftColumn(x,y,"full");
+    }
+    if(isRightColFillable(x,y)){
+      handleRightColumn(x,y,"full");
+    }
+  }
+
+  public boolean isFillable(int x, int y){
+    return current(x,y).getState().equals("empty") && checkNeighbors(x, y, fullCells);
+  }
+
+  public boolean isTopRowFillable(int x, int y){
+    return y==0 && isFillable(x,y);
+  }
+
+  public boolean isBottomRowFillable(int x, int y){
+    return y==getRows()-1 && isFillable(x,y);
+  }
+
+  public boolean isLeftColFillable(int x, int y){
+    return x==0 && isFillable(x,y);
+  }
+
+  public boolean isRightColFillable(int x, int y){
+    return x==getColumns()-1 && isFillable(x,y);
+  }
+
+  public void handleTopRow(int x, int y, String state){
+    if(x==0){
+      if(checkRight(x,y,state) || checkDown(x,y,state)){
+        leakCell(x,y);
       }
     }
-    if(y==getRows()-1 && current(x,y).getState().equals("empty") && checkNeighbors(x, y, fullCells)){
-      if(x==0){
-        if(checkRight(x,y,"full") || checkUp(x,y,"full")){
-          current(x,y).update(Color.BLUE, "full");
-          System.out.println("leaked: " + (x) + ", " + (y));
-        }
-      }
-      else if(x==getColumns()-1){
-        if(checkLeft(x,y,"full") || checkUp(x,y,"full")){
-          current(x,y).update(Color.BLUE, "full");
-          System.out.println("leaked: " + (x) + ", " + (y));
-        }
-      }
-      else{
-        if(checkLeft(x,y,"full") || checkRight(x,y,"full") || checkUp(x,y,"full")){
-          current(x,y).update(Color.BLUE, "full");
-          System.out.println("leaked: " + (x) + ", " + (y));
-        }
+    else if(x==getColumns()-1){
+      if(checkLeft(x,y,state) || checkDown(x,y,state)){
+        leakCell(x,y);
       }
     }
-    if(x==0 && getGrid().get(x).get(y).getState().equals("empty") && checkNeighbors(x, y, fullCells)){
-      if(y!=0 && y!= getRows()-1){
-        if(checkRight(x,y,"full") || checkDown(x,y,"full") || checkUp(x,y,"full")){
-          getGrid().get(x).get(y).update(Color.BLUE, "full");
-          System.out.println("leaked: " + (x) + ", " + (y));
-        }
-      }
-    }
-    if(x==getColumns()-1 && current(x,y).getState().equals("empty") && checkNeighbors(x, y, fullCells)){
-      if(y!=0 && y!= getRows()-1){
-        if(checkLeft(x,y,"full") || checkDown(x,y,"full") || checkUp(x,y,"full")){
-          current(x,y).update(Color.BLUE, "full");
-          System.out.println("leaked: " + (x) + ", " + (y));
-        }
+    else{
+      if(checkLeft(x,y,state) || checkRight(x,y,state) || checkDown(x,y,state)){
+        leakCell(x,y);
       }
     }
   }
+
+  public void handleBottomRow(int x, int y, String state){
+    if(x==0){
+      if(checkRight(x,y,state) || checkUp(x,y,state)){
+        leakCell(x,y);
+      }
+    }
+      else if(x==getColumns()-1){
+      if(checkLeft(x,y,state) || checkUp(x,y,state)){
+        leakCell(x,y);
+      }
+    }
+    else{
+      if(checkLeft(x,y,state) || checkRight(x,y,state) || checkUp(x,y,state)){
+        leakCell(x,y);
+      }
+    }
+  }
+
+  public void handleLeftColumn(int x, int y, String state){
+    if(y!=0 && y!= getRows()-1){
+      if(checkRight(x,y,state) || checkDown(x,y,state) || checkUp(x,y,state)){
+        leakCell(x,y);
+      }
+    }
+  }
+
+  public void handleRightColumn(int x, int y, String state){
+    if(y!=0 && y!= getRows()-1){
+      if(checkLeft(x,y,state) || checkDown(x,y,state) || checkUp(x,y,state)){
+        leakCell(x,y);
+      }
+    }
+  }
+
+  public void leakCell(int x, int y){
+    current(x,y).update(Color.BLUE, "full");
+    System.out.println("leaked: " + (x) + ", " + (y));
+  }
+
 }
 
