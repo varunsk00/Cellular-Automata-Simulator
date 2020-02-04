@@ -55,13 +55,27 @@ public class XMLParser {
     List<String> dataFields = setDataFieldsByGridType(type);
 
     // read data associated with the fields given by the object
+    Map<String, String> results = createDataFieldMap(root, dataFields);
+    return returnGridByType(type, results);
+  }
+
+  public String getAuthors(File dataFile) {
+    Element root = getRootElement(dataFile);
+    return getTextValue(root, "author");
+  }
+
+  public String getTitle(File dataFile) {
+    Element root = getRootElement(dataFile);
+    return getTextValue(root, "title");
+  }
+
+  private Map<String, String> createDataFieldMap(Element root, List<String> dataFields) {
     Map<String, String> results = new HashMap<>();
     for (String field : dataFields) {
       results.put(field, getTextValue(root, field));
     }
-    return returnGridByType(type, results);
+    return results;
   }
-
 
   private Element getRootElement(File xmlFile) {
     try {

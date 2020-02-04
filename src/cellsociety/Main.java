@@ -114,7 +114,7 @@ public class Main extends Application {
   }
 
   private void step(double elapsedTime) {
-    if (header.getLoadStatus()) xmlToGrid();
+    if (header.getLoadStatus()) handleXML();
     else if (header.getSkipStatus()) skipAhead();
     else if (header.getSpeedStatus()) updateSpeed();
     else if (header.getPlayStatus()) updateState();
@@ -137,14 +137,18 @@ public class Main extends Application {
     return result;
   }
 
-  private void xmlToGrid() {
+  private void handleXML() {
     File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
     if (dataFile==null){
       header.setLoadOff();
       return;
     }
     try {
-      grid = new XMLParser("grid").getGrid(dataFile);
+      XMLParser parser = new XMLParser("grid");
+      grid = parser.getGrid(dataFile);
+      System.out.println(parser.getAuthors(dataFile));
+      System.out.println(parser.getTitle(dataFile));
+
       header.setPlayOff();
       gridView.updateGrid(grid);
       }
