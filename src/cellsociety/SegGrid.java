@@ -1,5 +1,6 @@
 package cellsociety;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import javafx.scene.paint.Color;
@@ -19,6 +20,7 @@ public class SegGrid extends Grid {
   private Random r = new Random();
   private double prob;
   private double percentFull;
+  private ArrayList<Point> sameCells;
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -31,6 +33,7 @@ public class SegGrid extends Grid {
     super(rows, columns);
     this.prob = satisfiedThreshold * 8;
     this.percentFull = percentFull;
+    this.sameCells = new ArrayList<Point>();
     setInits();
   }
 
@@ -39,6 +42,24 @@ public class SegGrid extends Grid {
         Integer.parseInt(dataValues.get(DATA_FIELDS.get(1))),
         Double.parseDouble(dataValues.get(DATA_FIELDS.get(2))),
         Double.parseDouble(dataValues.get(DATA_FIELDS.get(3))));
+  }
+
+  @Override
+  public void updateGrid(){
+    int x=0;
+    int y=0;
+    handleNeigbors(sameCells, getGrid().get(x).get(y).getState());
+    for (ArrayList<Cell> row : getGrid()) {
+      for (Cell cell : row) {
+        x = getGrid().indexOf(row);
+        y = row.indexOf(cell);
+        if (isMiddleCell(x, y)) {
+          handleMiddleCell(x, y);
+        } else {
+          handleEdgeCell(x, y);
+        }
+      }
+    }
   }
 
   private void setInits() {
