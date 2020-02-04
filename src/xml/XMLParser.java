@@ -20,20 +20,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-
 /**
- * This class handles parsing XML files and returning a completed object.
+ * This class handles parsing XML files and returning a completed object. Modified from
+ * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation
  *
  * @author Rhondu Smithwick
  * @author Robert C. Duvall
+ * @author Jaidha Rosenblatt
  */
 public class XMLParser {
 
-  // Readable error message that can be displayed by the GUI
-  public static final String ERROR_MESSAGE = "XML file does not represent %s";
-  // name of root attribute that notes the type of file expecting to parse
   private final String TYPE_ATTRIBUTE;
-  // keep only one documentBuilder because it is expensive to make and can reset it before parsing
   private final DocumentBuilder DOCUMENT_BUILDER;
 
 
@@ -47,15 +44,60 @@ public class XMLParser {
 
   /**
    * Get data contained in this XML file as an object
+   *
+   * @param dataFile an xml file to read
+   * @return Grid object based on grid type in xml file
    */
   public Grid getGrid(File dataFile) {
     Element root = getRootElement(dataFile);
-
     String type = getAttribute(root, TYPE_ATTRIBUTE);
 
+    List<String> dataFields = setDataFieldsByGridType(type);
+
+    // read data associated with the fields given by the object
+    Map<String, String> results = new HashMap<>();
+    for (String field : dataFields) {
+      results.put(field, getTextValue(root, field));
+    }
+    return returnGridByType(type, results);
+  }
+
+
+  private Element getRootElement(File xmlFile) {
+    try {
+      DOCUMENT_BUILDER.reset();
+      Document xmlDocument = DOCUMENT_BUILDER.parse(xmlFile);
+      return xmlDocument.getDocumentElement();
+    } catch (SAXException | IOException e) {
+      throw new XMLException(e);
+    }
+  }
+
+  private String getAttribute(Element e, String attributeName) {
+    return e.getAttribute(attributeName);
+  }
+
+  private String getTextValue(Element e, String tagName) {
+    NodeList nodeList = e.getElementsByTagName(tagName);
+    if (nodeList != null && nodeList.getLength() > 0) {
+      return nodeList.item(0).getTextContent();
+    } else {
+      return "";
+    }
+  }
+
+  private DocumentBuilder getDocumentBuilder() {
+    try {
+      return DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    } catch (ParserConfigurationException e) {
+      throw new XMLException(e);
+    }
+  }
+
+  private List<String> setDataFieldsByGridType(String type) {
     List<String> dataFields = new ArrayList<>();
 
-    switch (type){
+    switch (type) {
       case "Fire":
         dataFields = FireGrid.DATA_FIELDS;
         break;
@@ -72,15 +114,11 @@ public class XMLParser {
         dataFields = PredPreyGrid.DATA_FIELDS;
         break;
     }
+    return dataFields;
+  }
 
-//    System.out.println(dataFields);
-    // read data associated with the fields given by the object
-    Map<String, String> results = new HashMap<>();
-    for (String field : dataFields) {
-      results.put(field, getTextValue(root, field));
-    }
-
-    switch (type){
+  private Grid returnGridByType(String type, Map<String, String> results) {
+    switch (type) {
       case "Fire":
         return new FireGrid(results);
       case "Percolation":
@@ -89,46 +127,11 @@ public class XMLParser {
         return new LifeGrid(results);
       case "Segregation":
         return new SegGrid(results);
-      case "PredPray":
+      case "PredPrey":
         return new PredPreyGrid(results);
     }
 
     return new Grid(0, 0);
   }
 
-  // get root element of an XML file
-  private Element getRootElement(File xmlFile) {
-    try {
-      DOCUMENT_BUILDER.reset();
-      Document xmlDocument = DOCUMENT_BUILDER.parse(xmlFile);
-      return xmlDocument.getDocumentElement();
-    } catch (SAXException | IOException e) {
-      throw new XMLException(e);
-    }
-  }
-
-  // get value of Element's attribute
-  private String getAttribute(Element e, String attributeName) {
-    return e.getAttribute(attributeName);
-  }
-
-  // get value of Element's text
-  private String getTextValue(Element e, String tagName) {
-    NodeList nodeList = e.getElementsByTagName(tagName);
-    if (nodeList != null && nodeList.getLength() > 0) {
-      return nodeList.item(0).getTextContent();
-    } else {
-      // FIXME: empty string or exception? In some cases it may be an error to not find any text
-      return "";
-    }
-  }
-
-  // boilerplate code needed to make a documentBuilder
-  private DocumentBuilder getDocumentBuilder() {
-    try {
-      return DocumentBuilderFactory.newInstance().newDocumentBuilder();
-    } catch (ParserConfigurationException e) {
-      throw new XMLException(e);
-    }
-  }
 }
