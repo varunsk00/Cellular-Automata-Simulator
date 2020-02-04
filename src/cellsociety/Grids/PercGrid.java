@@ -1,6 +1,10 @@
-package cellsociety;
+package cellsociety.Grids;
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
+
+import cellsociety.Cell;
+import cellsociety.Grids.Grid;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,6 +16,8 @@ public class PercGrid extends Grid {
       "columns",
       "percentBlocked"
   );
+
+  private ArrayList<Point> fullCells;
 
   private static double percentBlocked;
   private Random r = new Random();
@@ -25,6 +31,7 @@ public class PercGrid extends Grid {
   public PercGrid(int row, int column, double percentBlocked) {
     super(row, column);
     this.percentBlocked = percentBlocked;
+    this.fullCells = new ArrayList<Point>();
     setFullCells();
     setBlockedCells();
   }
@@ -53,8 +60,8 @@ public class PercGrid extends Grid {
         }
       }
     }
-
   }
+
   @Override
   public ArrayList<ArrayList<Cell>> createGrid() {
     ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
@@ -68,9 +75,25 @@ public class PercGrid extends Grid {
     return ret;
   }
 
+    @Override
+    public void updateGrid(){
+        handleNeigbors(fullCells, "full");
+        for (ArrayList<Cell> row : getGrid()) {
+            for (Cell cell : row) {
+                int x = getGrid().indexOf(row);
+                int y = row.indexOf(cell);
+                if (isMiddleCell(x, y)) {
+                    handleMiddleCell(x, y);
+                } else {
+                    handleEdgeCell(x, y);
+                }
+            }
+        }
+    }
+
   @Override
   public void handleMiddleCell(int x, int y){
-    if (current(x,y).getState().equals("empty")  && checkNeighbors(x,y,"full")) {
+      if (checkNeighbors(x, y, fullCells) && current(x,y).getState().equals("empty")) {
       current(x,y).update(Color.BLUE, "full");
       System.out.println("leaked: " + (x) + ", " + (y));
     }
@@ -79,7 +102,7 @@ public class PercGrid extends Grid {
   //TODO: HEAVY REFACTORING!!! THIS IS DISGUSTING ATM
   @Override
   public void handleEdgeCell(int x, int y){
-    if(y==0 && current(x,y).getState().equals("empty")){
+    if(y==0 && current(x,y).getState().equals("empty") && checkNeighbors(x, y, fullCells)){
       if(x==0){
         if(checkRight(x,y,"full") || checkDown(x,y,"full")){
           current(x,y).update(Color.BLUE, "full");
@@ -99,7 +122,7 @@ public class PercGrid extends Grid {
         }
       }
     }
-    if(y==getRows()-1 && current(x,y).getState().equals("empty")){
+    if(y==getRows()-1 && current(x,y).getState().equals("empty") && checkNeighbors(x, y, fullCells)){
       if(x==0){
         if(checkRight(x,y,"full") || checkUp(x,y,"full")){
           current(x,y).update(Color.BLUE, "full");
@@ -119,7 +142,7 @@ public class PercGrid extends Grid {
         }
       }
     }
-    if(x==0 && getGrid().get(x).get(y).getState().equals("empty")){
+    if(x==0 && getGrid().get(x).get(y).getState().equals("empty") && checkNeighbors(x, y, fullCells)){
       if(y!=0 && y!= getRows()-1){
         if(checkRight(x,y,"full") || checkDown(x,y,"full") || checkUp(x,y,"full")){
           getGrid().get(x).get(y).update(Color.BLUE, "full");
@@ -127,7 +150,7 @@ public class PercGrid extends Grid {
         }
       }
     }
-    if(x==getColumns()-1 && current(x,y).getState().equals("empty")){
+    if(x==getColumns()-1 && current(x,y).getState().equals("empty") && checkNeighbors(x, y, fullCells)){
       if(y!=0 && y!= getRows()-1){
         if(checkLeft(x,y,"full") || checkDown(x,y,"full") || checkUp(x,y,"full")){
           current(x,y).update(Color.BLUE, "full");

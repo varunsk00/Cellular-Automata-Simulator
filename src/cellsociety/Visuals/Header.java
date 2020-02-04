@@ -12,15 +12,15 @@ import java.util.ResourceBundle;
 
 /**
  * Header Class serves as a controller unit, taking in input from the user to pause/play the game, skip ahead, speed up, or load a file.
- * It is displayed at the top of the BorderPane in Main and is an HBox with Buttons that affect the game
+ * It is displayed at the top of the BorderPane in Main and has a VBox with Buttons that affect the game and author/title info
  * Works in conjunction with the Footer class, since the Footer class determines new speed/frames to jump
  * Every simulation needs a header, which should be instantiated in Main and added to the top of the BorderPane
  * @author ericdoppelt
  */
 public class Header {
 
-  private static final String RESOURCES  = "Resources";
-  private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
+  private static final String RESOURCES  = "resources";
+  private static final String DEFAULT_RESOURCE_PACKAGE = "../../../" + RESOURCES + "/";
 
   private static final String AUTHOR_INTRO = "Author: ";
   private static final String TITLE_INTRO = "Title: ";
@@ -46,7 +46,7 @@ public class Header {
    */
   public Header(String language) {
 
-    myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
+    myResources = ResourceBundle.getBundle(language);
     this.playPressed = false;
     this.skipPressed = false;
     this.speedUpPressed = false;
@@ -55,25 +55,16 @@ public class Header {
     renderHeader();
   }
 
+  /**
+   * Sets the author and
+   * @param author
+   * @param title
+   */
   public void setAuthorTitle(String author, String title) {
 
-    mySimulationInfo.getChildren().clear();
-
-    addLabel(AUTHOR_INTRO + author, mySimulationInfo);
-    addLabel(TITLE_INTRO  + title, mySimulationInfo);
-
+    ((Label)mySimulationInfo.getChildren().get(0)).setText(AUTHOR_INTRO + author);
+    ((Label)mySimulationInfo.getChildren().get(1)).setText(TITLE_INTRO  + title);
   }
-
-
-  private void addLabel(String info, HBox header) {
-    Label addedLabel = new Label(info);
-    addedLabel.setMaxWidth(Double.MAX_VALUE);
-    addedLabel.setAlignment(Pos.CENTER);
-    header.setHgrow(addedLabel, Priority.ALWAYS);
-    header.getChildren().add(addedLabel);
-  }
-
-
 
   /**
    * Basic getter method for the header used in Main
@@ -141,6 +132,14 @@ public class Header {
 
     myHeader = new VBox();
     myHeader.getChildren().addAll(myButtons, mySimulationInfo);
+  }
+
+  private void addLabel(String info, HBox header) {
+    Label addedLabel = new Label(info);
+    addedLabel.setMaxWidth(Double.MAX_VALUE);
+    addedLabel.setAlignment(Pos.CENTER);
+    header.setHgrow(addedLabel, Priority.ALWAYS);
+    header.getChildren().add(addedLabel);
   }
 
   private Button makePlayButton() {

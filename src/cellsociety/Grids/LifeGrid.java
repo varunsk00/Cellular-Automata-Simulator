@@ -1,8 +1,12 @@
-package cellsociety;
+package cellsociety.Grids;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import cellsociety.Cell;
+import cellsociety.Grids.Grid;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -14,6 +18,7 @@ public class LifeGrid extends Grid {
       "percentAlive"
   );
   private Random r = new Random();
+  private ArrayList<Point> aliveCells;
   private static double percentAlive;
 
   /**
@@ -26,6 +31,7 @@ public class LifeGrid extends Grid {
     public LifeGrid(int rows, int columns, double percentAlive) {
         super(rows, columns);
         this.percentAlive = percentAlive;
+        this.aliveCells = new ArrayList<Point>();
         setAliveCells();
     }
 
@@ -59,6 +65,22 @@ public class LifeGrid extends Grid {
     }
 
     @Override
+    public void updateGrid(){
+        handleNeigbors(aliveCells, "alive");
+        for (ArrayList<Cell> row : getGrid()) {
+            for (Cell cell : row) {
+                int x = getGrid().indexOf(row);
+                int y = row.indexOf(cell);
+                if (isMiddleCell(x, y)) {
+                    handleMiddleCell(x, y);
+                } else {
+                    handleEdgeCell(x, y);
+                }
+            }
+        }
+    }
+
+    @Override
     public void handleMiddleCell(int x, int y){
         ArrayList<Cell> neighbors = getAllNeighbors(x,y);
         int alive_count= 0;
@@ -68,7 +90,7 @@ public class LifeGrid extends Grid {
             }
         }
 
-        if (current(x,y).getState().equals("alive")){
+        if (checkNeighbors(x, y, aliveCells) && current(x,y).getState().equals("alive")){
             if(alive_count==2 || alive_count ==3){
                 current(x,y).update(Color.BLACK, "alive");
                 System.out.println("survived: " + (x) + ", " + (y));

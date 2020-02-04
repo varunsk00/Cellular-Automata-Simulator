@@ -1,9 +1,11 @@
-package cellsociety;
+package cellsociety.Grids;
 
 import java.awt.Point;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cellsociety.Cell;
+import cellsociety.Grids.Grid;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,7 +25,6 @@ public class FireGrid extends Grid {
 
   private double probability;
   private Random r = new Random();
-  private int neighborCount;
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -69,16 +70,7 @@ public class FireGrid extends Grid {
 
   @Override
   public void updateGrid() {
-    burnedCells.clear();
-
-    for (ArrayList<Cell> row : getGrid()) {
-      for (Cell cell : row) {
-        if (cell.getState().equals("burning")) {
-          burnedCells.add(new Point(getGrid().indexOf(row), row.indexOf(cell)));
-        }
-      }
-    }
-
+    handleNeigbors(burnedCells, "burning");
     for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
         int x = getGrid().indexOf(row);
@@ -93,7 +85,7 @@ public class FireGrid extends Grid {
 
   @Override
   public void handleMiddleCell(int x, int y) {
-    if (checkNeighbors(x, y) && current(x, y).getState().equals("tree")
+    if (checkNeighbors(x, y, burnedCells) && current(x, y).getState().equals("tree")
         && r.nextFloat() <= probability) {
       current(x, y).update(Color.RED, "burning");
       //System.out.println("caught fire: " + (x) + ", " + (y));
@@ -107,11 +99,4 @@ public class FireGrid extends Grid {
     }
   }
 
-  private boolean checkNeighbors(int x, int y) {
-    if (burnedCells.contains(new Point(x + 1, y))) return true;
-    if (burnedCells.contains(new Point(x - 1, y))) return true;
-    if (burnedCells.contains(new Point(x, y + 1))) return true;
-    if (burnedCells.contains(new Point(x, y - 1))) return true;
-    return false;
-  }
 }
