@@ -64,7 +64,6 @@ public class PredPreyGrid extends Grid {
   }
 
   private void setInits() {
-
     for (int i = 0; i < getRows(); i++) {
       for (int j = 0; j < getColumns(); j++) {
         if (r.nextFloat() <= percentPredator / 2) {
@@ -78,9 +77,19 @@ public class PredPreyGrid extends Grid {
   }
 
   @Override
+  public void handleEdgeCell(int x, int y) {
+    ArrayList<Cell> neighbors = handleEdgeCases(x, y);
+    updateCell(x, y, neighbors);
+  }
+
+  @Override
   public void handleMiddleCell(int x, int y) {
 
     ArrayList<Cell> neighbors = getNeighbors(x, y);
+    updateCell(x, y, neighbors);
+  }
+
+  private void updateCell(int x, int y, ArrayList<Cell> neighbors) {
     Cell currentCell = current(x, y);
 
     //prey can move
@@ -105,8 +114,8 @@ public class PredPreyGrid extends Grid {
       System.out.println("predator move");
       Cell neighbor = getRandomNeighborByState(neighbors, "empty");
       moveToRandomEmptyNeighbor(neighbor, currentCell, "predator");
-      subtractLife(currentCell);      }
-    else{
+      subtractLife(currentCell);
+    } else {
       System.out.println("predator lose life");
       subtractLife(currentCell);
     }
@@ -201,6 +210,5 @@ public class PredPreyGrid extends Grid {
     cell.update(Color.ORANGE, "predator_0");
   }
 
-  public void handleEdgeCell(int x, int y) {}
 
 }
