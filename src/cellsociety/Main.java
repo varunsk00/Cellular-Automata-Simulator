@@ -31,9 +31,10 @@ public class Main extends Application {
   private static final String STYLESHEET = "default.css";
   private static final String RESOURCE_LANGUAGE = "Standard";
 
-  private static double FRAMES_PER_SECOND = 2;
+  private static double FRAMES_PER_SECOND = 1;
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
+
   private double SCENE_WIDTH = 500;
   private double SCENE_HEIGHT = 500;
 
@@ -43,13 +44,14 @@ public class Main extends Application {
   private Grid grid;
   private GridView gridView;
   private BorderPane root;
-  private Header inputHeader;
-  private Footer inputFooter;
-
+  private Header header;
+  private Footer footer;
   private Stage myStage;
-  private Random r = new Random();
   private Timeline animation;
 
+  private Random r = new Random();
+
+  private static final Color BACKGROUND_COLOR = Color.ALICEBLUE;
 
   public static void main(String[] args) {
     launch(args);
@@ -62,31 +64,43 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Simulation");
-
     startAnimationLoop();
 
-    grid = new Grid(30,30);
-    root = new BorderPane();
-    root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-    root.setMaxHeight(SCENE_HEIGHT);
-    root.setMaxWidth(SCENE_WIDTH);
-
-    inputHeader = new Header(RESOURCE_LANGUAGE);
-    root.setTop(inputHeader.getHeader());
-
-    inputFooter = new Footer(RESOURCE_LANGUAGE);
-    root.setBottom(inputFooter.getFooter());
-
-    gridView = new GridView();
-    root.setCenter(gridView.getGridPane());
+    setBorderPane();
+    setHeader();
+    setFooter();
+    setGridView();
 
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     scene.getStylesheets()
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
+
     myStage = primaryStage;
-    primaryStage.setScene(scene);
+    myStage.setScene(scene);
     startAnimationLoop();
-    primaryStage.show();
+    myStage.show();
+  }
+
+  private void setBorderPane() {
+    root = new BorderPane();
+    root.setBackground(new Background(new BackgroundFill(BACKGROUND_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
+    root.setMaxHeight(SCENE_HEIGHT);
+    root.setMaxWidth(SCENE_WIDTH);
+  }
+
+  private void setHeader() {
+    header = new Header(RESOURCE_LANGUAGE);
+    root.setTop(header.getHeader());
+  }
+
+  private void setFooter() {
+    footer = new Footer(RESOURCE_LANGUAGE);
+    root.setBottom(footer.getFooter());
+  }
+
+  private void setGridView() {
+    gridView = new GridView();
+    root.setCenter(gridView.getGridPane());
   }
 
   private void startAnimationLoop() {
@@ -100,23 +114,18 @@ public class Main extends Application {
   }
 
   private void step(double elapsedTime) {
-    if (inputHeader.getLoadStatus()) {
-      xmlToGrid();
-    } else if (inputHeader.getSkipStatus()) {
-      skipAhead();
-    } else if (inputHeader.getSpeedStatus()) {
-      updateSpeed();
-    } else if (inputHeader.getPlayStatus()) {
-      updateState();
-    }
+    if (header.getLoadStatus()) xmlToGrid();
+    else if (header.getSkipStatus()) skipAhead();
+    else if (header.getSpeedStatus()) updateSpeed();
+    else if (header.getPlayStatus()) updateState();
   }
 
   private void skipAhead() {
-    for (int i = 0; i < inputFooter.getJumpValue(); i++) {
+    for (int i = 0; i < footer.getJumpValue(); i++) {
       grid.updateGrid();
     }
     gridView.updateGrid(grid);
-    inputHeader.setSkipOff();
+    header.setSkipOff();
   }
 
   private static FileChooser makeChooser(String extensionAccepted) {
@@ -131,23 +140,23 @@ public class Main extends Application {
   private void xmlToGrid() {
     File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
     if (dataFile==null){
-      inputHeader.setLoadOff();
+      header.setLoadOff();
       return;
     }
     try {
       grid = new XMLParser("grid").getGrid(dataFile);
-      inputHeader.setPlayOff();
+      header.setPlayOff();
       gridView.updateGrid(grid);
       }
     catch (XMLException e) {
       System.out.println(e.getMessage());
     }
-    inputHeader.setLoadOff();
+    header.setLoadOff();
   }
 
   private void updateSpeed() {
-    animation.setRate(inputFooter.getSpeed());
-    inputHeader.setSpeedOff();
+    animation.setRate(footer.getSpeed());
+    header.setSpeedOff();
   }
 
   private void updateState() {
