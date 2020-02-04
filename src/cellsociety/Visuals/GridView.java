@@ -1,6 +1,6 @@
 package cellsociety.Visuals;
 
-import cellsociety.Grid;
+import cellsociety.Grids.Grid;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;

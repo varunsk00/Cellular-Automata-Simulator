@@ -30,7 +30,7 @@ public class Footer {
     private VBox footer;
 
     public Footer(String language) {
-        this.myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
+        this.myResources = ResourceBundle.getBundle(language);
         renderFooter();
     }
 

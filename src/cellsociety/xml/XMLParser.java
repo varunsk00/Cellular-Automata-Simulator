@@ -1,12 +1,12 @@
-package xml;
+package cellsociety.xml;
 
-import cellsociety.FireGrid;
-import cellsociety.Grid;
-import cellsociety.LifeGrid;
-import cellsociety.PercGrid;
-import cellsociety.PredPreyGrid;
-import cellsociety.SegGrid;
-import java.util.ArrayList;
+import cellsociety.Grids.FireGrid;
+import cellsociety.Grids.Grid;
+import cellsociety.Grids.LifeGrid;
+import cellsociety.Grids.PercGrid;
+import cellsociety.Grids.PredPreyGrid;
+import cellsociety.Grids.SegGrid;
+
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -45,8 +45,8 @@ public class XMLParser {
   /**
    * Get data contained in this XML file as an object
    *
-   * @param dataFile an xml file to read
-   * @return Grid object based on grid type in xml file
+   * @param dataFile an cellsociety.xml file to read
+   * @return Grid object based on grid type in cellsociety.xml file
    */
   public Grid getGrid(File dataFile) {
     Element root = getRootElement(dataFile);
