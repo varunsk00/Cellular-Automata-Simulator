@@ -184,4 +184,107 @@ public class Grid {
   public boolean checkDown(int x, int y, String state) {
     return getGrid().get(x).get(y + 1).getState() == state;
   }
+
+  public ArrayList<Cell> handleEdgeCases(int x, int y){
+      ArrayList<Cell> neighbors = new ArrayList<Cell>();
+        if(y==0){
+            handleTopRow(x,y, neighbors);
+        }
+        if(y==getRows()-1){
+            handleBottomRow(x,y, neighbors);
+        }
+        if(x==0){
+            subtractLeftCol(x,y, neighbors);
+        }
+        if(x==getColumns()-1){
+            subtractRightCol(x,y, neighbors);
+        }
+        return neighbors;
+    }
+
+  public void handleTopRow(int x, int y, ArrayList<Cell> neighbors){
+        if(x==0){
+            subtractTopLeftCorner(x,y,neighbors);
+        }
+        else if (x==getColumns()-1){
+            subtractTopRightCorner(x,y,neighbors);
+        }
+        else{
+            subtractTopRow(x,y,neighbors);
+        }
+    }
+
+  public void subtractTopLeftCorner(int x, int y, ArrayList<Cell> neighbors){
+        neighbors.add(current(x+1, y+1));
+        neighbors.add(current(x, y+1));
+        neighbors.add(current(x+1, y));
+    }
+
+  public void subtractTopRightCorner(int x, int y, ArrayList<Cell> neighbors){
+        neighbors.add(current(x-1, y));
+        neighbors.add(current(x-1, y+1));
+        neighbors.add(current(x, y+1));
+    }
+
+  public void subtractTopRow(int x, int y, ArrayList<Cell> neighbors){
+        neighbors.add(current(x-1, y));
+        neighbors.add(current(x-1, y+1));
+        neighbors.add(current(x, y+1));
+        neighbors.add(current(x+1, y+1));
+        neighbors.add(current(x, y+1));
+        neighbors.add(current(x+1, y));
+    }
+
+  public void handleBottomRow(int x, int y, ArrayList<Cell> neighbors){
+        if(x==0){
+            subtractBottomLeftCorner(x,y,neighbors);
+        }
+        else if (x==getColumns()-1){
+            subtractBottomRightCorner(x,y,neighbors);
+        }
+        else{
+            subtractBottomRow(x,y,neighbors);
+        }
+    }
+
+  public void subtractBottomLeftCorner(int x, int y, ArrayList<Cell> neighbors){
+        neighbors.add(current(x,y-1));
+        neighbors.add(current(x+1,y-1));
+        neighbors.add(current(x+1,y));
+    }
+
+  public void subtractBottomRightCorner(int x, int y, ArrayList<Cell> neighbors){
+        neighbors.add(current(x-1,y));
+        neighbors.add(current(x-1,y-1));
+        neighbors.add(current(x,y-1));
+    }
+
+  public void subtractBottomRow(int x, int y, ArrayList<Cell> neighbors){
+        neighbors.add(current(x,y-1));
+        neighbors.add(current(x+1,y-1));
+        neighbors.add(current(x+1,y));
+        neighbors.add(current(x-1,y));
+        neighbors.add(current(x-1,y-1));
+        neighbors.add(current(x,y-1));
+    }
+
+  public void subtractLeftCol(int x, int y, ArrayList<Cell> neighbors){
+        if(y!=0 && y!= getRows()-1){
+            neighbors.add(current(x,y-1));
+            neighbors.add(current(x+1,y-1));
+            neighbors.add(current(x+1,y));
+            neighbors.add(current(x+1,y+1));
+            neighbors.add(current(x,y+1));
+        }
+    }
+
+  public void subtractRightCol(int x, int y, ArrayList<Cell> neighbors){
+        if(y!=0 && y!= getRows()-1){
+            neighbors.add(current(x,y-1));
+            neighbors.add(current(x-1,y-1));
+            neighbors.add(current(x-1,y));
+            neighbors.add(current(x-1,y+1));
+            neighbors.add(current(x,y+1));
+        }
+    }
 }
