@@ -122,7 +122,7 @@ public class Main extends Application {
   }
 
   private void skipAhead() {
-    for (int i = 0; i < footer.getJumpValue(); i++) {
+    for (int i = 0; i < footer.getSkipValue(); i++) {
       grid.updateGrid();
     }
     gridView.updateGrid(grid);
