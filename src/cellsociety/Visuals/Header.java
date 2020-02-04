@@ -36,33 +36,6 @@ public class Header {
     renderHeader();
   }
 
-  private void renderHeader() {
-    myHeader = new HBox();
-
-    Button loadButton = makeButton("LoadButton", event -> loadPressed = true);
-    Button skipButton = makeButton("SkipButton", event -> skipPressed = true);
-    Button speedButton = makeButton("SpeedButton", event -> speedUpPressed = true);
-    Button playButton = makeButton("PlayButton", event -> playPressed = (playPressed) ? false : true);
-
-    myHeader.getChildren().addAll(loadButton, speedButton, skipButton, playButton);
-    formatButtons(loadButton, speedButton, skipButton, playButton);
-  }
-
-
-  private Button makeButton(String key, EventHandler e) {
-    Button tempButton = new Button(myResources.getString(key));
-    tempButton.setMaxWidth(Double.MAX_VALUE);
-    tempButton.setOnAction(e);
-    return tempButton;
-  }
-
-  private void formatButtons(Button load, Button speed, Button skip, Button play) {
-    myHeader.setHgrow(load, Priority.ALWAYS);
-    myHeader.setHgrow(speed, Priority.ALWAYS);
-    myHeader.setHgrow(skip, Priority.ALWAYS);
-    myHeader.setHgrow(play, Priority.ALWAYS);
-  }
-
   public HBox getHeader() {return myHeader;}
 
   public boolean getPlayStatus() {return playPressed;}
@@ -78,4 +51,43 @@ public class Header {
   public void setSkipOff() {skipPressed = false;}
 
   public void setSpeedOff() {speedUpPressed = false;}
+
+  private void renderHeader() {
+    myHeader = new HBox();
+
+    Button playButton = makePlayButton();
+
+    Button loadButton = makeButton("LoadButton", event -> loadPressed = true);
+    Button skipButton = makeButton("SkipButton", event -> skipPressed = true);
+    Button speedButton = makeButton("SpeedButton", event -> speedUpPressed = true);
+
+    myHeader.getChildren().addAll(loadButton, playButton, speedButton, skipButton);
+    formatButtons(loadButton, playButton, speedButton, skipButton);
+  }
+
+  private Button makePlayButton() {
+    Button tempButton = new Button(myResources.getString("PlayButton"));
+    tempButton.setOnAction(e -> {
+      if (playPressed) tempButton.setText(myResources.getString("PlayButton"));
+      else tempButton.setText(myResources.getString("PauseButton"));
+
+      playPressed = !playPressed;
+    });
+    tempButton.setMaxWidth(Double.MAX_VALUE);
+    return tempButton;
+  }
+
+  private Button makeButton(String key, EventHandler e) {
+    Button tempButton = new Button(myResources.getString(key));
+    tempButton.setMaxWidth(Double.MAX_VALUE);
+    tempButton.setOnAction(e);
+    return tempButton;
+  }
+
+  private void formatButtons(Button load, Button speed, Button skip, Button play) {
+    myHeader.setHgrow(load, Priority.ALWAYS);
+    myHeader.setHgrow(speed, Priority.ALWAYS);
+    myHeader.setHgrow(skip, Priority.ALWAYS);
+    myHeader.setHgrow(play, Priority.ALWAYS);
+  }
 }
