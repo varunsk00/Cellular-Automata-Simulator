@@ -1,14 +1,8 @@
 package cellsociety.Grids;
 
-import java.awt.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.awt.Point;
 import cellsociety.Cell;
 import javafx.scene.paint.Color;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
