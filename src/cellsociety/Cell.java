@@ -6,6 +6,7 @@ public class Cell {
 
   private Color color;
   private String state;
+  private int lives;
 
   /**
    * Constructs a new cell
@@ -14,11 +15,13 @@ public class Cell {
    * @param state the initial state for cell Sets the cell's instance variables using update()
    **/
   public Cell(Color color, String state) {
+    this.lives = 1;
     update(color, state);
   }
 
   /**
    * Updates instance variables of cell
+   *
    * @param color the new color for cell
    * @param state the new state for cell Sets the cell's instance variables to new values
    **/
@@ -32,6 +35,22 @@ public class Cell {
    */
   public Color getColor() {
     return this.color;
+  }
+
+  /**
+   * @return the cell's current lives
+   */
+  public int getLives() {
+    return lives;
+  }
+
+  /**
+   * update the cell's lives based on a given change
+   *
+   * @param change an int representing the desired change for lives
+   */
+  public void updateLives(int change) {
+    this.lives = lives + change;
   }
 
   /**

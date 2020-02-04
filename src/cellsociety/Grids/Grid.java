@@ -162,7 +162,7 @@ public class Grid {
     neighborCells.clear();
     for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
-        if (cell.getState().contains(state)) {
+        if (cell.getState().equals(state)) {
           neighborCells.add(new Point(getGrid().indexOf(row), row.indexOf(cell)));
         }
       }
