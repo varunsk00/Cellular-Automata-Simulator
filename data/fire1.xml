@@ -2,7 +2,7 @@
 <data grid="Fire">
   <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
   <title>Predator Prey</title>
-  <rows>25</rows>
-  <columns>25</columns>
-  <probCatch>0.8</probCatch>
+  <rows>50</rows>
+  <columns>50</columns>
+  <probCatch>0.6</probCatch>
 </data>

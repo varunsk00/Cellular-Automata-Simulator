@@ -1,15 +1,12 @@
 package cellsociety.Grids;
 
+import java.awt.Point;
 import cellsociety.Cell;
 import javafx.scene.paint.Color;
-import java.awt.Point;
 import java.util.ArrayList;
 
-/**
- * Abstract Grid Class that every simulation type inherits for its subclass
- * Grid contains an ArrayList of ArrayLists of Cells representing the actual grid
- */
-public abstract class Grid {
+
+public class Grid {
 
   private ArrayList<ArrayList<Cell>> grid;
   private int rows;
@@ -69,21 +66,34 @@ public abstract class Grid {
    *
    * @return a grid (2D array of cells) with updated state
    */
-  public abstract void updateGrid();
+  public void updateGrid() {
+    for (ArrayList<Cell> row : getGrid()) {
+      for (Cell cell : row) {
+        int x = grid.indexOf(row);
+        int y = row.indexOf(cell);
+        if (isMiddleCell(x, y)) {
+          handleMiddleCell(x, y);
+        } else {
+          handleEdgeCell(x, y);
+        }
+      }
+    }
+    this.grid = getGrid();
+  }
 
   /**
    * Empty method to handle an middle cell in the grid
    * @param x the x coordinate of the cell to handle
    * @param y the y coordinate of the cell to handle
    */
-  public abstract void handleMiddleCell(int x, int y);
+  public void handleMiddleCell(int x, int y) {}
 
   /**
    * Empty method to handle an edge cell in the grid
    * @param x the x coordinate of the cell to handle
    * @param y the y coordinate of the cell to handle
    */
-  public abstract void handleEdgeCell(int x, int y);
+  public void handleEdgeCell(int x, int y) {}
 
   /**
    * Returns true if the cell at x, y is a middle cell in the grid (not on the border)

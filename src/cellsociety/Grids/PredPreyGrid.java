@@ -182,6 +182,4 @@ public class PredPreyGrid extends Grid {
 
   public void handleEdgeCell(int x, int y) {}
 
-  public void updateGrid() {}
-
 }
