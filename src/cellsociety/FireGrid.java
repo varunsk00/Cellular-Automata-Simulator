@@ -19,8 +19,6 @@ public class FireGrid extends Grid {
   );
 
   private ArrayList<Point> burnedCells;
-
-
   private double probability;
   private Random r = new Random();
 
@@ -68,7 +66,7 @@ public class FireGrid extends Grid {
 
   @Override
   public void updateGrid() {
-    handleNeigbors(burnedCells, "burning");
+    storeNeigborState(burnedCells, "burning");
     for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
         int x = getGrid().indexOf(row);
@@ -86,15 +84,14 @@ public class FireGrid extends Grid {
     if (checkNeighbors(x, y, burnedCells) && current(x, y).getState().equals("tree")
         && r.nextFloat() <= probability) {
       current(x, y).update(Color.RED, "burning");
-      //System.out.println("caught fire: " + (x) + ", " + (y));
+      System.out.println("caught fire: " + (x) + ", " + (y));
     }
   }
 
   public void handleBurningCell(int x, int y) {
     if (current(x, y).getState().equals("burning")) {
       current(x, y).update(Color.YELLOW, "empty");
-      //System.out.println("extinguished: " + (x) + ", " + (y));
+      System.out.println("extinguished: " + (x) + ", " + (y));
     }
   }
-
 }
