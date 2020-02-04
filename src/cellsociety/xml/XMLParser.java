@@ -138,7 +138,6 @@ public class XMLParser {
         return new PredPreyGrid(results);
     }
 
-    return new Grid(0, 0);
+    return null;
   }
-
 }
