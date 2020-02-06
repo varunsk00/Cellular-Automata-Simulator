@@ -74,17 +74,7 @@ public class LifeGrid extends Grid {
   @Override
   public void updateGrid(){
       storeNeigborState(aliveCells, "alive");
-      for (ArrayList<Cell> row : getGrid()) {
-          for (Cell cell : row) {
-              int x = getGrid().indexOf(row);
-              int y = row.indexOf(cell);
-              if (isMiddleCell(x, y)) {
-                  handleMiddleCell(x, y);
-              } else {
-                  handleEdgeCell(x, y);
-              }
-          }
-      }
+      super.updateGrid();
   }
 
   @Override
