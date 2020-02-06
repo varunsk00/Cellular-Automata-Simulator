@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class StatBox {
 
@@ -15,12 +16,12 @@ public class StatBox {
     private static final Color GRID_BACKGROUND = Color.BLUE;
     private static final BackgroundFill STAT_BACKGROUND = new BackgroundFill(GRID_BACKGROUND, CornerRadii.EMPTY, Insets.EMPTY);
     private VBox statBox;
-    private HashMap<String, Double> myStats;
+    private Map<String, Double> myStats;
     private String myTitle;
     private String myAuthor;
 
 
-    public StatBox(String title, String author, HashMap stats) {
+    public StatBox(String title, String author, Map stats) {
         myTitle = title;
         myAuthor = author;
         myStats = stats;
