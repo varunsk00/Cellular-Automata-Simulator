@@ -94,18 +94,7 @@ public class PredPreyGrid extends Grid {
   }
 
   @Override
-  public void handleEdgeCell(int x, int y) {
-    List<Cell> neighbors = handleEdgeCases(x, y);
-    updateCell(x, y, neighbors);
-  }
-
-  @Override
-  public void handleMiddleCell(int x, int y) {
-    List<Cell> neighbors = getNeighbors(x, y);
-    updateCell(x, y, neighbors);
-  }
-
-  private void updateCell(int x, int y, List<Cell> neighbors) {
+  public void updateCells(int x, int y, ArrayList<Cell> neighbors) {
     Cell currentCell = current(x, y);
     //prey can move
     if (current(x, y).getState().equals(PREY_NAME) && checkNeighbors(x, y, EMPTY_CELLS)) {

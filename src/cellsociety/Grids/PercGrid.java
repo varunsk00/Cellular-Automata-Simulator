@@ -18,7 +18,6 @@ public class PercGrid extends Grid {
   );
 
   private ArrayList<Point> fullCells;
-
   private static double percentBlocked;
   private Random r = new Random();
   /**
@@ -31,7 +30,7 @@ public class PercGrid extends Grid {
   public PercGrid(int row, int column, double percentBlocked) {
     super(row, column);
     this.percentBlocked = percentBlocked;
-    this.fullCells = new ArrayList<Point>();
+    this.fullCells = new ArrayList<>();
     setFullCells();
     setBlockedCells();
   }
@@ -44,11 +43,23 @@ public class PercGrid extends Grid {
     return DATA_FIELDS;
   }
 
-
   public PercGrid(Map<String, String> dataValues) {
     this(Integer.parseInt(dataValues.get(DATA_FIELDS.get(0))),
         Integer.parseInt(dataValues.get(DATA_FIELDS.get(1))),
         Double.parseDouble(dataValues.get(DATA_FIELDS.get(2))));
+  }
+
+  @Override
+  public void updateGrid(){
+    storeNeigborState(fullCells, "full");
+    super.updateGrid();
+  }
+
+  @Override
+  protected void updateCells(int x, int y, ArrayList<Cell> neighbors){
+    if (isFillable(x,y)) {
+      leakCell(x,y);
+    }
   }
 
   private void setFullCells(){
@@ -69,111 +80,13 @@ public class PercGrid extends Grid {
     }
   }
 
-  @Override
-  public void updateGrid(){
-      storeNeigborState(fullCells, "full");
-      super.updateGrid();
-    }
-
-  @Override
-  public void handleMiddleCell(int x, int y){
-      if (isFillable(x,y)) {
-        leakCell(x,y);
-    }
-  }
-
-  @Override
-  public void handleEdgeCell(int x, int y){
-    if(isTopRowFillable(x,y)){
-      handleTopRow(x,y,"full");
-    }
-    if(isBottomRowFillable(x,y)){
-      handleBottomRow(x,y,"full");
-    }
-    if(isLeftColFillable(x,y)){
-      handleLeftColumn(x,y,"full");
-    }
-    if(isRightColFillable(x,y)){
-      handleRightColumn(x,y,"full");
-    }
-  }
-
-  public boolean isFillable(int x, int y){
+  private boolean isFillable(int x, int y){
     return current(x,y).getState().equals("empty") && checkNeighbors(x, y, fullCells);
   }
 
-  public boolean isTopRowFillable(int x, int y){
-    return y==0 && isFillable(x,y);
-  }
-
-  public boolean isBottomRowFillable(int x, int y){
-    return y==getRows()-1 && isFillable(x,y);
-  }
-
-  public boolean isLeftColFillable(int x, int y){
-    return x==0 && isFillable(x,y);
-  }
-
-  public boolean isRightColFillable(int x, int y){
-    return x==getColumns()-1 && isFillable(x,y);
-  }
-
-  public void handleTopRow(int x, int y, String state){
-    if(x==0){
-      if(checkRight(x,y,state) || checkDown(x,y,state)){
-        leakCell(x,y);
-      }
-    }
-    else if(x==getColumns()-1){
-      if(checkLeft(x,y,state) || checkDown(x,y,state)){
-        leakCell(x,y);
-      }
-    }
-    else{
-      if(checkLeft(x,y,state) || checkRight(x,y,state) || checkDown(x,y,state)){
-        leakCell(x,y);
-      }
-    }
-  }
-
-  public void handleBottomRow(int x, int y, String state){
-    if(x==0){
-      if(checkRight(x,y,state) || checkUp(x,y,state)){
-        leakCell(x,y);
-      }
-    }
-      else if(x==getColumns()-1){
-      if(checkLeft(x,y,state) || checkUp(x,y,state)){
-        leakCell(x,y);
-      }
-    }
-    else{
-      if(checkLeft(x,y,state) || checkRight(x,y,state) || checkUp(x,y,state)){
-        leakCell(x,y);
-      }
-    }
-  }
-
-  public void handleLeftColumn(int x, int y, String state){
-    if(y!=0 && y!= getRows()-1){
-      if(checkRight(x,y,state) || checkDown(x,y,state) || checkUp(x,y,state)){
-        leakCell(x,y);
-      }
-    }
-  }
-
-  public void handleRightColumn(int x, int y, String state){
-    if(y!=0 && y!= getRows()-1){
-      if(checkLeft(x,y,state) || checkDown(x,y,state) || checkUp(x,y,state)){
-        leakCell(x,y);
-      }
-    }
-  }
-
-  public void leakCell(int x, int y){
+  private void leakCell(int x, int y){
     current(x,y).update(Color.BLUE, "full");
     System.out.println("leaked: " + (x) + ", " + (y));
   }
-
 }
 

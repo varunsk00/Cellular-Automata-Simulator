@@ -63,33 +63,8 @@ public class SegGrid extends Grid {
     super.updateGrid();
   }
 
-  private void setInits() {
-    for (int i = 0; i < this.getRows(); i++) {
-      for (int j = 0; j < this.getColumns(); j++) {
-
-        if (r.nextFloat() <= percentFull/2) {
-          this.current(i, j).update(Color.BLUE, "X");
-        }
-        if (r.nextFloat() <= percentFull/2) {
-          this.current(i, j).update(Color.RED, "O");
-        }
-      }
-    }
-  }
-
   @Override
-  public void handleMiddleCell(int x, int y) {
-    List<Cell> neighbors = getAllNeighbors(x, y);
-    updateCells(x,y,neighbors);
-  }
-
-  @Override
-  public void handleEdgeCell(int x, int y) {
-    List<Cell> neighbors = handleEdgeCases(x,y);;
-    updateCells(x,y,neighbors);
-  }
-
-  public void updateCells(int x, int y, List<Cell> neighbors){
+  protected void updateCells(int x, int y, ArrayList<Cell> neighbors){
     int similar_count = 0;
     for (Cell c : neighbors) {
       if (c.getState().equals(current(x, y).getState())) {
@@ -109,6 +84,20 @@ public class SegGrid extends Grid {
         ran_y = r.nextInt(getRows());
       }
       current(x, y).update(Color.WHITE, "empty");
+    }
+  }
+
+  private void setInits() {
+    for (int i = 0; i < this.getRows(); i++) {
+      for (int j = 0; j < this.getColumns(); j++) {
+
+        if (r.nextFloat() <= percentFull/2) {
+          this.current(i, j).update(Color.BLUE, "X");
+        }
+        if (r.nextFloat() <= percentFull/2) {
+          this.current(i, j).update(Color.RED, "O");
+        }
+      }
     }
   }
 }
