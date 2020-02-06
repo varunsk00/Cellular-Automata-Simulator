@@ -78,29 +78,17 @@ public class FireGrid extends Grid {
   @Override
   public void updateGrid() {
     storeNeigborState(burnedCells, "burning");
-    for (ArrayList<Cell> row : getGrid()) {
-      for (Cell cell : row) {
-        int x = getGrid().indexOf(row);
-        int y = row.indexOf(cell);
-        if (x > 0 && y > 0 && x < getColumns() - 1 && y < getRows() - 1) {
-          handleBurningCell(x, y);
-          handleMiddleCell(x, y);
-        }
-      }
-    }
+    super.updateGrid();
   }
 
   @Override
   public void handleMiddleCell(int x, int y) {
+    if (current(x, y).getState().equals("burning")) {
+      extinguishCell(x,y);
+    }
     if (checkNeighbors(x, y, burnedCells) && current(x, y).getState().equals("tree")
         && r.nextFloat() <= probability) {
       burnCell(x,y);
-    }
-  }
-
-  public void handleBurningCell(int x, int y) {
-    if (current(x, y).getState().equals("burning")) {
-      extinguishCell(x,y);
     }
   }
 
