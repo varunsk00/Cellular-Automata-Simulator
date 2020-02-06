@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.util.HashMap;
 
@@ -11,7 +12,7 @@ public class StatBox {
 
     private static final String TITLE_SETUP = "Title: ";
     private static final String AUTHOR_SETUP = "Author: ";
-    private static final Color GRID_BACKGROUND = Color.DARKGOLDENROD;
+    private static final Color GRID_BACKGROUND = Color.BLUE;
     private static final BackgroundFill STAT_BACKGROUND = new BackgroundFill(GRID_BACKGROUND, CornerRadii.EMPTY, Insets.EMPTY);
     private VBox statBox;
     private HashMap<String, Double> myStats;
@@ -29,11 +30,12 @@ public class StatBox {
     private void renderStatBox() {
         statBox = new VBox();
         statBox.setBackground(new Background(STAT_BACKGROUND));
-
-        Label authorLabel = new Label(AUTHOR_SETUP + myAuthor);
-        statBox.setVgrow(authorLabel, Priority.ALWAYS);
-        Label titleLabel = new Label(TITLE_SETUP + myTitle);
-        statBox.setVgrow(titleLabel, Priority.ALWAYS);
+        statBox.setMaxHeight(Double.MAX_VALUE);
+        Text authorText = new Text(AUTHOR_SETUP + myAuthor);
+        statBox.setVgrow(authorText, Priority.ALWAYS);
+        Label titleText = new Label(TITLE_SETUP + myTitle);
+        statBox.setVgrow(titleText, Priority.ALWAYS);
+        statBox.setMinWidth(30);
 
         for (String key : myStats.keySet()) {
             Label tempLabel = new Label(key + ": " + myStats.get(key));

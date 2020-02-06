@@ -27,13 +27,10 @@ public class Header {
   private ResourceBundle myResources;
 
   private boolean playPressed;
-  private boolean speedPressed;
   private boolean skipPressed;
   private boolean loadPressed;
 
-  private VBox myHeader;
   private HBox myButtons;
-  private HBox mySimulationInfo;
   private Button playButton;
 
   /**
@@ -49,27 +46,16 @@ public class Header {
     myResources = ResourceBundle.getBundle(language);
     this.playPressed = false;
     this.skipPressed = false;
-    this.speedPressed = false;
     this.loadPressed = false;
 
     renderHeader();
   }
 
   /**
-   * Sets the author and title of a given simulation in the bottom of the header
-   * @param author String telling the authors of the xml file
-   * @param title String telling the title of the simulation
-   */
-  public void setAuthorTitle(String author, String title) {
-    ((Label)mySimulationInfo.getChildren().get(0)).setText(AUTHOR_INTRO + author);
-    ((Label)mySimulationInfo.getChildren().get(1)).setText(TITLE_INTRO  + title);
-  }
-
-  /**
    * Basic getter method for the header used in Main
    * @return myHeader which is the VBox private instance variable representing the header (with functional buttons and title/author info)
    */
-  public VBox getHeader() {return myHeader;}
+  public HBox getHeader() {return myButtons;}
 
   /**
    * Basic getter method returning whether or not to play the simulation
@@ -97,7 +83,6 @@ public class Header {
    * This triggers the updateSpeed() method in main
    * @return the boolean private instance variable speedPressed
    */
-  public boolean getSpeedStatus() {return speedPressed;}
 
   /**
    * Method that pauses the simulation
@@ -125,27 +110,15 @@ public class Header {
    * Basic setter method that sets the speedPressed variable to false
    * Called in updateSpeed() to stop the speed from constantly being set to the slider value
    */
-  public void setSpeedOff() {
-    speedPressed = false;}
 
   private void renderHeader() {
     myButtons = new HBox();
     playButton = makePlayButton();
     Button loadButton = makeButton("LoadButton", event -> loadPressed = true);
     Button skipButton = makeButton("SkipButton", event -> skipPressed = true);
-    Button speedButton = makeButton("SpeedButton", event -> speedPressed = true);
 
-    myButtons.getChildren().addAll(loadButton, playButton, speedButton, skipButton);
-    formatButtons(loadButton, playButton, speedButton, skipButton);
-    myButtons.setMaxWidth(Double.MAX_VALUE);
-
-    mySimulationInfo = new HBox();
-    addLabel(AUTHOR_INTRO, mySimulationInfo);
-    addLabel(TITLE_INTRO, mySimulationInfo);
-    mySimulationInfo.setMaxWidth(Double.MAX_VALUE);
-
-    myHeader = new VBox();
-    myHeader.getChildren().addAll(myButtons, mySimulationInfo);
+    myButtons.getChildren().addAll(loadButton, playButton, skipButton);
+    formatButtons(loadButton, playButton, skipButton);
   }
 
   private void addLabel(String info, HBox header) {
@@ -175,9 +148,8 @@ public class Header {
     return tempButton;
   }
 
-  private void formatButtons(Button load, Button speed, Button skip, Button play) {
+  private void formatButtons(Button load, Button skip, Button play) {
     myButtons.setHgrow(load, Priority.ALWAYS);
-    myButtons.setHgrow(speed, Priority.ALWAYS);
     myButtons.setHgrow(skip, Priority.ALWAYS);
     myButtons.setHgrow(play, Priority.ALWAYS);
   }

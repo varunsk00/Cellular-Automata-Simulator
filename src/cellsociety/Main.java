@@ -142,10 +142,10 @@ public class Main extends Application {
 
   // Talk to TA before final about whether elapsedTime is needed
   private void step(double elapsedTime) {
+    updateSpeed();
 
     if (header.getLoadStatus()) handleXML();
     else if (header.getSkipStatus()) skipAhead();
-    else if (header.getSpeedStatus()) updateSpeed();
     else if (header.getPlayStatus()) updateState();
   }
 
@@ -197,31 +197,29 @@ public class Main extends Application {
         totalGrids++;
         center.getChildren().add(tempGridView.getGridPane());
 
-        header.setAuthorTitle(parser.getAuthors(dataFile), parser.getTitle(dataFile));
+        addStats(parser.getTitle(dataFile), parser.getAuthors(dataFile), new HashMap<>());
+
       } catch (XMLException e) {
         System.out.println(e.getMessage());
       }
     header.setLoadOff();
   }
 
-  private void setStats(String title, String author, HashMap<String, Double> stats)  {
+  private void addStats(String title, String author, HashMap<String, Double> stats)  {
     StatBox tempStats = new StatBox(title, author, stats);
-
     if (allGrids.size() % 2 == 0) {
-        allLeftStats.getChildren().add(tempStats.getStatBox());
-      } else {
         allRightStats.getChildren().add(tempStats.getStatBox());
+      } else {
+        allLeftStats.getChildren().add(tempStats.getStatBox());
     }
   }
 
   private void updateSpeed() {
     animation.setRate(footer.getSpeed());
-    header.setSpeedOff();
   }
 
   private void updateState() {
     for (int i = 0; i < totalGrids; i++) {
-//        System.out.println(i);
         allGrids.get(i).updateGrid();
         allGridViews.get(i).
                 updateGrid(allGrids.get(i));
@@ -230,7 +228,11 @@ public class Main extends Application {
 
     private void setStats() {
     allLeftStats = new VBox();
+    allLeftStats.setPrefWidth(SCENE_WIDTH / 8);
+    root.setLeft(allLeftStats);
     allRightStats = new VBox();
+    allRightStats.setPrefWidth(SCENE_WIDTH / 8);
+    root.setRight(allRightStats);
     }
   }
 
