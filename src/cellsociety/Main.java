@@ -5,20 +5,22 @@ import cellsociety.Visuals.Footer;
 import cellsociety.Visuals.GridView;
 import cellsociety.Visuals.Header;
 import java.io.File;
+
+import cellsociety.Visuals.StatBox;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import cellsociety.xml.XMLException;
 import cellsociety.xml.XMLParser;
@@ -32,6 +34,7 @@ import cellsociety.xml.XMLParser;
  * Once grids become bigger than 100x100, they begin to skip frames since the computer is too slow to render each frame
  * @author Eric Doppelt, Jaidha Rosenblatt, Varun Kosgi
  */
+
 public class Main extends Application {
 
   private static final String STYLESHEET = "default.css";
@@ -41,28 +44,35 @@ public class Main extends Application {
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-  private double SCENE_WIDTH = 500;
+  private double SCENE_WIDTH = 1000;
   private double SCENE_HEIGHT = 500;
 
-  public static final String DATA_FILE_EXTENSION = "*.cellsociety.xml";
+  public static final String DATA_FILE_EXTENSION = "*.xml";
   public final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
 
-  private Grid grid;
-  private GridView gridView;
+  private static final Color GRID_BACKGROUND = Color.BEIGE;
+  private static final Color ALL_COLOR = Color.ALICEBLUE;
+
+  private List<GridView> allGridViews;
+  private List<Grid> allGrids;
+  private int totalGrids;
+
   private BorderPane root;
+  private HBox center;
   private Header header;
   private Footer footer;
   private Stage myStage;
   private Timeline animation;
+  private VBox allLeftStats;
+  private VBox allRightStats;
 
   private Random r = new Random();
-
-  private static final Color BACKGROUND_COLOR = Color.ALICEBLUE;
 
   /**
    * Launches the JavaFX program
    * @param args Usual String Array passed to Main
    */
+
   public static void main(String[] args) {
     launch(args);
   }
@@ -80,7 +90,8 @@ public class Main extends Application {
     setBorderPane();
     setHeader();
     setFooter();
-    setGridView();
+    setCenter();
+    setStats();
 
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     scene.getStylesheets()
@@ -93,9 +104,9 @@ public class Main extends Application {
 
   private void setBorderPane() {
     root = new BorderPane();
-    root.setBackground(new Background(new BackgroundFill(BACKGROUND_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
-    root.setMaxHeight(SCENE_HEIGHT);
+    root.setBackground(new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
     root.setMaxWidth(SCENE_WIDTH);
+    root.setMaxHeight(SCENE_WIDTH);
   }
 
   private void setHeader() {
@@ -108,9 +119,15 @@ public class Main extends Application {
     root.setBottom(footer.getFooter());
   }
 
-  private void setGridView() {
-    gridView = new GridView();
-    root.setCenter(gridView.getGridPane());
+  private void setCenter() {
+    allGridViews = new ArrayList<GridView>();
+    allGrids = new ArrayList<Grid>();
+    totalGrids = 0;
+
+    center = new HBox();
+    center.setBackground(new Background(new BackgroundFill(GRID_BACKGROUND, CornerRadii.EMPTY, Insets.EMPTY)));
+    root.setCenter(center);
+
   }
 
   private void startAnimationLoop() {
@@ -125,6 +142,7 @@ public class Main extends Application {
 
   // Talk to TA before final about whether elapsedTime is needed
   private void step(double elapsedTime) {
+
     if (header.getLoadStatus()) handleXML();
     else if (header.getSkipStatus()) skipAhead();
     else if (header.getSpeedStatus()) updateSpeed();
@@ -133,9 +151,10 @@ public class Main extends Application {
 
   private void skipAhead() {
     for (int i = 0; i < footer.getSkipValue(); i++) {
-      grid.updateGrid();
+      for (Grid tempGrid: allGrids) {
+          tempGrid.updateGrid();
+      }
     }
-    gridView.updateGrid(grid);
     header.setSkipOff();
   }
 
@@ -149,22 +168,42 @@ public class Main extends Application {
   }
 
   private void handleXML() {
-    File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
-    if (dataFile==null){
-      header.setLoadOff();
-      return;
-    }
-    try {
-      XMLParser parser = new XMLParser("grid");
-      grid = parser.getGrid(dataFile);
-      header.togglePause();
-      gridView.updateGrid(grid);
-      header.setAuthorTitle(parser.getAuthors(dataFile), parser.getTitle(dataFile));
+    header.togglePause();
+
+      File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
+
+      if (dataFile == null) {
+        header.setLoadOff();
+        return;
       }
-    catch (XMLException e) {
-      System.out.println(e.getMessage());
-    }
+
+      try {
+        XMLParser parser = new XMLParser("grid");
+        Grid tempGrid = parser.getGrid(dataFile);
+        GridView tempGridView = new GridView();
+        tempGridView.updateGrid(tempGrid);
+
+        allGrids.add(tempGrid);
+        allGridViews.add(tempGridView);
+        center.setHgrow(tempGridView.getGridPane(), Priority.ALWAYS);
+        totalGrids++;
+        center.getChildren().add(tempGridView.getGridPane());
+
+        header.setAuthorTitle(parser.getAuthors(dataFile), parser.getTitle(dataFile));
+      } catch (XMLException e) {
+        System.out.println(e.getMessage());
+      }
     header.setLoadOff();
+  }
+
+  private void setStats(String title, String author, HashMap<String, Double> stats)  {
+    StatBox tempStats = new StatBox(title, author, stats);
+
+    if (allGrids.size() % 2 == 0) {
+        allLeftStats.getChildren().add(tempStats.getStatBox());
+      } else {
+        allRightStats.getChildren().add(tempStats.getStatBox());
+    }
   }
 
   private void updateSpeed() {
@@ -173,9 +212,17 @@ public class Main extends Application {
   }
 
   private void updateState() {
-    if (grid != null) {
-      grid.updateGrid();
-      gridView.updateGrid(grid);
+    for (int i = 0; i < totalGrids; i++) {
+//        System.out.println(i);
+        allGrids.get(i).updateGrid();
+        allGridViews.get(i).
+                updateGrid(allGrids.get(i));
+      }
+    }
+
+    private void setStats() {
+    allLeftStats = new VBox();
+    allRightStats = new VBox();
     }
   }
-}
+

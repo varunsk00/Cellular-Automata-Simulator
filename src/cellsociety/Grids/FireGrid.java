@@ -97,12 +97,12 @@ public class FireGrid extends Grid {
 
   public void burnCell(int x, int y){
     current(x, y).update(Color.RED, "burning");
-    System.out.println("caught fire: " + (x) + ", " + (y));
+    //System.out.println("caught fire: " + (x) + ", " + (y));
   }
 
   public void extinguishCell(int x, int y){
     current(x, y).update(Color.YELLOW, "empty");
-    System.out.println("extinguished: " + (x) + ", " + (y));
+    //System.out.println("extinguished: " + (x) + ", " + (y));
   }
 
   // No edge cases by nature of FireGrid, but needed for abstraction

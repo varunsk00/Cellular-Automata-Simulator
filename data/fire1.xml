@@ -1,8 +1,8 @@
 <?cellsociety.xml version="1.0" encoding="UTF-8" ?>
 <data grid="Fire">
   <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
-  <title>Predator Prey</title>
-  <rows>25</rows>
-  <columns>25</columns>
-  <probCatch>0.8</probCatch>
+  <title>Fire</title>
+  <rows>20</rows>
+  <columns>20</columns>
+  <probCatch>0.6</probCatch>
 </data>

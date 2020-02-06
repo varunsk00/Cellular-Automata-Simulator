@@ -106,61 +106,7 @@ public class SegGrid extends Grid {
 
   @Override
   public void handleEdgeCell(int x, int y) {
-    ArrayList<Cell> neighbors = new ArrayList<>();
-    if (y == 0) {
-      if (x == 0) {
-        neighbors.add(getGrid().get(x + 1).get(y + 1));
-        neighbors.add(getGrid().get(x).get(y + 1));
-        neighbors.add(getGrid().get(x + 1).get(y));
-      } else if (x == getColumns() - 1) {
-        neighbors.add(getGrid().get(x - 1).get(y));
-        neighbors.add(getGrid().get(x - 1).get(y + 1));
-        neighbors.add(getGrid().get(x).get(y + 1));
-      } else {
-        neighbors.add(getGrid().get(x - 1).get(y));
-        neighbors.add(getGrid().get(x - 1).get(y + 1));
-        neighbors.add(getGrid().get(x).get(y + 1));
-        neighbors.add(getGrid().get(x + 1).get(y + 1));
-        neighbors.add(getGrid().get(x).get(y + 1));
-        neighbors.add(getGrid().get(x + 1).get(y));
-      }
-    }
-    if (y == getRows() - 1) {
-      if (x == 0) {
-        neighbors.add(getGrid().get(x).get(y - 1));
-        neighbors.add(getGrid().get(x + 1).get(y - 1));
-        neighbors.add(getGrid().get(x + 1).get(y));
-      } else if (x == getColumns() - 1) {
-        neighbors.add(getGrid().get(x - 1).get(y));
-        neighbors.add(getGrid().get(x - 1).get(y - 1));
-        neighbors.add(getGrid().get(x).get(y - 1));
-      } else {
-        neighbors.add(getGrid().get(x - 1).get(y));
-        neighbors.add(getGrid().get(x - 1).get(y - 1));
-        neighbors.add(getGrid().get(x).get(y - 1));
-        neighbors.add(getGrid().get(x + 1).get(y - 1));
-        neighbors.add(getGrid().get(x).get(y - 1));
-        neighbors.add(getGrid().get(x + 1).get(y));
-      }
-    }
-    if (x == 0) {
-      if (y != 0 && y != getRows() - 1) {
-        neighbors.add(getGrid().get(x).get(y - 1));
-        neighbors.add(getGrid().get(x + 1).get(y - 1));
-        neighbors.add(getGrid().get(x + 1).get(y));
-        neighbors.add(getGrid().get(x + 1).get(y + 1));
-        neighbors.add(getGrid().get(x).get(y + 1));
-      }
-    }
-    if (x == getColumns() - 1) {
-      if (y != 0 && y != getRows() - 1) {
-        neighbors.add(getGrid().get(x).get(y - 1));
-        neighbors.add(getGrid().get(x - 1).get(y - 1));
-        neighbors.add(getGrid().get(x - 1).get(y));
-        neighbors.add(getGrid().get(x - 1).get(y + 1));
-        neighbors.add(getGrid().get(x).get(y + 1));
-      }
-    }
+    ArrayList<Cell> neighbors = handleEdgeCases(x,y);;
 
     int similar_count = 0;
     for (Cell c : neighbors) {
