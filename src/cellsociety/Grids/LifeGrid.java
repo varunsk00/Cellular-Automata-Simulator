@@ -59,7 +59,7 @@ public class LifeGrid extends Grid {
   }
 
   @Override
-  public ArrayList<ArrayList<Cell>> createGrid() {
+  protected ArrayList<ArrayList<Cell>> createGrid() {
       ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
       for (int i = 0; i < getRows(); i++) {
           ArrayList<Cell> row = new ArrayList<>();
