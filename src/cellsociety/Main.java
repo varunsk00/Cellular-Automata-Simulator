@@ -66,8 +66,6 @@ public class Main extends Application {
   private VBox allLeftStats;
   private VBox allRightStats;
 
-  private Random r = new Random();
-
   /**
    * Launches the JavaFX program
    * @param args Usual String Array passed to Main
@@ -186,9 +184,9 @@ public class Main extends Application {
       }
 
       try {
-        XMLParser parser = new XMLParser("grid");
-        Grid tempGrid = parser.getGrid(dataFile);
-        GridView tempGridView = new GridView();
+        XMLParser parser = new XMLParser("grid", dataFile);
+        Grid tempGrid = parser.getGrid();
+        GridView tempGridView = new GridView(parser.getGridType());
         tempGridView.updateGrid(tempGrid);
 
         allGrids.add(tempGrid);
@@ -197,8 +195,7 @@ public class Main extends Application {
         totalGrids++;
         center.getChildren().add(tempGridView.getGridPane());
 
-        addStats(parser.getTitle(dataFile), parser.getAuthors(dataFile), new HashMap<>());
-
+        addStats(parser.getTitle(), parser.getAuthors(), new HashMap<>());
       } catch (XMLException e) {
         System.out.println(e.getMessage());
       }
