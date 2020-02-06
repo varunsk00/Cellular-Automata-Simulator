@@ -14,7 +14,7 @@ import java.util.Random;
 public class FireGrid extends Grid {
 
   // field names expected to appear in data file holding values for this object
-  public static final List<String> DATA_FIELDS = List.of(
+  private static final List<String> DATA_FIELDS = List.of(
       "rows",
       "columns",
       "probCatch"
@@ -37,6 +37,15 @@ public class FireGrid extends Grid {
     burnedCells = new ArrayList<Point>();
     setBurningCell();
   }
+
+  /**
+   *
+   * @return the instance variables in our simulation
+   */
+  public static List<String> getDataFields() {
+    return DATA_FIELDS;
+  }
+
 
   private void setBurningCell() {
     this.getGrid().get(this.getRows() / 2).get(this.getColumns() / 2)
@@ -97,12 +106,12 @@ public class FireGrid extends Grid {
 
   public void burnCell(int x, int y){
     current(x, y).update(Color.RED, "burning");
-    //System.out.println("caught fire: " + (x) + ", " + (y));
+    System.out.println("caught fire: " + (x) + ", " + (y));
   }
 
   public void extinguishCell(int x, int y){
     current(x, y).update(Color.YELLOW, "empty");
-    //System.out.println("extinguished: " + (x) + ", " + (y));
+    System.out.println("extinguished: " + (x) + ", " + (y));
   }
 
   // No edge cases by nature of FireGrid, but needed for abstraction

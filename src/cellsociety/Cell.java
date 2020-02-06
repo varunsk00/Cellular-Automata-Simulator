@@ -50,7 +50,17 @@ public class Cell {
    * @param change an int representing the desired change for lives
    */
   public void updateLives(int change) {
-    this.lives = lives + change;
+    this.lives = this.lives + change;
+  }
+
+  /**
+   * set a cell's lives
+   *
+   * @param lives an int representing the lives to set to our cell
+   */
+  public void setLives(int lives) {
+    this.lives = lives;
+
   }
 
   /**

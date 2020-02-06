@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class SegGrid extends Grid {
 
-  public static final List<String> DATA_FIELDS = List.of(
+  private static final List<String> DATA_FIELDS = List.of(
       "rows",
       "columns",
       "satisfiedThreshold",
@@ -38,6 +38,14 @@ public class SegGrid extends Grid {
     this.percentFull = percentFull;
     this.sameCells = new ArrayList<Point>();
     setInits();
+  }
+
+  /**
+   *
+   * @return the instance variables in our simulation
+   */
+  public static List<String> getDataFields() {
+    return DATA_FIELDS;
   }
 
   public SegGrid(Map<String, String> dataValues) {
@@ -82,6 +90,16 @@ public class SegGrid extends Grid {
   @Override
   public void handleMiddleCell(int x, int y) {
     ArrayList<Cell> neighbors = getAllNeighbors(x, y);
+    updateCells(x,y,neighbors);
+  }
+
+  @Override
+  public void handleEdgeCell(int x, int y) {
+    ArrayList<Cell> neighbors = handleEdgeCases(x,y);;
+    updateCells(x,y,neighbors);
+  }
+
+  public void updateCells(int x, int y, ArrayList<Cell> neighbors){
     int similar_count = 0;
     for (Cell c : neighbors) {
       if (c.getState().equals(current(x, y).getState())) {
@@ -89,32 +107,6 @@ public class SegGrid extends Grid {
       }
     }
     if (similar_count >= prob) {
-      //System.out.println("satisfied: " + (x) + ", " + (y));
-    } else {
-      //System.out.println("unsatisfied: " + (x) + ", " + (y));
-      int ran_x = r.nextInt(getColumns());
-      int ran_y = r.nextInt(getRows());
-      while (current(ran_x, ran_y).getState().equals("empty")) {
-        current(ran_x, ran_y).update(current(x, y).getColor(), current(x, y).getState());
-        System.out.println("relocated to: " + (ran_x) + ", " + (y));
-        ran_x = r.nextInt(getColumns());
-        ran_y = r.nextInt(getRows());
-      }
-      current(x, y).update(Color.WHITE, "empty");
-    }
-  }
-
-  @Override
-  public void handleEdgeCell(int x, int y) {
-    ArrayList<Cell> neighbors = handleEdgeCases(x,y);;
-
-    int similar_count = 0;
-    for (Cell c : neighbors) {
-      if (c.getState().equals(current(x, y).getState())) {
-        similar_count++;
-      }
-    }
-    if (similar_count >= 4) {
       System.out.println("satisfied: " + (x) + ", " + (y));
     } else {
       System.out.println("unsatisfied: " + (x) + ", " + (y));

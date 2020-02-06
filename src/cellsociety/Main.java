@@ -142,16 +142,17 @@ public class Main extends Application {
 
   // Talk to TA before final about whether elapsedTime is needed
   private void step(double elapsedTime) {
+
     if (header.getLoadStatus()) handleXML();
     else if (header.getSkipStatus()) skipAhead();
     else if (header.getSpeedStatus()) updateSpeed();
     else if (header.getPlayStatus()) updateState();
-
-    System.out.println(allLeftStats.getChildren());
-    System.out.println(allRightStats.getChildren());
   }
 
   private void skipAhead() {
+    System.out.println(footer.getSkipValue());
+    System.out.println(totalGrids);
+
     for (int i = 0; i < footer.getSkipValue(); i++) {
       for (Grid tempGrid: allGrids) {
         tempGrid.updateGrid();

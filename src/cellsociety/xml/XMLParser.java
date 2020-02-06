@@ -121,15 +121,15 @@ public class XMLParser {
   private List<String> setDataFieldsByGridType(String type) {
     switch (type) {
       case "Fire":
-        return FireGrid.DATA_FIELDS;
+        return FireGrid.getDataFields();
       case "Percolation":
-        return PercGrid.DATA_FIELDS;
+        return PercGrid.getDataFields();
       case "Life":
-        return LifeGrid.DATA_FIELDS;
+        return LifeGrid.getDataFields();
       case "Segregation":
-        return SegGrid.DATA_FIELDS;
+        return SegGrid.getDataFields();
       case "PredPrey":
-        return PredPreyGrid.DATA_FIELDS;
+        return PredPreyGrid.getDataFields();
     }
     return null;
   }
