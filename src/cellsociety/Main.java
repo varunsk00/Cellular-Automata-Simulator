@@ -150,11 +150,19 @@ public class Main extends Application {
   }
 
   private void skipAhead() {
+    System.out.println(footer.getSkipValue());
+    System.out.println(totalGrids);
+
     for (int i = 0; i < footer.getSkipValue(); i++) {
       for (Grid tempGrid: allGrids) {
-          tempGrid.updateGrid();
+        tempGrid.updateGrid();
       }
     }
+
+    for (int i = 0; i < totalGrids; i++) {
+      allGridViews.get(i).updateGrid(allGrids.get(i));
+    }
+
     header.setSkipOff();
   }
 
