@@ -27,7 +27,6 @@ public class Header {
   private ResourceBundle myResources;
 
   private boolean playPressed;
-  private boolean speedPressed;
   private boolean skipPressed;
   private boolean loadPressed;
 
@@ -47,7 +46,6 @@ public class Header {
     myResources = ResourceBundle.getBundle(language);
     this.playPressed = false;
     this.skipPressed = false;
-    this.speedPressed = false;
     this.loadPressed = false;
 
     renderHeader();
@@ -85,7 +83,6 @@ public class Header {
    * This triggers the updateSpeed() method in main
    * @return the boolean private instance variable speedPressed
    */
-  public boolean getSpeedStatus() {return speedPressed;}
 
   /**
    * Method that pauses the simulation
@@ -113,18 +110,15 @@ public class Header {
    * Basic setter method that sets the speedPressed variable to false
    * Called in updateSpeed() to stop the speed from constantly being set to the slider value
    */
-  public void setSpeedOff() {
-    speedPressed = false;}
 
   private void renderHeader() {
     myButtons = new HBox();
     playButton = makePlayButton();
     Button loadButton = makeButton("LoadButton", event -> loadPressed = true);
     Button skipButton = makeButton("SkipButton", event -> skipPressed = true);
-    Button speedButton = makeButton("SpeedButton", event -> speedPressed = true);
 
-    myButtons.getChildren().addAll(loadButton, playButton, speedButton, skipButton);
-    formatButtons(loadButton, playButton, speedButton, skipButton);
+    myButtons.getChildren().addAll(loadButton, playButton, skipButton);
+    formatButtons(loadButton, playButton, skipButton);
   }
 
   private void addLabel(String info, HBox header) {
@@ -154,9 +148,8 @@ public class Header {
     return tempButton;
   }
 
-  private void formatButtons(Button load, Button speed, Button skip, Button play) {
+  private void formatButtons(Button load, Button skip, Button play) {
     myButtons.setHgrow(load, Priority.ALWAYS);
-    myButtons.setHgrow(speed, Priority.ALWAYS);
     myButtons.setHgrow(skip, Priority.ALWAYS);
     myButtons.setHgrow(play, Priority.ALWAYS);
   }

@@ -142,10 +142,10 @@ public class Main extends Application {
 
   // Talk to TA before final about whether elapsedTime is needed
   private void step(double elapsedTime) {
+    updateSpeed();
 
     if (header.getLoadStatus()) handleXML();
     else if (header.getSkipStatus()) skipAhead();
-    else if (header.getSpeedStatus()) updateSpeed();
     else if (header.getPlayStatus()) updateState();
   }
 
@@ -216,7 +216,6 @@ public class Main extends Application {
 
   private void updateSpeed() {
     animation.setRate(footer.getSpeed());
-    header.setSpeedOff();
   }
 
   private void updateState() {
