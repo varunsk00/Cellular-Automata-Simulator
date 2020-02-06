@@ -142,17 +142,16 @@ public class Main extends Application {
 
   // Talk to TA before final about whether elapsedTime is needed
   private void step(double elapsedTime) {
-
     if (header.getLoadStatus()) handleXML();
     else if (header.getSkipStatus()) skipAhead();
     else if (header.getSpeedStatus()) updateSpeed();
     else if (header.getPlayStatus()) updateState();
+
+    System.out.println(allLeftStats.getChildren());
+    System.out.println(allRightStats.getChildren());
   }
 
   private void skipAhead() {
-    System.out.println(footer.getSkipValue());
-    System.out.println(totalGrids);
-
     for (int i = 0; i < footer.getSkipValue(); i++) {
       for (Grid tempGrid: allGrids) {
         tempGrid.updateGrid();
@@ -197,20 +196,20 @@ public class Main extends Application {
         totalGrids++;
         center.getChildren().add(tempGridView.getGridPane());
 
-        header.setAuthorTitle(parser.getAuthors(dataFile), parser.getTitle(dataFile));
+        addStats(parser.getTitle(dataFile), parser.getAuthors(dataFile), new HashMap<>());
+
       } catch (XMLException e) {
         System.out.println(e.getMessage());
       }
     header.setLoadOff();
   }
 
-  private void setStats(String title, String author, HashMap<String, Double> stats)  {
+  private void addStats(String title, String author, HashMap<String, Double> stats)  {
     StatBox tempStats = new StatBox(title, author, stats);
-
     if (allGrids.size() % 2 == 0) {
-        allLeftStats.getChildren().add(tempStats.getStatBox());
-      } else {
         allRightStats.getChildren().add(tempStats.getStatBox());
+      } else {
+        allLeftStats.getChildren().add(tempStats.getStatBox());
     }
   }
 
@@ -221,7 +220,6 @@ public class Main extends Application {
 
   private void updateState() {
     for (int i = 0; i < totalGrids; i++) {
-        System.out.println(i);
         allGrids.get(i).updateGrid();
         allGridViews.get(i).
                 updateGrid(allGrids.get(i));
@@ -230,7 +228,11 @@ public class Main extends Application {
 
     private void setStats() {
     allLeftStats = new VBox();
+    allLeftStats.setPrefWidth(SCENE_WIDTH / 8);
+    root.setLeft(allLeftStats);
     allRightStats = new VBox();
+    allRightStats.setPrefWidth(SCENE_WIDTH / 8);
+    root.setRight(allRightStats);
     }
   }
 

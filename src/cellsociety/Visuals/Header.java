@@ -31,9 +31,7 @@ public class Header {
   private boolean skipPressed;
   private boolean loadPressed;
 
-  private VBox myHeader;
   private HBox myButtons;
-  private HBox mySimulationInfo;
   private Button playButton;
 
   /**
@@ -56,20 +54,10 @@ public class Header {
   }
 
   /**
-   * Sets the author and title of a given simulation in the bottom of the header
-   * @param author String telling the authors of the xml file
-   * @param title String telling the title of the simulation
-   */
-  public void setAuthorTitle(String author, String title) {
-    ((Label)mySimulationInfo.getChildren().get(0)).setText(AUTHOR_INTRO + author);
-    ((Label)mySimulationInfo.getChildren().get(1)).setText(TITLE_INTRO  + title);
-  }
-
-  /**
    * Basic getter method for the header used in Main
    * @return myHeader which is the VBox private instance variable representing the header (with functional buttons and title/author info)
    */
-  public VBox getHeader() {return myHeader;}
+  public HBox getHeader() {return myButtons;}
 
   /**
    * Basic getter method returning whether or not to play the simulation
@@ -137,15 +125,6 @@ public class Header {
 
     myButtons.getChildren().addAll(loadButton, playButton, speedButton, skipButton);
     formatButtons(loadButton, playButton, speedButton, skipButton);
-    myButtons.setMaxWidth(Double.MAX_VALUE);
-
-    mySimulationInfo = new HBox();
-    addLabel(AUTHOR_INTRO, mySimulationInfo);
-    addLabel(TITLE_INTRO, mySimulationInfo);
-    mySimulationInfo.setMaxWidth(Double.MAX_VALUE);
-
-    myHeader = new VBox();
-    myHeader.getChildren().addAll(myButtons, mySimulationInfo);
   }
 
   private void addLabel(String info, HBox header) {
