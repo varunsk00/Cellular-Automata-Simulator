@@ -89,9 +89,9 @@ public class SegGrid extends Grid {
       }
     }
     if (similar_count >= prob) {
-      System.out.println("satisfied: " + (x) + ", " + (y));
+      //System.out.println("satisfied: " + (x) + ", " + (y));
     } else {
-      System.out.println("unsatisfied: " + (x) + ", " + (y));
+      //System.out.println("unsatisfied: " + (x) + ", " + (y));
       int ran_x = r.nextInt(getColumns());
       int ran_y = r.nextInt(getRows());
       while (current(ran_x, ran_y).getState().equals("empty")) {
