@@ -26,21 +26,6 @@ public class Grid {
   }
 
   /**
-   * Initializes an ArrayList of ArrayLists representative of the grid
-   **/
-  protected ArrayList<ArrayList<Cell>> createGrid() {
-    ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
-    for (int i = 0; i < rows; i++) {
-      ArrayList<Cell> row = new ArrayList<>();
-      for (int j = 0; j < columns; j++) {
-        row.add(new Cell(Color.WHITE, "empty"));
-      }
-      ret.add(row);
-    }
-    return ret;
-  }
-
-  /**
    * @return ArrayList of ArrayLists of Cells representing Grid
    */
   public ArrayList<ArrayList<Cell>> getGrid() {
@@ -61,48 +46,66 @@ public class Grid {
     return this.columns;
   }
 
+  public Cell current(int x, int y){
+      return this.grid.get(x).get(y);
+  }
+
   /**
    * Checks every cell in the current grid and updates based on state of neighbors
    *
    * @return a grid (2D array of cells) with updated state
    */
   public void updateGrid() {
-    for (ArrayList<Cell> row : getGrid()) {
-      for (Cell cell : row) {
-        int x = grid.indexOf(row);
-        int y = row.indexOf(cell);
-        if (isMiddleCell(x, y)) {
-          handleMiddleCell(x, y);
-        } else {
-          handleEdgeCell(x, y);
+        for (ArrayList<Cell> row : getGrid()) {
+            for (Cell cell : row) {
+                int x = grid.indexOf(row);
+                int y = row.indexOf(cell);
+                if (isMiddleCell(x, y)) {
+                    handleMiddleCell(x, y);
+                } else {
+                    handleEdgeCell(x, y);
+                }
+            }
         }
-      }
+        this.grid = getGrid();
     }
-    this.grid = getGrid();
-  }
+
+  /**
+   * Initializes an ArrayList of ArrayLists representative of the grid
+   **/
+  protected ArrayList<ArrayList<Cell>> createGrid() {
+        ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
+        for (int i = 0; i < rows; i++) {
+            ArrayList<Cell> row = new ArrayList<>();
+            for (int j = 0; j < columns; j++) {
+                row.add(new Cell(Color.WHITE, "empty"));
+            }
+            ret.add(row);
+        }
+        return ret;
+    }
 
   /**
    * Empty method to handle an middle cell in the grid
    * @param x the x coordinate of the cell to handle
    * @param y the y coordinate of the cell to handle
    */
-  public void handleMiddleCell(int x, int y) {}
+  protected void handleMiddleCell(int x, int y){
+      ArrayList<Cell> neighbors = getAllNeighbors(x,y);
+      updateCells(x,y,neighbors);
+  }
 
   /**
    * Empty method to handle an edge cell in the grid
    * @param x the x coordinate of the cell to handle
    * @param y the y coordinate of the cell to handle
    */
-  public void handleEdgeCell(int x, int y) {}
+  protected void handleEdgeCell(int x, int y){
+      ArrayList<Cell> neighbors = handleEdgeCases(x,y);
+      updateCells(x,y,neighbors);
+  }
 
-  /**
-   * Returns true if the cell at x, y is a middle cell in the grid (not on the border)
-   * @param x
-   * @param y
-   * @return
-   */
-  public boolean isMiddleCell(int x, int y) {
-    return x > 0 && y > 0 && x < getColumns() - 1 && y < getRows() - 1;
+  protected void updateCells(int x, int y, ArrayList<Cell> neighbors){
   }
 
   /**
@@ -111,7 +114,7 @@ public class Grid {
    * @param y the y coordinate of the cell
    * @return
    */
-  public ArrayList<Cell> getNeighbors(int x, int y){
+  protected ArrayList<Cell> getNeighbors(int x, int y){
     ArrayList<Cell> ret = new ArrayList<>();
     ret.add(getGrid().get(x-1).get(y));
     ret.add(getGrid().get(x+1).get(y));
@@ -126,7 +129,7 @@ public class Grid {
    * @param y the y coordinate of the cell
    * @return
    */
-  public ArrayList<Cell> getAllNeighbors(int x, int y){
+  protected ArrayList<Cell> getAllNeighbors(int x, int y){
     ArrayList<Cell> ret = new ArrayList<>();
     ret.add(getGrid().get(x-1).get(y));
     ret.add(getGrid().get(x+1).get(y));
@@ -146,7 +149,7 @@ public class Grid {
    * @param neighbors an ArrayList of points to check if any contain a neighboring point to (x,y)
    * @return a boolean if the list contains a neighbor or not
    */
-  public boolean checkNeighbors(int x, int y, ArrayList<Point> neighbors) {
+  protected boolean checkNeighbors(int x, int y, ArrayList<Point> neighbors) {
     if (neighbors.contains(new Point(x + 1, y))) return true;
     if (neighbors.contains(new Point(x - 1, y))) return true;
     if (neighbors.contains(new Point(x, y + 1))) return true;
@@ -154,11 +157,7 @@ public class Grid {
     return false;
   }
 
-  public Cell current(int x, int y){
-    return this.grid.get(x).get(y);
-  }
-
-  public void storeNeigborState(ArrayList<Point> neighborCells, String state){
+  protected void storeNeigborState(ArrayList<Point> neighborCells, String state){
     neighborCells.clear();
     for (ArrayList<Cell> row : getGrid()) {
       for (Cell cell : row) {
@@ -169,23 +168,17 @@ public class Grid {
     }
   }
 
-  public boolean checkLeft(int x, int y, String state) {
-    return getGrid().get(x - 1).get(y).getState() == state;
-  }
+  /**
+   * Returns true if the cell at x, y is a middle cell in the grid (not on the border)
+   * @param x
+   * @param y
+   * @return
+   */
+  private boolean isMiddleCell(int x, int y) {
+        return x > 0 && y > 0 && x < getColumns() - 1 && y < getRows() - 1;
+    }
 
-  public boolean checkRight(int x, int y, String state) {
-    return getGrid().get(x + 1).get(y).getState() == state;
-  }
-
-  public boolean checkUp(int x, int y, String state) {
-    return getGrid().get(x).get(y - 1).getState() == state;
-  }
-
-  public boolean checkDown(int x, int y, String state) {
-    return getGrid().get(x).get(y + 1).getState() == state;
-  }
-
-  public ArrayList<Cell> handleEdgeCases(int x, int y){
+  private ArrayList<Cell> handleEdgeCases(int x, int y){
       ArrayList<Cell> neighbors = new ArrayList<Cell>();
         if(y==0){
             handleTopRow(x,y, neighbors);
@@ -202,7 +195,7 @@ public class Grid {
         return neighbors;
     }
 
-  public void handleTopRow(int x, int y, ArrayList<Cell> neighbors){
+  private void handleTopRow(int x, int y, ArrayList<Cell> neighbors){
         if(x==0){
             subtractTopLeftCorner(x,y,neighbors);
         }
@@ -214,19 +207,19 @@ public class Grid {
         }
     }
 
-  public void subtractTopLeftCorner(int x, int y, ArrayList<Cell> neighbors){
+  private void subtractTopLeftCorner(int x, int y, ArrayList<Cell> neighbors){
         neighbors.add(current(x+1, y+1));
         neighbors.add(current(x, y+1));
         neighbors.add(current(x+1, y));
     }
 
-  public void subtractTopRightCorner(int x, int y, ArrayList<Cell> neighbors){
+  private void subtractTopRightCorner(int x, int y, ArrayList<Cell> neighbors){
         neighbors.add(current(x-1, y));
         neighbors.add(current(x-1, y+1));
         neighbors.add(current(x, y+1));
     }
 
-  public void subtractTopRow(int x, int y, ArrayList<Cell> neighbors){
+  private void subtractTopRow(int x, int y, ArrayList<Cell> neighbors){
         neighbors.add(current(x-1, y));
         neighbors.add(current(x-1, y+1));
         neighbors.add(current(x, y+1));
@@ -235,7 +228,7 @@ public class Grid {
         neighbors.add(current(x+1, y));
     }
 
-  public void handleBottomRow(int x, int y, ArrayList<Cell> neighbors){
+  private void handleBottomRow(int x, int y, ArrayList<Cell> neighbors){
         if(x==0){
             subtractBottomLeftCorner(x,y,neighbors);
         }
@@ -247,19 +240,19 @@ public class Grid {
         }
     }
 
-  public void subtractBottomLeftCorner(int x, int y, ArrayList<Cell> neighbors){
+  private void subtractBottomLeftCorner(int x, int y, ArrayList<Cell> neighbors){
         neighbors.add(current(x,y-1));
         neighbors.add(current(x+1,y-1));
         neighbors.add(current(x+1,y));
     }
 
-  public void subtractBottomRightCorner(int x, int y, ArrayList<Cell> neighbors){
+  private void subtractBottomRightCorner(int x, int y, ArrayList<Cell> neighbors){
         neighbors.add(current(x-1,y));
         neighbors.add(current(x-1,y-1));
         neighbors.add(current(x,y-1));
     }
 
-  public void subtractBottomRow(int x, int y, ArrayList<Cell> neighbors){
+  private void subtractBottomRow(int x, int y, ArrayList<Cell> neighbors){
         neighbors.add(current(x,y-1));
         neighbors.add(current(x+1,y-1));
         neighbors.add(current(x+1,y));
@@ -268,7 +261,7 @@ public class Grid {
         neighbors.add(current(x,y-1));
     }
 
-  public void subtractLeftCol(int x, int y, ArrayList<Cell> neighbors){
+  private void subtractLeftCol(int x, int y, ArrayList<Cell> neighbors){
         if(y!=0 && y!= getRows()-1){
             neighbors.add(current(x,y-1));
             neighbors.add(current(x+1,y-1));
@@ -278,7 +271,7 @@ public class Grid {
         }
     }
 
-  public void subtractRightCol(int x, int y, ArrayList<Cell> neighbors){
+  private void subtractRightCol(int x, int y, ArrayList<Cell> neighbors){
         if(y!=0 && y!= getRows()-1){
             neighbors.add(current(x,y-1));
             neighbors.add(current(x-1,y-1));
