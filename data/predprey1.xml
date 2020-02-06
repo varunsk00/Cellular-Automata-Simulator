@@ -7,7 +7,7 @@
   <predatorStartingEnergy>3</predatorStartingEnergy>
   <predatorEnergyPerPrey>1</predatorEnergyPerPrey>
   <preyGenerationRate>3</preyGenerationRate>
-  <predatorGenerationRate>10</predatorGenerationRate>
+  <predatorGenerationRate>3</predatorGenerationRate>
   <percentPredator>0.1</percentPredator>
   <percentPrey>0.1</percentPrey>
 </data>

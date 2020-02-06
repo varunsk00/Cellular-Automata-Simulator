@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
 public class LifeGrid extends Grid {
-  public static final List<String> DATA_FIELDS = List.of(
+  private static final List<String> DATA_FIELDS = List.of(
       "rows",
       "columns",
       "percentAlive"
@@ -40,6 +40,13 @@ public class LifeGrid extends Grid {
         Double.parseDouble(dataValues.get(DATA_FIELDS.get(2))));
   }
 
+  /**
+   *
+   * @return the instance variables in our simulation
+   */
+  public static List<String> getDataFields() {
+    return DATA_FIELDS;
+  }
 
   private void setAliveCells(){
     for (int i = 0; i < this.getRows(); i++) {

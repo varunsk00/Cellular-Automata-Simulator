@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class PredPreyGrid extends Grid {
 
-  public static final List<String> DATA_FIELDS = List.of(
+  private static final List<String> DATA_FIELDS = List.of(
       "rows",
       "columns",
       "predatorStartingEnergy",
@@ -28,9 +28,9 @@ public class PredPreyGrid extends Grid {
   private static double percentPredator;
   private static double percentPrey;
   private Random r = new Random();
-  private ArrayList<Point> emptyNeighbors;
-  private ArrayList<Point> preyNeighbors;
-
+  private ArrayList<Point> emptyCells;
+  private ArrayList<Point> preyCells;
+  private ArrayList<Point> predatorCells;
 
   public PredPreyGrid(int rows, int columns, int predatorStartingEnergy, int predatorEnergyPerPrey,
       int preyGenerationRate,
@@ -42,17 +42,27 @@ public class PredPreyGrid extends Grid {
     this.predatorGenerationRate = predatorGenerationRate;
     this.percentPredator = percentPredator;
     this.percentPrey = percentPrey;
-    this.emptyNeighbors = new ArrayList<>();
-    this.preyNeighbors = new ArrayList<>();
-
+    this.emptyCells = new ArrayList<>();
+    this.preyCells = new ArrayList<>();
+    this.predatorCells = new ArrayList<>();
     createGrid();
     setInits();
   }
 
+  /**
+   *
+   * @return the instance variables in our simulation
+   */
+  public static List<String> getDataFields() {
+    return DATA_FIELDS;
+  }
+
   @Override
   public void updateGrid() {
-    storeNeigborState(emptyNeighbors, "empty");
-    storeNeigborState(preyNeighbors, "prey");
+    storeNeigborState(emptyCells, "empty");
+    storeNeigborState(preyCells, "prey");
+    storeNeigborState(predatorCells, "predator");
+//    System.out.println(predatorCells.size());
     super.updateGrid();
   }
 
@@ -94,9 +104,9 @@ public class PredPreyGrid extends Grid {
 
   private void updateCell(int x, int y, ArrayList<Cell> neighbors) {
     Cell currentCell = current(x, y);
-
+//    System.out.println(predatorCells.size());
     //prey can move
-    if (current(x, y).getState().equals("prey") && checkNeighbors(x, y, emptyNeighbors)) {
+    if (current(x, y).getState().equals("prey") && checkNeighbors(x, y, emptyCells)) {
       handlePrey(neighbors, currentCell);
     }
 
@@ -106,51 +116,64 @@ public class PredPreyGrid extends Grid {
   }
 
   private void handlePredator(int x, int y, ArrayList<Cell> neighbors, Cell currentCell) {
-    if (currentCell.getLives() < 0) {
+    System.out.println(currentCell.getLives());
+    if (currentCell.getLives() <= 0) {
       resetCellToEmpty(currentCell);
     }
-    if (checkNeighbors(x, y, preyNeighbors)) {
-//      System.out.println("predator eat");
-      Cell neighbor = getRandomNeighborByState(neighbors, "prey");
-      if (neighbor != null) {
-        predatorEatPrey(neighbor, currentCell);
+
+    if (checkNeighbors(x, y, preyCells)) {
+      Cell newCell = getRandomNeighborByState(neighbors, "prey");
+      if (newCell != null) {
+        //predator now in new cell
+        predatorEatPrey(newCell, currentCell);
+        newCell.updateLives(predatorEnergyPerPrey);
       }
-    } else if (checkNeighbors(x, y, emptyNeighbors)) {
-//      System.out.println("predator move");
-      Cell neighbor = getRandomNeighborByState(neighbors, "empty");
-      if (neighbor != null) {
-        moveToRandomEmptyNeighbor(neighbor, currentCell);
-        currentCell.updateLives(-1);
+    } else if (checkNeighbors(x, y, emptyCells)) {
+      Cell newCell = getRandomNeighborByState(neighbors, "empty");
+      if (newCell != null) {
+        //predator now in newCell
+        moveToRandomEmptyNeighbor(newCell, currentCell);
       }
-    } else {
-//      System.out.println("predator lose life");
+    } else if (checkNeighbors(x,y, predatorCells)) {
+      // predator surrounded by predators
       currentCell.updateLives(-1);
     }
   }
 
   private void handlePrey(ArrayList<Cell> neighbors, Cell currentCell) {
     //first check if there is a prey, then check if there are blank spaces
-    Cell neighbor = getRandomNeighborByState(neighbors, "empty");
-    if (neighbor != null) {
-      moveToRandomEmptyNeighbor(neighbor, currentCell);
-      neighbor.updateLives(1);
+    Cell newCell = getRandomNeighborByState(neighbors, "empty");
+    if (newCell!=null){
+      moveToRandomEmptyNeighbor(newCell, currentCell);
+      newCell.updateLives(1);
     }
   }
 
-  private void moveToRandomEmptyNeighbor(Cell newCell, Cell prevCell) {
-    //move current cell to neighbor
-    copyCellToCell(newCell, prevCell);
-    if (checkCellReproduction(prevCell)) {
-      // spawn a new cell of that type in prevCEll
-      if (prevCell.getState().equals("predator")) {
-        resetCellToPredatorState(prevCell);
+  private void moveToRandomEmptyNeighbor(Cell newCell, Cell currentCell) {
+    //move current cell to newCell
+    copyCellToCell(newCell, currentCell);
+
+
+    if (currentCell.getState().equals("predator")) {
+      if (checkCellReproduction(currentCell)) {
+        // spawn a new cell of that type in prevCEll
+        resetCellToPredatorState(currentCell);
+      } else {
+        resetCellToEmpty(currentCell);
       }
-      if (prevCell.getState().equals("prey")) {
-        resetCellToPreyState(prevCell);
-      }
-    } else {
-      resetCellToEmpty(prevCell);
+      newCell.updateLives(-1);
     }
+    if (currentCell.getState().equals("prey")) {
+      resetCellToPreyState(currentCell);
+      if (checkCellReproduction(currentCell)) {
+        // spawn a new cell of that type in prevCEll
+        resetCellToPreyState(currentCell);
+      } else {
+        resetCellToEmpty(currentCell);
+      }
+      newCell.updateLives(1);
+    }
+
   }
 
   private void copyCellToCell(Cell newCell, Cell prevCell) {
@@ -170,7 +193,7 @@ public class PredPreyGrid extends Grid {
   private Cell getRandomNeighborByState(ArrayList<Cell> neighbors, String state) {
     ArrayList<Cell> stateNeighbors = new ArrayList<>();
     for (Cell cell : neighbors) {
-      if (cell.getState().contains(state)) {
+      if (cell.getState().equals(state)) {
         stateNeighbors.add(cell);
       }
     }
@@ -200,7 +223,7 @@ public class PredPreyGrid extends Grid {
 
   private void resetCellToPredatorState(Cell cell) {
     cell.update(Color.ORANGE, "predator");
-    cell.updateLives(predatorStartingEnergy);
+    cell.setLives(predatorStartingEnergy);
   }
 
 }

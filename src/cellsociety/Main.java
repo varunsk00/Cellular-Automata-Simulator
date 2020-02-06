@@ -221,7 +221,7 @@ public class Main extends Application {
 
   private void updateState() {
     for (int i = 0; i < totalGrids; i++) {
-        System.out.println(i);
+//        System.out.println(i);
         allGrids.get(i).updateGrid();
         allGridViews.get(i).
                 updateGrid(allGrids.get(i));
