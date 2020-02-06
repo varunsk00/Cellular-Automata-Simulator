@@ -21,12 +21,12 @@ public class PredPreyGrid extends Grid {
       "percentPredator",
       "percentPrey"
   );
-  private static int PREDATOR_STARTING_ENERGY;
-  private static int PREDATOR_ENERGY_PER_PREY;
-  private static int PREY_GEN_RATE;
-  private static int PREDATOR_GEN_RATE;
-  private static double PERCENT_PREDATOR;
-  private static double PERCENT_PREY;
+  private static int predatorStartingEnergy;
+  private static int predatorEnergyPerPrey;
+  private static int preyGenerationRate;
+  private static int predatorGenerationRate;
+  private static double percentPredator;
+  private static double percentPrey;
   private Random r = new Random();
   private ArrayList<Point> EMPTY_CELLS;
   private ArrayList<Point> PREY_CELLS;
@@ -39,12 +39,12 @@ public class PredPreyGrid extends Grid {
       int preyGenerationRate,
       int predatorGenerationRate, double percentPredator, double percentPrey) {
     super(rows, columns);
-    this.PREDATOR_STARTING_ENERGY = predatorStartingEnergy;
-    this.PREDATOR_ENERGY_PER_PREY = predatorEnergyPerPrey;
-    this.PREY_GEN_RATE = preyGenerationRate;
-    this.PREDATOR_GEN_RATE = predatorGenerationRate;
-    this.PERCENT_PREDATOR = percentPredator;
-    this.PERCENT_PREY = percentPrey;
+    this.predatorStartingEnergy = predatorStartingEnergy;
+    this.predatorEnergyPerPrey = predatorEnergyPerPrey;
+    this.preyGenerationRate = preyGenerationRate;
+    this.predatorGenerationRate = predatorGenerationRate;
+    this.percentPredator = percentPredator;
+    this.percentPrey = percentPrey;
     this.EMPTY_CELLS = new ArrayList<>();
     this.PREY_CELLS = new ArrayList<>();
     this.PREDATOR_CELLS = new ArrayList<>();
@@ -83,10 +83,10 @@ public class PredPreyGrid extends Grid {
   private void setInits() {
     for (int i = 0; i < getRows(); i++) {
       for (int j = 0; j < getColumns(); j++) {
-        if (r.nextFloat() <= PERCENT_PREDATOR) {
+        if (r.nextFloat() <= percentPredator) {
           resetCellToPredatorState(current(i, j));
         }
-        if (r.nextFloat() <= PERCENT_PREY) {
+        if (r.nextFloat() <= percentPrey) {
           resetCellToPreyState(current(i, j));
         }
       }
@@ -128,7 +128,7 @@ public class PredPreyGrid extends Grid {
       if (newCell != null) {
         //predator now in new cell
         predatorEatPrey(newCell, currentCell);
-        newCell.updateLives(PREDATOR_ENERGY_PER_PREY);
+        newCell.updateLives(predatorEnergyPerPrey);
       }
     } else if (checkNeighbors(x, y, EMPTY_CELLS)) {
       Cell newCell = getRandomNeighborByState(neighbors, EMPTY_NAME);
@@ -183,7 +183,7 @@ public class PredPreyGrid extends Grid {
 
   private void predatorEatPrey(Cell preyCell, Cell predatorCell) {
     copyCellToCell(preyCell, predatorCell);
-    preyCell.updateLives(PREDATOR_ENERGY_PER_PREY);
+    preyCell.updateLives(predatorEnergyPerPrey);
     if (checkCellReproduction(predatorCell)) {
       resetCellToPredatorState(predatorCell);
     } else {
@@ -210,21 +210,23 @@ public class PredPreyGrid extends Grid {
     String state = cell.getState();
     int lives = cell.getLives();
 
-    return state.equals(PREY_NAME) && lives + 1 > PREY_GEN_RATE
-        || state.equals(PREDATOR_NAME) && lives + 1 > PREDATOR_GEN_RATE;
+    return state.equals(PREY_NAME) && lives + 1 > preyGenerationRate
+        || state.equals(PREDATOR_NAME) && lives + 1 > predatorGenerationRate;
   }
 
   private void resetCellToPreyState(Cell cell) {
     cell.update(Color.GREEN, PREY_NAME);
+    cell.setLives(1);
   }
 
   private void resetCellToEmpty(Cell cell) {
     cell.update(Color.WHITE, EMPTY_NAME);
+    cell.setLives(0);
   }
 
   private void resetCellToPredatorState(Cell cell) {
     cell.update(Color.ORANGE, PREDATOR_NAME);
-    cell.setLives(PREDATOR_STARTING_ENERGY);
+    cell.setLives(predatorStartingEnergy);
   }
 
 }
