@@ -20,10 +20,7 @@ import java.util.ResourceBundle;
 public class Header {
 
   private static final String RESOURCES  = "resources";
-  private static final String DEFAULT_RESOURCE_PACKAGE = "../../../" + RESOURCES + "/";
-
-  private static final String AUTHOR_INTRO = "Author: ";
-  private static final String TITLE_INTRO = "Title: ";
+  
   private ResourceBundle myResources;
 
   private boolean playPressed;
