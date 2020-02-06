@@ -2,13 +2,14 @@ package cellsociety.Grids;
 
 import java.awt.Point;
 import cellsociety.Cell;
+import java.util.List;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
 
 public class Grid {
 
-  private ArrayList<ArrayList<Cell>> grid;
+  private List<List<Cell>> grid;
   private int rows;
   private int columns;
 
@@ -28,10 +29,10 @@ public class Grid {
   /**
    * Initializes an ArrayList of ArrayLists representative of the grid
    **/
-  protected ArrayList<ArrayList<Cell>> createGrid() {
-    ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
+  protected List<List<Cell>> createGrid() {
+    List<List<Cell>> ret = new ArrayList<>();
     for (int i = 0; i < rows; i++) {
-      ArrayList<Cell> row = new ArrayList<>();
+      List<Cell> row = new ArrayList<>();
       for (int j = 0; j < columns; j++) {
         row.add(new Cell(Color.WHITE, "empty"));
       }
@@ -43,7 +44,7 @@ public class Grid {
   /**
    * @return ArrayList of ArrayLists of Cells representing Grid
    */
-  public ArrayList<ArrayList<Cell>> getGrid() {
+  public List<List<Cell>> getGrid() {
     return this.grid;
   }
 
@@ -67,7 +68,7 @@ public class Grid {
    * @return a grid (2D array of cells) with updated state
    */
   public void updateGrid() {
-    for (ArrayList<Cell> row : getGrid()) {
+    for (List<Cell> row : getGrid()) {
       for (Cell cell : row) {
         int x = grid.indexOf(row);
         int y = row.indexOf(cell);
@@ -111,8 +112,8 @@ public class Grid {
    * @param y the y coordinate of the cell
    * @return
    */
-  public ArrayList<Cell> getNeighbors(int x, int y){
-    ArrayList<Cell> ret = new ArrayList<>();
+  public List<Cell> getNeighbors(int x, int y){
+    List<Cell> ret = new ArrayList<>();
     ret.add(getGrid().get(x-1).get(y));
     ret.add(getGrid().get(x+1).get(y));
     ret.add(getGrid().get(x).get(y+1));
@@ -126,8 +127,8 @@ public class Grid {
    * @param y the y coordinate of the cell
    * @return
    */
-  public ArrayList<Cell> getAllNeighbors(int x, int y){
-    ArrayList<Cell> ret = new ArrayList<>();
+  public List<Cell> getAllNeighbors(int x, int y){
+    List<Cell> ret = new ArrayList<>();
     ret.add(getGrid().get(x-1).get(y));
     ret.add(getGrid().get(x+1).get(y));
     ret.add(getGrid().get(x).get(y+1));
@@ -146,7 +147,7 @@ public class Grid {
    * @param neighbors an ArrayList of points to check if any contain a neighboring point to (x,y)
    * @return a boolean if the list contains a neighbor or not
    */
-  public boolean checkNeighbors(int x, int y, ArrayList<Point> neighbors) {
+  public boolean checkNeighbors(int x, int y, List<Point> neighbors) {
     if (neighbors.contains(new Point(x + 1, y))) return true;
     if (neighbors.contains(new Point(x - 1, y))) return true;
     if (neighbors.contains(new Point(x, y + 1))) return true;
@@ -158,9 +159,9 @@ public class Grid {
     return this.grid.get(x).get(y);
   }
 
-  public void storeNeigborState(ArrayList<Point> neighborCells, String state){
+  public void storeNeigborState(List<Point> neighborCells, String state){
     neighborCells.clear();
-    for (ArrayList<Cell> row : getGrid()) {
+    for (List<Cell> row : getGrid()) {
       for (Cell cell : row) {
         if (cell.getState().equals(state)) {
           neighborCells.add(new Point(getGrid().indexOf(row), row.indexOf(cell)));
@@ -185,8 +186,8 @@ public class Grid {
     return getGrid().get(x).get(y + 1).getState() == state;
   }
 
-  public ArrayList<Cell> handleEdgeCases(int x, int y){
-      ArrayList<Cell> neighbors = new ArrayList<Cell>();
+  public List<Cell> handleEdgeCases(int x, int y){
+      List<Cell> neighbors = new ArrayList<Cell>();
         if(y==0){
             handleTopRow(x,y, neighbors);
         }
@@ -202,7 +203,7 @@ public class Grid {
         return neighbors;
     }
 
-  public void handleTopRow(int x, int y, ArrayList<Cell> neighbors){
+  public void handleTopRow(int x, int y, List<Cell> neighbors){
         if(x==0){
             subtractTopLeftCorner(x,y,neighbors);
         }
@@ -214,19 +215,19 @@ public class Grid {
         }
     }
 
-  public void subtractTopLeftCorner(int x, int y, ArrayList<Cell> neighbors){
+  public void subtractTopLeftCorner(int x, int y, List<Cell> neighbors){
         neighbors.add(current(x+1, y+1));
         neighbors.add(current(x, y+1));
         neighbors.add(current(x+1, y));
     }
 
-  public void subtractTopRightCorner(int x, int y, ArrayList<Cell> neighbors){
+  public void subtractTopRightCorner(int x, int y, List<Cell> neighbors){
         neighbors.add(current(x-1, y));
         neighbors.add(current(x-1, y+1));
         neighbors.add(current(x, y+1));
     }
 
-  public void subtractTopRow(int x, int y, ArrayList<Cell> neighbors){
+  public void subtractTopRow(int x, int y, List<Cell> neighbors){
         neighbors.add(current(x-1, y));
         neighbors.add(current(x-1, y+1));
         neighbors.add(current(x, y+1));
@@ -235,7 +236,7 @@ public class Grid {
         neighbors.add(current(x+1, y));
     }
 
-  public void handleBottomRow(int x, int y, ArrayList<Cell> neighbors){
+  public void handleBottomRow(int x, int y, List<Cell> neighbors){
         if(x==0){
             subtractBottomLeftCorner(x,y,neighbors);
         }
@@ -247,19 +248,19 @@ public class Grid {
         }
     }
 
-  public void subtractBottomLeftCorner(int x, int y, ArrayList<Cell> neighbors){
+  public void subtractBottomLeftCorner(int x, int y, List<Cell> neighbors){
         neighbors.add(current(x,y-1));
         neighbors.add(current(x+1,y-1));
         neighbors.add(current(x+1,y));
     }
 
-  public void subtractBottomRightCorner(int x, int y, ArrayList<Cell> neighbors){
+  public void subtractBottomRightCorner(int x, int y, List<Cell> neighbors){
         neighbors.add(current(x-1,y));
         neighbors.add(current(x-1,y-1));
         neighbors.add(current(x,y-1));
     }
 
-  public void subtractBottomRow(int x, int y, ArrayList<Cell> neighbors){
+  public void subtractBottomRow(int x, int y, List<Cell> neighbors){
         neighbors.add(current(x,y-1));
         neighbors.add(current(x+1,y-1));
         neighbors.add(current(x+1,y));
@@ -268,7 +269,7 @@ public class Grid {
         neighbors.add(current(x,y-1));
     }
 
-  public void subtractLeftCol(int x, int y, ArrayList<Cell> neighbors){
+  public void subtractLeftCol(int x, int y, List<Cell> neighbors){
         if(y!=0 && y!= getRows()-1){
             neighbors.add(current(x,y-1));
             neighbors.add(current(x+1,y-1));
@@ -278,7 +279,7 @@ public class Grid {
         }
     }
 
-  public void subtractRightCol(int x, int y, ArrayList<Cell> neighbors){
+  public void subtractRightCol(int x, int y, List<Cell> neighbors){
         if(y!=0 && y!= getRows()-1){
             neighbors.add(current(x,y-1));
             neighbors.add(current(x-1,y-1));

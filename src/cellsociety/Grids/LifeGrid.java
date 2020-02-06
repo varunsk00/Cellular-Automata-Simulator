@@ -59,10 +59,10 @@ public class LifeGrid extends Grid {
   }
 
   @Override
-  protected ArrayList<ArrayList<Cell>> createGrid() {
-      ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
+  protected List<List<Cell>> createGrid() {
+      List<List<Cell>> ret = new ArrayList<>();
       for (int i = 0; i < getRows(); i++) {
-          ArrayList<Cell> row = new ArrayList<>();
+          List<Cell> row = new ArrayList<>();
           for (int j = 0; j < getColumns(); j++) {
               row.add(new Cell(Color.WHITE, "dead"));
           }
@@ -79,16 +79,16 @@ public class LifeGrid extends Grid {
 
   @Override
   public void handleMiddleCell(int x, int y){
-      ArrayList<Cell> neighbors = getAllNeighbors(x,y);
+      List<Cell> neighbors = getAllNeighbors(x,y);
       updateCells(x,y,neighbors);
   }
 
   public void handleEdgeCell(int x, int y){
-      ArrayList<Cell> neighbors = handleEdgeCases(x,y);
+      List<Cell> neighbors = handleEdgeCases(x,y);
       updateCells(x,y,neighbors);
   }
 
-  public void updateCells(int x, int y, ArrayList<Cell> neighbors){
+  public void updateCells(int x, int y, List<Cell> neighbors){
         int alive_count= 0;
         for (Cell c: neighbors){
             if (c.getState() == "alive"){

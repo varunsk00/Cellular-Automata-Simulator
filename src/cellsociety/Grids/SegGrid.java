@@ -79,17 +79,17 @@ public class SegGrid extends Grid {
 
   @Override
   public void handleMiddleCell(int x, int y) {
-    ArrayList<Cell> neighbors = getAllNeighbors(x, y);
+    List<Cell> neighbors = getAllNeighbors(x, y);
     updateCells(x,y,neighbors);
   }
 
   @Override
   public void handleEdgeCell(int x, int y) {
-    ArrayList<Cell> neighbors = handleEdgeCases(x,y);;
+    List<Cell> neighbors = handleEdgeCases(x,y);;
     updateCells(x,y,neighbors);
   }
 
-  public void updateCells(int x, int y, ArrayList<Cell> neighbors){
+  public void updateCells(int x, int y, List<Cell> neighbors){
     int similar_count = 0;
     for (Cell c : neighbors) {
       if (c.getState().equals(current(x, y).getState())) {
