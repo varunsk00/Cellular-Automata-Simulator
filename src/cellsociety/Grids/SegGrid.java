@@ -60,17 +60,7 @@ public class SegGrid extends Grid {
     int x=0;
     int y=0;
     storeNeigborState(sameCells, getGrid().get(x).get(y).getState());
-    for (ArrayList<Cell> row : getGrid()) {
-      for (Cell cell : row) {
-        x = getGrid().indexOf(row);
-        y = row.indexOf(cell);
-        if (isMiddleCell(x, y)) {
-          handleMiddleCell(x, y);
-        } else {
-          handleEdgeCell(x, y);
-        }
-      }
-    }
+    super.updateGrid();
   }
 
   private void setInits() {
