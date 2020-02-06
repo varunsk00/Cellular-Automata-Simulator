@@ -28,7 +28,7 @@ public class Grid {
   /**
    * Initializes an ArrayList of ArrayLists representative of the grid
    **/
-  public ArrayList<ArrayList<Cell>> createGrid() {
+  protected ArrayList<ArrayList<Cell>> createGrid() {
     ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
     for (int i = 0; i < rows; i++) {
       ArrayList<Cell> row = new ArrayList<>();
