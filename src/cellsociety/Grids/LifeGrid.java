@@ -55,10 +55,10 @@ public class LifeGrid extends Grid {
   }
 
   @Override
-  protected ArrayList<ArrayList<Cell>> createGrid() {
-      ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
+  protected List<List<Cell>> createGrid() {
+      List<List<Cell>> ret = new ArrayList<>();
       for (int i = 0; i < getRows(); i++) {
-          ArrayList<Cell> row = new ArrayList<>();
+          List<Cell> row = new ArrayList<>();
           for (int j = 0; j < getColumns(); j++) {
               row.add(new Cell(Color.WHITE, "dead"));
           }

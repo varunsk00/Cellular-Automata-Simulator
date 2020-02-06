@@ -62,7 +62,7 @@ public class FireGrid extends Grid {
   protected ArrayList<ArrayList<Cell>> createGrid() {
     ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
     for (int i = 0; i < getRows(); i++) {
-      ArrayList<Cell> row = new ArrayList<>();
+      List<Cell> row = new ArrayList<>();
       for (int j = 0; j < getColumns(); j++) {
         if (i == 0 || j == 0 || i == getRows() - 1 || j == getColumns() - 1) {
           row.add(new Cell(Color.YELLOW, "empty"));

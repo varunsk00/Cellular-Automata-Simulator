@@ -2,13 +2,14 @@ package cellsociety.Grids;
 
 import java.awt.Point;
 import cellsociety.Cell;
+import java.util.List;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
 
 public class Grid {
 
-  private ArrayList<ArrayList<Cell>> grid;
+  private List<List<Cell>> grid;
   private int rows;
   private int columns;
 
@@ -28,7 +29,7 @@ public class Grid {
   /**
    * @return ArrayList of ArrayLists of Cells representing Grid
    */
-  public ArrayList<ArrayList<Cell>> getGrid() {
+  public List<List<Cell>> getGrid() {
     return this.grid;
   }
 
@@ -159,7 +160,7 @@ public class Grid {
 
   protected void storeNeigborState(ArrayList<Point> neighborCells, String state){
     neighborCells.clear();
-    for (ArrayList<Cell> row : getGrid()) {
+    for (List<Cell> row : getGrid()) {
       for (Cell cell : row) {
         if (cell.getState().equals(state)) {
           neighborCells.add(new Point(getGrid().indexOf(row), row.indexOf(cell)));

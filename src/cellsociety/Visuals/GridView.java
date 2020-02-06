@@ -8,6 +8,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
+
+import java.util.ResourceBundle;
 
 /**
  * Converts a Grid object to a dynamic GridPane object that can be displayed in Main
@@ -19,6 +22,7 @@ import javafx.scene.layout.Priority;
 public class GridView {
 
   private GridPane myGridPane;
+  private ResourceBundle myResources;
 
   /**
    * Basic constructor for a GridView object
@@ -26,12 +30,14 @@ public class GridView {
    * Future variations can store a grid to the GridPane to be updated for efficiency purposes
    * Creates the GridPane and sets Horizontal and Vertical Gaps to 1
    */
-  public GridView() {
+  public GridView(String language) {
     myGridPane = new GridPane();
     myGridPane.setMaxWidth(Double.MAX_VALUE);
     myGridPane.setMaxHeight(Double.MAX_VALUE);
     myGridPane.setHgap(1);
     myGridPane.setVgap(1);
+
+    myResources = ResourceBundle.getBundle(language);
   }
 
   /**
@@ -51,11 +57,12 @@ public class GridView {
    */
   public void updateGrid(Grid grid){
     myGridPane.getChildren().clear();
-
     for (int i = 0; i < grid.getColumns(); i++) {
       for (int j = 0; j < grid.getRows(); j++) {
         Region addedShape = new Region();
-        addedShape.setBackground(new Background(new BackgroundFill(grid.current(j, i).getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
+        Color regionColor = Color.web(myResources.getString(grid.current(j, i).getState()));
+        Background regionBackground = new Background(new BackgroundFill(regionColor, CornerRadii.EMPTY, Insets.EMPTY));
+        addedShape.setBackground(regionBackground);
         myGridPane.add(addedShape, i, j);
         myGridPane.setHgrow(addedShape, Priority.ALWAYS);
         myGridPane.setVgrow(addedShape, Priority.ALWAYS);

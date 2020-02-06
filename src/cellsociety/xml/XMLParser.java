@@ -32,24 +32,25 @@ public class XMLParser {
 
   private final String TYPE_ATTRIBUTE;
   private final DocumentBuilder DOCUMENT_BUILDER;
-
+  private File myFile;
+  private Element root;
 
   /**
    * Create parser for XML files of given type.
    */
-  public XMLParser(String type) {
+  public XMLParser(String type, File dataFile) {
     DOCUMENT_BUILDER = getDocumentBuilder();
     TYPE_ATTRIBUTE = type;
+    myFile = dataFile;
+    root = getRootElement();
   }
 
   /**
    * Get data contained in this XML file as an object
    *
-   * @param dataFile an cellsociety.xml file to read
    * @return Grid object based on grid type in cellsociety.xml file
    */
-  public Grid getGrid(File dataFile) {
-    Element root = getRootElement(dataFile);
+  public Grid getGrid() {
     String type = getAttribute(root, TYPE_ATTRIBUTE);
 
     List<String> dataFields = setDataFieldsByGridType(type);
@@ -59,23 +60,24 @@ public class XMLParser {
     return returnGridByType(type, results);
   }
 
+
+  public String getGridType() {
+    return getAttribute(root, TYPE_ATTRIBUTE);
+  }
+
   /**
    * Returns the author of the file
-   * @param dataFile File to be read
    * @return the String associated with the author tag
    */
-  public String getAuthors(File dataFile) {
-    Element root = getRootElement(dataFile);
+  public String getAuthors() {
     return getTextValue(root, "author");
   }
 
   /**
    * Returns the title of the file
-   * @param dataFile File to be read
    * @return the String associated with the title tag
    */
-  public String getTitle(File dataFile) {
-    Element root = getRootElement(dataFile);
+  public String getTitle() {
     return getTextValue(root, "title");
   }
 
@@ -87,10 +89,10 @@ public class XMLParser {
     return results;
   }
 
-  private Element getRootElement(File xmlFile) {
+  private Element getRootElement() {
     try {
       DOCUMENT_BUILDER.reset();
-      Document xmlDocument = DOCUMENT_BUILDER.parse(xmlFile);
+      Document xmlDocument = DOCUMENT_BUILDER.parse(this.myFile);
       return xmlDocument.getDocumentElement();
     } catch (SAXException | IOException e) {
       throw new XMLException(e);
@@ -147,7 +149,6 @@ public class XMLParser {
       case "PredPrey":
         return new PredPreyGrid(results);
     }
-
     return null;
   }
 }
