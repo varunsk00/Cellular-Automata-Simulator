@@ -97,22 +97,29 @@ public class LifeGrid extends Grid {
         }
         if (checkNeighbors(x, y, aliveCells) && current(x,y).getState().equals("alive")){
             if(alive_count==2 || alive_count ==3){
-                current(x,y).update(Color.BLACK, "alive");
-                System.out.println("survived: " + (x) + ", " + (y));
+                surviveCell(x,y);
             }
             else{
-                current(x,y).update(Color.WHITE, "dead");
-                System.out.println("died: " + (x) + ", " + (y));
+                killCell(x,y);
             }
         }
         else{
             if (alive_count==3){
-                current(x,y).update(Color.BLACK, "alive");
-                System.out.println("reproduced: " + (x) + ", " + (y));
+                surviveCell(x,y);
             }
             else{
-                current(x,y).update(Color.WHITE, "dead");
+                killCell(x,y);
             }
         }
     }
+
+  public void killCell(int x, int y){
+      current(x,y).update(Color.WHITE, "dead");
+      System.out.println("died: " + (x) + ", " + (y));
+  }
+
+  public void surviveCell(int x, int y){
+      current(x,y).update(Color.BLACK, "alive");
+      System.out.println("survives: " + (x) + ", " + (y));
+  }
 }
