@@ -28,6 +28,8 @@ public class GridView {
    */
   public GridView() {
     myGridPane = new GridPane();
+    myGridPane.setMaxWidth(Double.MAX_VALUE);
+    myGridPane.setMaxHeight(Double.MAX_VALUE);
     myGridPane.setHgap(1);
     myGridPane.setVgap(1);
   }
