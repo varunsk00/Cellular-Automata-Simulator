@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class PercGrid extends Grid {
   // field names expected to appear in data file holding values for this object
-  public static final List<String> DATA_FIELDS = List.of(
+  private static final List<String> DATA_FIELDS = List.of(
       "rows",
       "columns",
       "percentBlocked"
@@ -34,6 +34,14 @@ public class PercGrid extends Grid {
     this.fullCells = new ArrayList<Point>();
     setFullCells();
     setBlockedCells();
+  }
+
+  /**
+   *
+   * @return the instance variables in our simulation
+   */
+  public static List<String> getDataFields() {
+    return DATA_FIELDS;
   }
 
 

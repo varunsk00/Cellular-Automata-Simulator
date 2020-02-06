@@ -54,6 +54,16 @@ public class Cell {
   }
 
   /**
+   * set a cell's lives
+   *
+   * @param lives an int representing the lives to set to our cell
+   */
+  public void setLives(int lives) {
+    this.lives = lives;
+
+  }
+
+  /**
    * @return the cell's current state
    **/
   public String getState() {
