@@ -5,6 +5,8 @@ import cellsociety.Visuals.Footer;
 import cellsociety.Visuals.GridView;
 import cellsociety.Visuals.Header;
 import java.io.File;
+
+import cellsociety.Visuals.StatBox;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -17,6 +19,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import cellsociety.xml.XMLException;
@@ -60,6 +63,8 @@ public class Main extends Application {
   private Footer footer;
   private Stage myStage;
   private Timeline animation;
+  private VBox allLeftStats;
+  private VBox allRightStats;
 
   private Random r = new Random();
 
@@ -86,6 +91,7 @@ public class Main extends Application {
     setHeader();
     setFooter();
     setCenter();
+    setStats();
 
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
     scene.getStylesheets()
@@ -190,6 +196,16 @@ public class Main extends Application {
     header.setLoadOff();
   }
 
+  private void setStats(String title, String author, HashMap<String, Double> stats)  {
+    StatBox tempStats = new StatBox(title, author, stats);
+
+    if (allGrids.size() % 2 == 0) {
+        allLeftStats.getChildren().add(tempStats.getStatBox());
+      } else {
+        allRightStats.getChildren().add(tempStats.getStatBox());
+    }
+  }
+
   private void updateSpeed() {
     animation.setRate(footer.getSpeed());
     header.setSpeedOff();
@@ -202,6 +218,11 @@ public class Main extends Application {
         allGridViews.get(i).
                 updateGrid(allGrids.get(i));
       }
+    }
+
+    private void setStats() {
+    allLeftStats = new VBox();
+    allRightStats = new VBox();
     }
   }
 
