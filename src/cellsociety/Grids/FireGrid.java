@@ -46,12 +46,6 @@ public class FireGrid extends Grid {
     return DATA_FIELDS;
   }
 
-
-  private void setBurningCell() {
-    this.getGrid().get(this.getRows() / 2).get(this.getColumns() / 2)
-        .update(Color.RED, "burning");
-  }
-
   public FireGrid(Map<String, String> dataValues) {
     this(Integer.parseInt(dataValues.get(DATA_FIELDS.get(0))),
         Integer.parseInt(dataValues.get(DATA_FIELDS.get(1))),
@@ -59,7 +53,13 @@ public class FireGrid extends Grid {
   }
 
   @Override
-  public ArrayList<ArrayList<Cell>> createGrid() {
+  public void updateGrid() {
+    storeNeigborState(burnedCells, "burning");
+    super.updateGrid();
+  }
+
+  @Override
+  protected ArrayList<ArrayList<Cell>> createGrid() {
     ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
     for (int i = 0; i < getRows(); i++) {
       ArrayList<Cell> row = new ArrayList<>();
@@ -76,32 +76,28 @@ public class FireGrid extends Grid {
   }
 
   @Override
-  public void updateGrid() {
-    storeNeigborState(burnedCells, "burning");
-    super.updateGrid();
-  }
-
-  @Override
-  public void handleMiddleCell(int x, int y) {
+  protected void updateCells(int x, int y, ArrayList<Cell> neighbors){
     if (current(x, y).getState().equals("burning")) {
       extinguishCell(x,y);
     }
     if (checkNeighbors(x, y, burnedCells) && current(x, y).getState().equals("tree")
-        && r.nextFloat() <= probability) {
+            && r.nextFloat() <= probability) {
       burnCell(x,y);
     }
   }
 
-  public void burnCell(int x, int y){
+  private void setBurningCell() {
+    this.getGrid().get(this.getRows() / 2).get(this.getColumns() / 2)
+            .update(Color.RED, "burning");
+  }
+
+  private void burnCell(int x, int y){
     current(x, y).update(Color.RED, "burning");
     System.out.println("caught fire: " + (x) + ", " + (y));
   }
 
-  public void extinguishCell(int x, int y){
+  private void extinguishCell(int x, int y){
     current(x, y).update(Color.YELLOW, "empty");
     System.out.println("extinguished: " + (x) + ", " + (y));
   }
-
-  // No edge cases by nature of FireGrid, but needed for abstraction
-  public void handleEdgeCell(int x, int y) {}
 }
