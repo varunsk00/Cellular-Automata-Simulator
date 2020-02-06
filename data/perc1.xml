@@ -1,8 +1,8 @@
 <?cellsociety.xml version="1.0" encoding="UTF-8" ?>
 <data grid="Percolation">
   <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
-  <title>Predator Prey</title>
-  <rows>30</rows>
-  <columns>30</columns>
+  <title>Percolation</title>
+  <rows>20</rows>
+  <columns>20</columns>
   <percentBlocked>0.4</percentBlocked>
 </data>
