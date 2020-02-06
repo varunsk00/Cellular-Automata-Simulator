@@ -2,11 +2,12 @@
 <data grid="PredPrey">
   <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
   <title>Predator Prey</title>
-  <rows>20</rows>
-  <columns>20</columns>
+  <rows>30</rows>
+  <columns>30</columns>
+  <predatorStartingEnergy>3</predatorStartingEnergy>
   <predatorEnergyPerPrey>1</predatorEnergyPerPrey>
-  <preyGenerationRate>10</preyGenerationRate>
-  <predatorGenerationRate>1</predatorGenerationRate>
+  <preyGenerationRate>3</preyGenerationRate>
+  <predatorGenerationRate>10</predatorGenerationRate>
   <percentPredator>0.1</percentPredator>
   <percentPrey>0.1</percentPrey>
 </data>

@@ -83,42 +83,22 @@ public class LifeGrid extends Grid {
   @Override
   public void handleMiddleCell(int x, int y){
       ArrayList<Cell> neighbors = getAllNeighbors(x,y);
-      int alive_count= 0;
-      for (Cell c: neighbors){
-          if (c.getState() == "alive"){
-                alive_count++;
-          }
-      }
-      if (checkNeighbors(x, y, aliveCells) && current(x,y).getState().equals("alive")){
-          if(alive_count==2 || alive_count ==3){
-              current(x,y).update(Color.BLACK, "alive");
-              System.out.println("survived: " + (x) + ", " + (y));
-          }
-          else{
-              current(x,y).update(Color.WHITE, "dead");
-              System.out.println("died: " + (x) + ", " + (y));
-          }
-      }
-      else{
-          if (alive_count==3){
-              current(x,y).update(Color.BLACK, "alive");
-              System.out.println("reproduced: " + (x) + ", " + (y));
-          }
-          else{
-              current(x,y).update(Color.WHITE, "dead");
-          }
-      }
+      updateCells(x,y,neighbors);
   }
 
   public void handleEdgeCell(int x, int y){
-        ArrayList<Cell> neighbors = handleEdgeCases(x,y);
+      ArrayList<Cell> neighbors = handleEdgeCases(x,y);
+      updateCells(x,y,neighbors);
+  }
+
+  public void updateCells(int x, int y, ArrayList<Cell> neighbors){
         int alive_count= 0;
         for (Cell c: neighbors){
             if (c.getState() == "alive"){
                 alive_count++;
             }
         }
-        if (current(x,y).getState().equals("alive")){
+        if (checkNeighbors(x, y, aliveCells) && current(x,y).getState().equals("alive")){
             if(alive_count==2 || alive_count ==3){
                 current(x,y).update(Color.BLACK, "alive");
                 System.out.println("survived: " + (x) + ", " + (y));
