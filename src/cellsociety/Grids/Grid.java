@@ -3,7 +3,6 @@ package cellsociety.Grids;
 import java.awt.Point;
 import cellsociety.Cell;
 import java.util.List;
-import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
 
@@ -79,7 +78,7 @@ public class Grid {
         for (int i = 0; i < rows; i++) {
             ArrayList<Cell> row = new ArrayList<>();
             for (int j = 0; j < columns; j++) {
-                row.add(new Cell(Color.WHITE, "empty"));
+                row.add(new Cell( "empty"));
             }
             ret.add(row);
         }

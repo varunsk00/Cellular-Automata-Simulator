@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import cellsociety.Cell;
-import cellsociety.Grids.Grid;
-import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -23,6 +21,9 @@ public class FireGrid extends Grid {
   private List<Point> burnedCells;
   private double probability;
   private Random r = new Random();
+  private final String BURNING = "burning";
+  private final String TREE = "tree";
+  private final String EMPTY = "empty";
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -34,7 +35,7 @@ public class FireGrid extends Grid {
   public FireGrid(int rows, int columns, double probCatch) {
     super(rows, columns);
     this.probability = probCatch;
-    burnedCells = new ArrayList<Point>();
+    burnedCells = new ArrayList<>();
     setBurningCell();
   }
 
@@ -54,7 +55,7 @@ public class FireGrid extends Grid {
 
   @Override
   public void updateGrid() {
-    storeNeigborState(burnedCells, "burning");
+    storeNeigborState(burnedCells, BURNING);
     super.updateGrid();
   }
 
@@ -65,9 +66,9 @@ public class FireGrid extends Grid {
       List<Cell> row = new ArrayList<>();
       for (int j = 0; j < getColumns(); j++) {
         if (i == 0 || j == 0 || i == getRows() - 1 || j == getColumns() - 1) {
-          row.add(new Cell(Color.YELLOW, "empty"));
+          row.add(new Cell(EMPTY));
         } else {
-          row.add(new Cell(Color.GREEN, "tree"));
+          row.add(new Cell(TREE));
         }
       }
       ret.add(row);
@@ -77,10 +78,10 @@ public class FireGrid extends Grid {
 
   @Override
   protected void updateCells(int x, int y, List<Cell> neighbors){
-    if (current(x, y).getState().equals("burning")) {
+    if (current(x, y).getState().equals(BURNING)) {
       extinguishCell(x,y);
     }
-    if (checkNeighbors(x, y, burnedCells) && current(x, y).getState().equals("tree")
+    if (checkNeighbors(x, y, burnedCells) && current(x, y).getState().equals(TREE)
             && r.nextFloat() <= probability) {
       burnCell(x,y);
     }
@@ -88,16 +89,16 @@ public class FireGrid extends Grid {
 
   private void setBurningCell() {
     this.getGrid().get(this.getRows() / 2).get(this.getColumns() / 2)
-            .update(Color.RED, "burning");
+            .updateState(BURNING);
   }
 
   private void burnCell(int x, int y){
-    current(x, y).update(Color.RED, "burning");
+    current(x, y).updateState(BURNING);
     System.out.println("caught fire: " + (x) + ", " + (y));
   }
 
   private void extinguishCell(int x, int y){
-    current(x, y).update(Color.YELLOW, "empty");
+    current(x, y).updateState(EMPTY);
     System.out.println("extinguished: " + (x) + ", " + (y));
   }
 }

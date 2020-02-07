@@ -11,22 +11,19 @@ public class Cell {
   /**
    * Constructs a new cell
    *
-   * @param color the initial color for cell
    * @param state the initial state for cell Sets the cell's instance variables using update()
    **/
-  public Cell(Color color, String state) {
+  public Cell(String state) {
     this.lives = 1;
-    update(color, state);
+    this.state = state;
   }
 
   /**
    * Updates instance variables of cell
    *
-   * @param color the new color for cell
    * @param state the new state for cell Sets the cell's instance variables to new values
    **/
-  public void update(Color color, String state) {
-    this.color = color;
+  public void updateState(String state) {
     this.state = state;
   }
 

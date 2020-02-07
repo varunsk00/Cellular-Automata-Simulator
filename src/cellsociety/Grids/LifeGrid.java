@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Random;
 
 import cellsociety.Cell;
-import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 
 public class LifeGrid extends Grid {
@@ -19,6 +17,8 @@ public class LifeGrid extends Grid {
   private Random r = new Random();
   private ArrayList<Point> aliveCells;
   private static double percentAlive;
+  private final String DEAD = "dead";
+  private final String ALIVE = "alive";
 
   /**
      * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -30,7 +30,7 @@ public class LifeGrid extends Grid {
   public LifeGrid(int rows, int columns, double percentAlive) {
         super(rows, columns);
         this.percentAlive = percentAlive;
-        this.aliveCells = new ArrayList<Point>();
+        this.aliveCells = new ArrayList<>();
         setAliveCells();
     }
 
@@ -50,7 +50,7 @@ public class LifeGrid extends Grid {
 
   @Override
   public void updateGrid(){
-      storeNeigborState(aliveCells, "alive");
+      storeNeigborState(aliveCells, ALIVE);
       super.updateGrid();
   }
 
@@ -60,7 +60,7 @@ public class LifeGrid extends Grid {
       for (int i = 0; i < getRows(); i++) {
           List<Cell> row = new ArrayList<>();
           for (int j = 0; j < getColumns(); j++) {
-              row.add(new Cell(Color.WHITE, "dead"));
+              row.add(new Cell(DEAD));
           }
           ret.add(row);
       }
@@ -97,19 +97,19 @@ public class LifeGrid extends Grid {
         for (int i = 0; i < this.getRows(); i++) {
             for (int j = 0; j < this.getColumns(); j++) {
                 if (r.nextFloat() <= percentAlive){
-                    this.getGrid().get(i).get(j).update(Color.BLACK, "alive");
+                    this.getGrid().get(i).get(j).updateState(ALIVE);
                 }
             }
         }
     }
 
   private void killCell(int x, int y){
-      current(x,y).update(Color.WHITE, "dead");
+      current(x,y).updateState(DEAD);
       System.out.println("died: " + (x) + ", " + (y));
   }
 
   private void surviveCell(int x, int y){
-      current(x,y).update(Color.BLACK, "alive");
+      current(x,y).updateState(ALIVE);
       System.out.println("survives: " + (x) + ", " + (y));
   }
 }

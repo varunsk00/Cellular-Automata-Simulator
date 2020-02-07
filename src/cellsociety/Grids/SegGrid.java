@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import cellsociety.Cell;
-import cellsociety.Grids.Grid;
-import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,6 +21,10 @@ public class SegGrid extends Grid {
   private double prob;
   private double percentFull;
   private ArrayList<Point> sameCells;
+  private final String X = "X";
+  private final String O = "O";
+  private final String EMPTY = "empty";
+
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -36,7 +37,7 @@ public class SegGrid extends Grid {
     super(rows, columns);
     this.prob = satisfiedThreshold * 8;
     this.percentFull = percentFull;
-    this.sameCells = new ArrayList<Point>();
+    this.sameCells = new ArrayList<>();
     setInits();
   }
 
@@ -77,13 +78,13 @@ public class SegGrid extends Grid {
       System.out.println("unsatisfied: " + (x) + ", " + (y));
       int ran_x = r.nextInt(getColumns());
       int ran_y = r.nextInt(getRows());
-      while (current(ran_x, ran_y).getState().equals("empty")) {
-        current(ran_x, ran_y).update(current(x, y).getColor(), current(x, y).getState());
+      while (current(ran_x, ran_y).getState().equals(EMPTY)) {
+        current(ran_x, ran_y).updateState(current(x, y).getState());
         System.out.println("relocated to: " + (ran_x) + ", " + (y));
         ran_x = r.nextInt(getColumns());
         ran_y = r.nextInt(getRows());
       }
-      current(x, y).update(Color.WHITE, "empty");
+      current(x, y).updateState(EMPTY);
     }
   }
 
@@ -92,10 +93,10 @@ public class SegGrid extends Grid {
       for (int j = 0; j < this.getColumns(); j++) {
 
         if (r.nextFloat() <= percentFull/2) {
-          this.current(i, j).update(Color.BLUE, "X");
+          this.current(i, j).updateState(X);
         }
         if (r.nextFloat() <= percentFull/2) {
-          this.current(i, j).update(Color.RED, "O");
+          this.current(i, j).updateState(O);
         }
       }
     }

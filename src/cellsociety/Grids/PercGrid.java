@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import cellsociety.Cell;
-import cellsociety.Grids.Grid;
-import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -20,6 +18,10 @@ public class PercGrid extends Grid {
   private ArrayList<Point> fullCells;
   private static double percentBlocked;
   private Random r = new Random();
+  private final String FULL = "full";
+  private final String BLOCKED = "blocked";
+  private final String EMPTY = "empty";
+
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
    * based on given rows and columns
@@ -51,7 +53,7 @@ public class PercGrid extends Grid {
 
   @Override
   public void updateGrid(){
-    storeNeigborState(fullCells, "full");
+    storeNeigborState(fullCells, FULL);
     super.updateGrid();
   }
 
@@ -64,8 +66,8 @@ public class PercGrid extends Grid {
 
   private void setFullCells(){
     for (int i = 0; i < this.getColumns(); i++) {
-      if (this.current(0, i).getState() != "blocked") {
-        this.current(0, i).update(Color.BLUE, "full");
+      if (this.current(0, i).getState() != BLOCKED) {
+        this.current(0, i).updateState(FULL);
       }
     }
   }
@@ -74,18 +76,18 @@ public class PercGrid extends Grid {
     for (int i = 0; i < this.getRows(); i++) {
       for (int j = 0; j < this.getColumns(); j++) {
         if (r.nextFloat() <= percentBlocked){
-          this.getGrid().get(i).get(j).update(Color.BLACK, "blocked");
+          this.getGrid().get(i).get(j).updateState(BLOCKED);
         }
       }
     }
   }
 
   private boolean isFillable(int x, int y){
-    return current(x,y).getState().equals("empty") && checkNeighbors(x, y, fullCells);
+    return current(x,y).getState().equals(EMPTY) && checkNeighbors(x, y, fullCells);
   }
 
   private void leakCell(int x, int y){
-    current(x,y).update(Color.BLUE, "full");
+    current(x,y).updateState(FULL);
     System.out.println("leaked: " + (x) + ", " + (y));
   }
 }
