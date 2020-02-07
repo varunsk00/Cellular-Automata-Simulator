@@ -2,14 +2,8 @@ package cellsociety.Visuals;
 
 import cellsociety.Models.Grids.Grid;
 import javafx.geometry.Insets;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-
 import java.util.ResourceBundle;
 
 /**
@@ -24,6 +18,7 @@ public class GridView {
   private GridPane myGridPane;
   private ResourceBundle myResources;
 
+
   /**
    * Basic constructor for a GridView object
    * Takes no parameters but creates an instance that can be used later to call updateGrid()
@@ -31,17 +26,14 @@ public class GridView {
    * Creates the GridPane and sets Horizontal and Vertical Gaps to 1
    */
   public GridView(String language) {
-    myGridPane = new GridPane();
-    myGridPane.setMaxWidth(Double.MAX_VALUE);
-    myGridPane.setMaxHeight(Double.MAX_VALUE);
+    myResources = ResourceBundle.getBundle(language);    myGridPane = new GridPane();
     myGridPane.setHgap(1);
     myGridPane.setVgap(1);
-
-    myResources = ResourceBundle.getBundle(language);
   }
 
   /**
    * Basic getter method to get the GridPane object
+   *
    * @return myGridPane instance variable representing the last grid passed through update
    */
   public GridPane getGridPane() {
@@ -53,10 +45,13 @@ public class GridView {
    * Clears instance variable myGridPane and updates it to show the grid parameter
    * Dynamically sized to fit size of center in BorderPane in Main
    * Called in Main every time the grid updates through the step() function
+   *
    * @param grid takes in a grid to be represented via a GridPane
    */
-  public void updateGrid(Grid grid){
+  public void updateGridView(Grid grid) {
+
     myGridPane.getChildren().clear();
+
     for (int i = 0; i < grid.getColumns(); i++) {
       for (int j = 0; j < grid.getRows(); j++) {
         Region addedShape = new Region();
@@ -70,3 +65,4 @@ public class GridView {
     }
   }
 }
+

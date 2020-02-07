@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StatBox {
+public class StatView {
 
     private static final String TITLE_SETUP = "Title: ";
     private static final String AUTHOR_SETUP = "Author: ";
@@ -25,7 +25,7 @@ public class StatBox {
     private String myAuthor;
 
 
-    public StatBox(String title, String author, Map stats) {
+    public StatView(String title, String author, Map stats) {
         myTitle = title;
         myAuthor = author;
         myStats = stats;
