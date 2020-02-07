@@ -1,11 +1,10 @@
-package cellsociety.Grids;
+package cellsociety.Models.Grids;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
-import cellsociety.Cell;
-import cellsociety.Grids.Grid;
+import cellsociety.Models.Cell;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;

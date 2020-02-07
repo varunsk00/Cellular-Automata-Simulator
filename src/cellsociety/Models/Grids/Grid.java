@@ -1,9 +1,11 @@
-package cellsociety.Grids;
+package cellsociety.Models.Grids;
 
 import java.awt.Point;
-import cellsociety.Cell;
+import cellsociety.Models.Cell;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Grid {
@@ -11,6 +13,7 @@ public class Grid {
   private ArrayList<ArrayList<Cell>> grid;
   private int rows;
   private int columns;
+  private int countState;
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -23,6 +26,7 @@ public class Grid {
     this.rows = rows;
     this.columns = columns;
     this.grid = createGrid();
+    this.countState = 0;
   }
 
   /**
@@ -68,6 +72,7 @@ public class Grid {
             }
         }
         this.grid = getGrid();
+        this.countState++;
     }
 
   /**
@@ -85,6 +90,9 @@ public class Grid {
         return ret;
     }
 
+    public int getCountState() {
+      return countState;
+    }
   /**
    * Empty method to handle an middle cell in the grid
    * @param x the x coordinate of the cell to handle
@@ -279,5 +287,19 @@ public class Grid {
             neighbors.add(current(x-1,y+1));
             neighbors.add(current(x,y+1));
         }
+    }
+
+    public Map getStats() {
+      Map stats = new HashMap<String, Integer>();
+          for (int i = 0; i < getRows(); i++) {
+              for (int j = 0; j < getColumns(); j++) {
+                  if (!stats.keySet().contains(current(i, j).getState())) {
+                      stats.put(current(i, j).getState(), 0);
+                  } else {
+                      stats.put(current(i,  j).getState(), stats.get(current(i,  j).getState() + 1));
+                  }
+              }
+        }
+      return stats;
     }
 }
