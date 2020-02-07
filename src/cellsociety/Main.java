@@ -96,7 +96,6 @@ public class Main extends Application {
         .add(getClass().getResource("/" + STYLESHEET).toExternalForm());
     myStage = primaryStage;
     myStage.setScene(scene);
-    startAnimationLoop();
     myStage.show();
   }
 
