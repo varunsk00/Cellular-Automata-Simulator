@@ -75,7 +75,7 @@ public class LifeGrid extends Grid {
         for (int i = 0; i < this.getRows(); i++) {
             for (int j = 0; j < this.getColumns(); j++) {
                 if (r.nextFloat() <= percentAlive){
-                    this.getGrid().get(i).get(j).updateState(ALIVE);
+                    this.getCell(i,j).updateState(ALIVE);
                 }
             }
         }

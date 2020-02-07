@@ -36,7 +36,7 @@ public class SegGrid extends Grid {
   public void updateGrid() {
     int x = 0;
     int y = 0;
-    storeNeighborState(sameCells, getGrid().get(x).get(y).getState());
+    storeNeighborState(sameCells, getCell(x,y).getState());
     super.updateGrid();
   }
 

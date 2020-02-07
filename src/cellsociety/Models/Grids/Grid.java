@@ -1,6 +1,7 @@
 package cellsociety.Models.Grids;
 
 import java.awt.Point;
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import cellsociety.Models.Cell;
@@ -60,10 +61,10 @@ public class Grid {
   }
 
   /**
-   * @return ArrayList of ArrayLists of Cells representing Grid
+   * @return  Cells in an immutable list representing Grid
    */
-  public List<List<Cell>> getGrid() {
-    return this.grid;
+  private List<List<Cell>> getGrid() {
+    return Collections.unmodifiableList(this.grid);
   }
 
   /**
@@ -90,7 +91,7 @@ public class Grid {
    * @return a grid (2D array of cells) with updated state
    */
   public void updateGrid() {
-        for (List<Cell> row : getGrid()) {
+        for (List<Cell> row : grid) {
             for (Cell cell : row) {
                 int x = grid.indexOf(row);
                 int y = row.indexOf(cell);
@@ -147,6 +148,16 @@ public class Grid {
   }
 
   /**
+   * Get cell at a coordinate
+   * @param x
+   * @param y
+   * @return
+   */
+  public Cell getCell(int x, int y) {
+    return getGrid().get(x).get(y);
+  }
+
+  /**
    * Returns the neighboring cells of a given index that represent the cell on top, bottom, left, right
    * @param x the x coordinate of the cell
    * @param y the y coordinate of the cell
@@ -154,10 +165,10 @@ public class Grid {
    */
   protected List<Cell> getNeighbors(int x, int y){
     List<Cell> ret = new ArrayList<>();
-    ret.add(getGrid().get(x-1).get(y));
-    ret.add(getGrid().get(x+1).get(y));
-    ret.add(getGrid().get(x).get(y+1));
-    ret.add(getGrid().get(x).get(y-1));
+    ret.add(getCell(x-1,y));
+    ret.add(getCell(x+1,y));
+    ret.add(getCell(x,y+1));
+    ret.add(getCell(x,y-1));
     return ret;
   }
 
@@ -169,10 +180,10 @@ public class Grid {
    */
   protected List<Cell> getAllNeighbors(int x, int y){
     List<Cell> ret = getNeighbors(x,y);
-    ret.add(getGrid().get(x-1).get(y-1));
-    ret.add(getGrid().get(x-1).get(y+1));
-    ret.add(getGrid().get(x+1).get(y-1));
-    ret.add(getGrid().get(x+1).get(y+1));
+    ret.add(getCell(x-1,y-1));
+    ret.add(getCell(x-1,y+1));
+    ret.add(getCell(x+1,y-1));
+    ret.add(getCell(x+1,y+1));
     return ret;
   }
 

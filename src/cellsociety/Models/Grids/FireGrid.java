@@ -21,11 +21,10 @@ public class FireGrid extends Grid {
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
    * based on given rows and columns
-   *
    **/
   public FireGrid(Map<String, String> data) {
     super(data);
-    this.probability = parseDoubleFromMap(data,"probCatch");
+    this.probability = parseDoubleFromMap(data, "probCatch");
     burnedCells = new ArrayList<>();
     setBurningCell();
   }
@@ -43,9 +42,9 @@ public class FireGrid extends Grid {
       List<Cell> row = new ArrayList<>();
       for (int j = 0; j < getColumns(); j++) {
         if (i == 0 || j == 0 || i == getRows() - 1 || j == getColumns() - 1) {
-          row.add(new Cell(EMPTY,i,j));
+          row.add(new Cell(EMPTY, i, j));
         } else {
-          row.add(new Cell(TREE,i,j));
+          row.add(new Cell(TREE, i, j));
         }
       }
       ret.add(row);
@@ -54,27 +53,26 @@ public class FireGrid extends Grid {
   }
 
   @Override
-  protected void updateCells(int x, int y, List<Cell> neighbors){
+  protected void updateCells(int x, int y, List<Cell> neighbors) {
     if (current(x, y).getState().equals(BURNING)) {
-      extinguishCell(x,y);
+      extinguishCell(x, y);
     }
     if (checkNeighbors(x, y, burnedCells) && current(x, y).getState().equals(TREE)
-            && r.nextFloat() <= probability) {
-      burnCell(x,y);
+        && r.nextFloat() <= probability) {
+      burnCell(x, y);
     }
   }
 
   private void setBurningCell() {
-    this.getGrid().get(this.getRows() / 2).get(this.getColumns() / 2)
-            .updateState(BURNING);
+    this.getCell(this.getRows() / 2, this.getColumns() / 2).updateState(BURNING);
   }
 
-  private void burnCell(int x, int y){
+  private void burnCell(int x, int y) {
     current(x, y).updateState(BURNING);
     System.out.println("caught fire: " + (x) + ", " + (y));
   }
 
-  private void extinguishCell(int x, int y){
+  private void extinguishCell(int x, int y) {
     current(x, y).updateState(EMPTY);
     System.out.println("extinguished: " + (x) + ", " + (y));
   }

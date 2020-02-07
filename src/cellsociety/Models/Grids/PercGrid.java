@@ -53,7 +53,7 @@ public class PercGrid extends Grid {
     for (int i = 0; i < this.getRows(); i++) {
       for (int j = 0; j < this.getColumns(); j++) {
         if (r.nextFloat() <= percentBlocked){
-          this.getGrid().get(i).get(j).updateState(BLOCKED);
+          this.getCell(i,j).updateState(BLOCKED);
         }
       }
     }
