@@ -47,7 +47,7 @@ Instead of passing a state and color to each Cell object from the Grid, we could
 
 ## User Interface
 
-The User Interface will consist of a JavaFX scene with an option to load a specific .cellsociety.xml configuration file. The user will be presented with a button to press that will allow them to browse their computer for a .cellsociety.xml configuration file. If the configuration file is not in the valid format, the user will get an error message prompting them to choose a file that is correctly formatted. Moreover, if the Simulation Type is not supported (does not have a corresponding GridType class), an error message will occur prompting the user to chose a simulation that exists. The user will also be able to pause and play the simulation at will by clicking. There will also be an option to speed up or slow down the simulation, in addition to an option to skip forward.
+The User Interface will consist of a JavaFX scene with an option to load a specific .cellsociety.Controllers.xml configuration file. The user will be presented with a button to press that will allow them to browse their computer for a .cellsociety.Controllers.xml configuration file. If the configuration file is not in the valid format, the user will get an error message prompting them to choose a file that is correctly formatted. Moreover, if the Simulation Type is not supported (does not have a corresponding GridType class), an error message will occur prompting the user to chose a simulation that exists. The user will also be able to pause and play the simulation at will by clicking. There will also be an option to speed up or slow down the simulation, in addition to an option to skip forward.
 
 ![GUI Design](GUI_Design.png)
 

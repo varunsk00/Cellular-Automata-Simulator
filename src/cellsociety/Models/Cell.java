@@ -1,4 +1,4 @@
-package cellsociety;
+package cellsociety.Models;
 
 import java.awt.Point;
 

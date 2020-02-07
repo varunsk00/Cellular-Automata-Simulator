@@ -1,11 +1,11 @@
-package cellsociety.xml;
+package cellsociety.Controllers.xml;
 
-import cellsociety.Grids.FireGrid;
-import cellsociety.Grids.Grid;
-import cellsociety.Grids.LifeGrid;
-import cellsociety.Grids.PercGrid;
-import cellsociety.Grids.PredPreyGrid;
-import cellsociety.Grids.SegGrid;
+import cellsociety.Models.Grids.FireGrid;
+import cellsociety.Models.Grids.Grid;
+import cellsociety.Models.Grids.LifeGrid;
+import cellsociety.Models.Grids.PercGrid;
+import cellsociety.Models.Grids.PredPreyGrid;
+import cellsociety.Models.Grids.SegGrid;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -48,7 +48,7 @@ public class XMLParser {
   /**
    * Get data contained in this XML file as an object
    *
-   * @return Grid object based on grid type in cellsociety.xml file
+   * @return Grid object based on grid type in cellsociety.Controllers.xml file
    */
   public Grid getGrid() {
     String type = getAttribute(root, TYPE_ATTRIBUTE);

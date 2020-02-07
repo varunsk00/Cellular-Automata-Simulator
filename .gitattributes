@@ -19,7 +19,7 @@
 *.txt           text
 *.tag           text
 *.tagx          text
-*.cellsociety.xml           text
+*.cellsociety.Controllers.xml           text
 *.yml           text
 
 # JAR Files And Dependencies
