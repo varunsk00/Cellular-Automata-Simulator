@@ -290,13 +290,14 @@ public class Grid {
     }
 
     public Map getStats() {
-      Map stats = new HashMap<String, Integer>();
+      Map<String, Integer> stats = new HashMap<String, Integer>();
           for (int i = 0; i < getRows(); i++) {
               for (int j = 0; j < getColumns(); j++) {
+
                   if (!stats.keySet().contains(current(i, j).getState())) {
                       stats.put(current(i, j).getState(), 0);
                   } else {
-                      stats.put(current(i,  j).getState(), stats.get(current(i,  j).getState() + 1));
+                      stats.put(current(i,  j).getState(), stats.get(current(i, j).getState()) + 1);
                   }
               }
         }
