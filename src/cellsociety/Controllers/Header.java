@@ -1,4 +1,4 @@
-package cellsociety.Visuals;
+package cellsociety.Controllers;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
