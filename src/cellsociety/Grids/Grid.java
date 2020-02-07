@@ -4,6 +4,7 @@ import java.awt.Point;
 import cellsociety.Cell;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class Grid {
@@ -11,6 +12,8 @@ public class Grid {
   private List<List<Cell>> grid;
   private int rows;
   private int columns;
+  private String title;
+  private String author;
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -23,6 +26,34 @@ public class Grid {
     this.rows = rows;
     this.columns = columns;
     this.grid = createGrid();
+  }
+
+  public Grid(Map<String,String> data) {
+    this.rows = parseIntFromMap(data,"rows");
+    this.columns = parseIntFromMap(data,"columns");
+    this.author = parseStringFromMap(data, "author");
+    this.title = parseStringFromMap(data, "title");
+    this.grid = createGrid();
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getAuthor() {
+    return author;
+  }
+
+  protected int parseIntFromMap(Map<String,String> data, String key){
+    return Integer.parseInt(data.get(key));
+  }
+
+  protected double parseDoubleFromMap(Map<String,String> data, String key){
+    return Double.parseDouble(data.get(key));
+  }
+
+  protected String parseStringFromMap(Map<String,String> data, String key){
+    return data.get(key);
   }
 
   /**

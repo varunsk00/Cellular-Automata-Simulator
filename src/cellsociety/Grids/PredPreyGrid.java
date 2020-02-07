@@ -23,16 +23,14 @@ public class PredPreyGrid extends Grid {
   private final String PREY = "prey";
   private final String EMPTY = "empty";
 
-  public PredPreyGrid(int rows, int columns, int predatorStartingEnergy, int predatorEnergyPerPrey,
-      int preyGenerationRate,
-      int predatorGenerationRate, double percentPredator, double percentPrey) {
-    super(rows, columns);
-    this.predatorStartingEnergy = predatorStartingEnergy;
-    this.predatorEnergyPerPrey = predatorEnergyPerPrey;
-    this.preyGenerationRate = preyGenerationRate;
-    this.predatorGenerationRate = predatorGenerationRate;
-    this.percentPredator = percentPredator;
-    this.percentPrey = percentPrey;
+  public PredPreyGrid(Map<String, String> data) {
+    super(data);
+    this.predatorStartingEnergy = parseIntFromMap(data,"predatorStartingEnergy");
+    this.predatorEnergyPerPrey = parseIntFromMap(data,"predatorEnergyPerPrey");
+    this.preyGenerationRate = parseIntFromMap(data,"preyGenerationRate");
+    this.predatorGenerationRate = parseIntFromMap(data,"predatorGenerationRate");
+    this.percentPredator = parseDoubleFromMap(data,"percentPredator");
+    this.percentPrey = parseDoubleFromMap(data,"percentPrey");;
     this.emptyCells = new ArrayList<>();
     this.preyCells = new ArrayList<>();
     createGrid();
@@ -45,18 +43,6 @@ public class PredPreyGrid extends Grid {
     storeNeighborState(preyCells, PREY);
 //    System.out.println(predatorCells.size());
     super.updateGrid();
-  }
-
-
-  public PredPreyGrid(Map<String, String> dataValues) {
-    this(Integer.parseInt(dataValues.get("rows")),
-        Integer.parseInt(dataValues.get("columns")),
-        Integer.parseInt(dataValues.get("predatorStartingEnergy")),
-        Integer.parseInt(dataValues.get("predatorEnergyPerPrey")),
-        Integer.parseInt(dataValues.get("preyGenerationRate")),
-        Integer.parseInt(dataValues.get("predatorGenerationRate")),
-        Double.parseDouble(dataValues.get("percentPredator")),
-        Double.parseDouble(dataValues.get("percentPrey")));
   }
 
   private void setInits() {

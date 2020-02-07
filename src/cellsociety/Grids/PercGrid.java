@@ -20,21 +20,13 @@ public class PercGrid extends Grid {
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
    * based on given rows and columns
    *
-   * @param row    the number of rows to generate in our grid
-   * @param column the number of columns to generate in our grid
    **/
-  public PercGrid(int row, int column, double percentBlocked) {
-    super(row, column);
-    this.percentBlocked = percentBlocked;
+  public PercGrid(Map<String, String> data) {
+    super(data);
+    this.percentBlocked = parseDoubleFromMap(data, "percentBlocked");
     this.fullCells = new ArrayList<>();
     setFullCells();
     setBlockedCells();
-  }
-
-  public PercGrid(Map<String, String> dataValues) {
-    this(Integer.parseInt(dataValues.get("rows")),
-        Integer.parseInt(dataValues.get("columns")),
-        Double.parseDouble((dataValues.get("percentBlocked"))));
   }
 
   @Override

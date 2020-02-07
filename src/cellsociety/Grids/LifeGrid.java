@@ -19,21 +19,13 @@ public class LifeGrid extends Grid {
      * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
      * based on given rows and columns
      *
-     * @param rows    the number of rows to generate in our grid
-     * @param columns the number of columns to generate in our grid
      **/
-  public LifeGrid(int rows, int columns, double percentAlive) {
-        super(rows, columns);
-        this.percentAlive = percentAlive;
+  public LifeGrid(Map<String, String> data) {
+        super(data);
+        this.percentAlive = parseDoubleFromMap(data,"percentAlive");
         this.aliveCells = new ArrayList<>();
         setAliveCells();
     }
-
-  public LifeGrid(Map<String, String> dataValues) {
-    this(Integer.parseInt(dataValues.get("rows")),
-        Integer.parseInt(dataValues.get("columns")),
-        Double.parseDouble(dataValues.get("percentAlive")));
-  }
 
   @Override
   public void updateGrid(){

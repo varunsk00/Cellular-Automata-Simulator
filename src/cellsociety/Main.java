@@ -194,8 +194,7 @@ public class Main extends Application {
         center.setHgrow(tempGridView.getGridPane(), Priority.ALWAYS);
         totalGrids++;
         center.getChildren().add(tempGridView.getGridPane());
-
-//        addStats(parser.getTitle(), parser.getAuthors(), new HashMap<>());
+        addStats(tempGrid.getTitle(), tempGrid.getAuthor(), new HashMap<>());
       } catch (XMLException e) {
         System.out.println(e.getMessage());
       }

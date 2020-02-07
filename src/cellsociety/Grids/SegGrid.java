@@ -23,34 +23,26 @@ public class SegGrid extends Grid {
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
    * based on given rows and columns
    *
-   * @param rows    the number of rows to generate in our grid
-   * @param columns the number of columns to generate in our grid
    **/
-  public SegGrid(int rows, int columns, double satisfiedThreshold, double percentFull) {
-    super(rows, columns);
-    this.prob = satisfiedThreshold * 8;
-    this.percentFull = percentFull;
+  public SegGrid(Map<String, String> data) {
+    super(data);
+    this.prob = parseDoubleFromMap(data,"satisfiedThreshold") * 8;
+    this.percentFull = parseDoubleFromMap(data, "percentFull");
     this.sameCells = new ArrayList<>();
     setInits();
   }
 
-  public SegGrid(Map<String, String> dataValues) {
-    this(Integer.parseInt(dataValues.get("rows")),
-        Integer.parseInt(dataValues.get("columns")),
-        Double.parseDouble(dataValues.get("satisfiedThreshold")),
-        Double.parseDouble(dataValues.get("percentFull")));
-  }
 
   @Override
-  public void updateGrid(){
-    int x=0;
-    int y=0;
+  public void updateGrid() {
+    int x = 0;
+    int y = 0;
     storeNeighborState(sameCells, getGrid().get(x).get(y).getState());
     super.updateGrid();
   }
 
   @Override
-  protected void updateCells(int x, int y, List<Cell> neighbors){
+  protected void updateCells(int x, int y, List<Cell> neighbors) {
     int similar_count = 0;
     for (Cell c : neighbors) {
       if (c.getState().equals(current(x, y).getState())) {
@@ -77,10 +69,10 @@ public class SegGrid extends Grid {
     for (int i = 0; i < this.getRows(); i++) {
       for (int j = 0; j < this.getColumns(); j++) {
 
-        if (r.nextFloat() <= percentFull/2) {
+        if (r.nextFloat() <= percentFull / 2) {
           this.current(i, j).updateState(X);
         }
-        if (r.nextFloat() <= percentFull/2) {
+        if (r.nextFloat() <= percentFull / 2) {
           this.current(i, j).updateState(O);
         }
       }
