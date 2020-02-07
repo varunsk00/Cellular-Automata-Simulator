@@ -19,13 +19,12 @@ import java.util.ResourceBundle;
  */
 public class Header {
 
-  private static final String RESOURCES  = "resources";
-  
   private ResourceBundle myResources;
 
   private boolean playPressed;
   private boolean skipPressed;
   private boolean loadPressed;
+  private boolean clearPressed;
 
   private HBox myButtons;
   private Button playButton;
@@ -44,7 +43,7 @@ public class Header {
     this.playPressed = false;
     this.skipPressed = false;
     this.loadPressed = false;
-
+    this.clearPressed = false;
     renderHeader();
   }
 
@@ -113,17 +112,14 @@ public class Header {
     playButton = makePlayButton();
     Button loadButton = makeButton("LoadButton", event -> loadPressed = true);
     Button skipButton = makeButton("SkipButton", event -> skipPressed = true);
+    Button clearButton = makeButton("ClearButton", event -> clearPressed = true);
 
-    myButtons.getChildren().addAll(loadButton, playButton, skipButton);
-    formatButtons(loadButton, playButton, skipButton);
-  }
+    myButtons.getChildren().addAll(loadButton, playButton, skipButton, clearButton);
 
-  private void addLabel(String info, HBox header) {
-    Label addedLabel = new Label(info);
-    addedLabel.setMaxWidth(Double.MAX_VALUE);
-    addedLabel.setAlignment(Pos.CENTER);
-    header.setHgrow(addedLabel, Priority.ALWAYS);
-    header.getChildren().add(addedLabel);
+    formatButton(playButton);
+    formatButton(loadButton);
+    formatButton(skipButton);
+    formatButton(clearButton);
   }
 
   private Button makePlayButton() {
@@ -145,9 +141,15 @@ public class Header {
     return tempButton;
   }
 
-  private void formatButtons(Button load, Button skip, Button play) {
-    myButtons.setHgrow(load, Priority.ALWAYS);
-    myButtons.setHgrow(skip, Priority.ALWAYS);
-    myButtons.setHgrow(play, Priority.ALWAYS);
+  private void formatButton(Button tempButton) {
+    myButtons.setHgrow(tempButton, Priority.ALWAYS);
+  }
+
+  public boolean getClearStatus() {
+    return clearPressed;
+  }
+
+  public void setClearOff() {
+    clearPressed = false;
   }
 }
