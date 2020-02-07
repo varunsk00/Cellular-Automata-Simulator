@@ -101,103 +101,61 @@ public class PredPreyGrid extends Grid {
     }
 
     if (current(x, y).getState().equals(PREDATOR)) {
-      handlePredator(x, y, neighbors, currentCell);
+      //handlePredator(x, y, neighbors, currentCell);
     }
   }
 
-  private void handlePredator(int x, int y, List<Cell> neighbors, Cell currentCell) {
-    System.out.println(currentCell.getLives());
-    if (currentCell.getLives() <= 0) {
-      resetCellToEmpty(currentCell);
-    }
-
-    if (checkNeighbors(x, y, preyCells)) {
-      Cell newCell = getRandomNeighborByState(neighbors, PREY);
-      if (newCell != null) {
-        //predator now in new cell
-        predatorEatPrey(newCell, currentCell);
-        newCell.updateLives(predatorEnergyPerPrey);
-      }
-    } else if (checkNeighbors(x, y, emptyCells)) {
-      Cell newCell = getRandomNeighborByState(neighbors, EMPTY);
-      if (newCell != null) {
-        //predator now in newCell
-        moveToRandomEmptyNeighbor(newCell, currentCell);
-      }
-    } else if (checkNeighbors(x,y, predatorCells)) {
-      // predator surrounded by predators
-      currentCell.updateLives(-1);
-    }
-  }
+//  private void handlePredator(int x, int y, List<Cell> neighbors, Cell currentCell) {
+//    System.out.println(currentCell.getLives());
+//    if (currentCell.getLives() <= 0) {
+//      resetCellToEmpty(currentCell);
+//    }
+//
+//    if (checkNeighbors(x, y, preyCells)) {
+//      Cell newCell = getRandomNeighborByState(neighbors, PREY);
+//      if (newCell != null) {
+//        //predator now in new cell
+//        predatorEatPrey(newCell, currentCell);
+//        newCell.updateLives(predatorEnergyPerPrey);
+//      }
+//    } else if (checkNeighbors(x, y, emptyCells)) {
+//      Cell newCell = getRandomNeighborByState(neighbors, EMPTY);
+//      if (newCell != null) {
+//        //predator now in newCell
+//        moveToRandomEmptyNeighbor(newCell, currentCell);
+//      }
+//    } else if (checkNeighbors(x,y, predatorCells)) {
+//      // predator surrounded by predators
+//      currentCell.updateLives(-1);
+//    }
+//  }
 
   private void handlePrey(List<Cell> neighbors, Cell currentCell) {
-    //first check if there is a prey, then check if there are blank spaces
-    Cell newCell = getRandomNeighborByState(neighbors, EMPTY);
-    if (newCell!=null){
-      moveToRandomEmptyNeighbor(newCell, currentCell);
-      newCell.updateLives(1);
-    }
-  }
-
-  private void moveToRandomEmptyNeighbor(Cell newCell, Cell currentCell) {
-    //move current cell to newCell
-    copyCellToCell(newCell, currentCell);
-
-
-    if (currentCell.getState().equals(PREDATOR)) {
-      if (checkCellReproduction(currentCell)) {
-        // spawn a new cell of that type in prevCEll
-        resetCellToPredatorState(currentCell);
-      } else {
-        resetCellToEmpty(currentCell);
-      }
-      newCell.updateLives(-1);
-    }
-    if (currentCell.getState().equals(PREY)) {
-      resetCellToPreyState(currentCell);
-      if (checkCellReproduction(currentCell)) {
-        // spawn a new cell of that type in prevCEll
-        resetCellToPreyState(currentCell);
-      } else {
-        resetCellToEmpty(currentCell);
-      }
-      newCell.updateLives(1);
-    }
-  }
-
-  private void copyCellToCell(Cell newCell, Cell prevCell) {
-    newCell.updateState(prevCell.getState());
-  }
-
-  private void predatorEatPrey(Cell preyCell, Cell predatorCell) {
-    copyCellToCell(preyCell, predatorCell);
-    preyCell.updateLives(predatorEnergyPerPrey);
-    if (checkCellReproduction(predatorCell)) {
-      resetCellToPredatorState(predatorCell);
-    } else {
-      resetCellToEmpty(predatorCell);
-    }
-  }
-
-  private Cell getRandomNeighborByState(List<Cell> neighbors, String state) {
-    List<Cell> stateNeighbors = new ArrayList<>();
-    for (Cell cell : neighbors) {
-      if (cell.getState().equals(state)) {
-        stateNeighbors.add(cell);
+    List<Cell> emptyNeighbors = new ArrayList<Cell>();
+    for(Cell c: neighbors) {
+      if (c.getState().equals(EMPTY)) {
+        emptyNeighbors.add(c);
       }
     }
-    //if no neighbors matching state
-    if (stateNeighbors.size() == 0) {
-      return null;
-    }
-    int rng = r.nextInt(stateNeighbors.size());
-    return stateNeighbors.get(rng);
+    Cell newCell = emptyNeighbors.get(r.nextInt(emptyNeighbors.size()));
+    moveCell(currentCell, newCell);
+  }
+
+  private void moveCell(Cell currentCell, Cell newCell){
+    copyCellToCell(currentCell, newCell);
+    resetCellToEmpty(currentCell);
+  }
+
+
+  private void copyCellToCell(Cell currentCell, Cell newCell) {
+    newCell.updateState(currentCell.getState());
+    newCell.setLives(currentCell.getLives());
   }
 
   private boolean checkCellReproduction(Cell cell) {
     String state = cell.getState();
     int lives = cell.getLives();
-
+    System.out.println("lives: " + lives);
     return state.equals(PREY) && lives + 1 > preyGenerationRate
         || state.equals(PREDATOR) && lives + 1 > predatorGenerationRate;
   }
@@ -216,5 +174,4 @@ public class PredPreyGrid extends Grid {
     cell.updateState(PREDATOR);
     cell.setLives(predatorStartingEnergy);
   }
-
 }
