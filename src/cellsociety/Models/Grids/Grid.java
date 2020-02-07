@@ -295,7 +295,7 @@ public class Grid {
               for (int j = 0; j < getColumns(); j++) {
 
                   if (!stats.keySet().contains(current(i, j).getState())) {
-                      stats.put(current(i, j).getState(), 0);
+                      stats.put(current(i, j).getState(), 1);
                   } else {
                       stats.put(current(i,  j).getState(), stats.get(current(i, j).getState()) + 1);
                   }
