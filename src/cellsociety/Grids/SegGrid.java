@@ -64,7 +64,7 @@ public class SegGrid extends Grid {
   }
 
   @Override
-  protected void updateCells(int x, int y, ArrayList<Cell> neighbors){
+  protected void updateCells(int x, int y, List<Cell> neighbors){
     int similar_count = 0;
     for (Cell c : neighbors) {
       if (c.getState().equals(current(x, y).getState())) {

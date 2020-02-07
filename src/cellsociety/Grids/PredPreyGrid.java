@@ -28,9 +28,9 @@ public class PredPreyGrid extends Grid {
   private static double percentPredator;
   private static double percentPrey;
   private Random r = new Random();
-  private List<Point> EMPTY_CELLS;
-  private List<Point> PREY_CELLS;
-  private List<Point> PREDATOR_CELLS;
+  private List<Point> emptyCells;
+  private List<Point> preyCells;
+  private List<Point> predatorCells;
   private final String PREDATOR_NAME = "predator";
   private final String PREY_NAME = "prey";
   private final String EMPTY_NAME = "empty";
@@ -45,9 +45,9 @@ public class PredPreyGrid extends Grid {
     this.predatorGenerationRate = predatorGenerationRate;
     this.percentPredator = percentPredator;
     this.percentPrey = percentPrey;
-    this.EMPTY_CELLS = new ArrayList<>();
-    this.PREY_CELLS = new ArrayList<>();
-    this.PREDATOR_CELLS = new ArrayList<>();
+    this.emptyCells = new ArrayList<>();
+    this.preyCells = new ArrayList<>();
+    this.predatorCells = new ArrayList<>();
     createGrid();
     setInits();
   }
@@ -62,9 +62,9 @@ public class PredPreyGrid extends Grid {
 
   @Override
   public void updateGrid() {
-    storeNeigborState(EMPTY_CELLS, EMPTY_NAME);
-    storeNeigborState(PREY_CELLS, PREY_NAME);
-    storeNeigborState(PREDATOR_CELLS, PREDATOR_NAME);
+    storeNeigborState(emptyCells, EMPTY_NAME);
+    storeNeigborState(preyCells, PREY_NAME);
+    storeNeigborState(predatorCells, PREDATOR_NAME);
 //    System.out.println(predatorCells.size());
     super.updateGrid();
   }
@@ -94,10 +94,10 @@ public class PredPreyGrid extends Grid {
   }
 
   @Override
-  public void updateCells(int x, int y, ArrayList<Cell> neighbors) {
+  public void updateCells(int x, int y, List<Cell> neighbors) {
     Cell currentCell = current(x, y);
     //prey can move
-    if (current(x, y).getState().equals(PREY_NAME) && checkNeighbors(x, y, EMPTY_CELLS)) {
+    if (current(x, y).getState().equals(PREY_NAME) && checkNeighbors(x, y, emptyCells)) {
       handlePrey(neighbors, currentCell);
     }
 
@@ -112,20 +112,20 @@ public class PredPreyGrid extends Grid {
       resetCellToEmpty(currentCell);
     }
 
-    if (checkNeighbors(x, y, PREY_CELLS)) {
+    if (checkNeighbors(x, y, preyCells)) {
       Cell newCell = getRandomNeighborByState(neighbors, PREY_NAME);
       if (newCell != null) {
         //predator now in new cell
         predatorEatPrey(newCell, currentCell);
         newCell.updateLives(predatorEnergyPerPrey);
       }
-    } else if (checkNeighbors(x, y, EMPTY_CELLS)) {
+    } else if (checkNeighbors(x, y, emptyCells)) {
       Cell newCell = getRandomNeighborByState(neighbors, EMPTY_NAME);
       if (newCell != null) {
         //predator now in newCell
         moveToRandomEmptyNeighbor(newCell, currentCell);
       }
-    } else if (checkNeighbors(x,y, PREDATOR_CELLS)) {
+    } else if (checkNeighbors(x,y, predatorCells)) {
       // predator surrounded by predators
       currentCell.updateLives(-1);
     }

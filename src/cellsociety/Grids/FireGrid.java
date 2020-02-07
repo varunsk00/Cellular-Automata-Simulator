@@ -20,7 +20,7 @@ public class FireGrid extends Grid {
       "probCatch"
   );
 
-  private ArrayList<Point> burnedCells;
+  private List<Point> burnedCells;
   private double probability;
   private Random r = new Random();
 
@@ -59,8 +59,8 @@ public class FireGrid extends Grid {
   }
 
   @Override
-  protected ArrayList<ArrayList<Cell>> createGrid() {
-    ArrayList<ArrayList<Cell>> ret = new ArrayList<>();
+  protected List<List<Cell>> createGrid() {
+    List<List<Cell>> ret = new ArrayList<>();
     for (int i = 0; i < getRows(); i++) {
       List<Cell> row = new ArrayList<>();
       for (int j = 0; j < getColumns(); j++) {
@@ -76,7 +76,7 @@ public class FireGrid extends Grid {
   }
 
   @Override
-  protected void updateCells(int x, int y, ArrayList<Cell> neighbors){
+  protected void updateCells(int x, int y, List<Cell> neighbors){
     if (current(x, y).getState().equals("burning")) {
       extinguishCell(x,y);
     }
