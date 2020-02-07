@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -53,10 +54,8 @@ public class XMLParser {
   public Grid getGrid() {
     String type = getAttribute(root, TYPE_ATTRIBUTE);
 
-    List<String> dataFields = setDataFieldsByGridType(type);
-
     // read data associated with the fields given by the object
-    Map<String, String> results = createDataFieldMap(root, dataFields);
+    Map<String, String> results = createDataFieldMap(root);
     return returnGridByType(type, results);
   }
 
@@ -65,27 +64,18 @@ public class XMLParser {
     return getAttribute(root, TYPE_ATTRIBUTE);
   }
 
-  /**
-   * Returns the author of the file
-   * @return the String associated with the author tag
-   */
-  public String getAuthors() {
-    return getTextValue(root, "author");
-  }
 
-  /**
-   * Returns the title of the file
-   * @return the String associated with the title tag
-   */
-  public String getTitle() {
-    return getTextValue(root, "title");
-  }
-
-  private Map<String, String> createDataFieldMap(Element root, List<String> dataFields) {
+  private Map<String, String> createDataFieldMap(Element root) {
     Map<String, String> results = new HashMap<>();
-    for (String field : dataFields) {
-      results.put(field, getTextValue(root, field));
+
+    NodeList nList = root.getChildNodes();
+    for (int i = 0; i < nList.getLength(); i++) {
+      Node temp = nList.item(i);
+      if (temp.getNodeType() == Node.ELEMENT_NODE) {
+        results.put(temp.getNodeName(), temp.getTextContent());
+      }
     }
+
     return results;
   }
 
@@ -103,14 +93,6 @@ public class XMLParser {
     return e.getAttribute(attributeName);
   }
 
-  private String getTextValue(Element e, String tagName) {
-    NodeList nodeList = e.getElementsByTagName(tagName);
-    if (nodeList != null && nodeList.getLength() > 0) {
-      return nodeList.item(0).getTextContent();
-    } else {
-      return "";
-    }
-  }
 
   private DocumentBuilder getDocumentBuilder() {
     try {
@@ -118,22 +100,6 @@ public class XMLParser {
     } catch (ParserConfigurationException e) {
       throw new XMLException(e);
     }
-  }
-
-  private List<String> setDataFieldsByGridType(String type) {
-    switch (type) {
-      case "Fire":
-        return FireGrid.getDataFields();
-      case "Percolation":
-        return PercGrid.getDataFields();
-      case "Life":
-        return LifeGrid.getDataFields();
-      case "Segregation":
-        return SegGrid.getDataFields();
-      case "PredPrey":
-        return PredPreyGrid.getDataFields();
-    }
-    return null;
   }
 
   private Grid returnGridByType(String type, Map<String, String> results) {
