@@ -53,7 +53,7 @@ public class PercGrid extends Grid {
 
   @Override
   public void updateGrid(){
-    storeNeigborState(fullCells, FULL);
+    storeNeighborState(fullCells, FULL);
     super.updateGrid();
   }
 

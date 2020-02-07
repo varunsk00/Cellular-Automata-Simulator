@@ -1,21 +1,40 @@
 package cellsociety;
 
-import javafx.scene.paint.Color;
+import java.awt.Point;
 
 public class Cell {
 
-  private Color color;
   private String state;
   private int lives;
+  private Point coordinate;
 
   /**
    * Constructs a new cell
    *
    * @param state the initial state for cell Sets the cell's instance variables using update()
    **/
-  public Cell(String state) {
+  public Cell(String state, int x, int y) {
     this.lives = 1;
     this.state = state;
+    this.coordinate = new Point(x, y);
+  }
+
+  /**
+   * Get current of the cell
+   *
+   * @return a point coordinate
+   */
+  public Point getCoordinate() {
+    return coordinate;
+  }
+
+  /**
+   * Update the current coordinate
+   *
+   * @param point new position to update to
+   */
+  public void setCoordinate(Point point) {
+    this.coordinate = point;
   }
 
   /**

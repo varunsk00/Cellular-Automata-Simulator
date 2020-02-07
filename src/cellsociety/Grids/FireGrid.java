@@ -55,7 +55,7 @@ public class FireGrid extends Grid {
 
   @Override
   public void updateGrid() {
-    storeNeigborState(burnedCells, BURNING);
+    storeNeighborState(burnedCells, BURNING);
     super.updateGrid();
   }
 
@@ -66,9 +66,9 @@ public class FireGrid extends Grid {
       List<Cell> row = new ArrayList<>();
       for (int j = 0; j < getColumns(); j++) {
         if (i == 0 || j == 0 || i == getRows() - 1 || j == getColumns() - 1) {
-          row.add(new Cell(EMPTY));
+          row.add(new Cell(EMPTY,i,j));
         } else {
-          row.add(new Cell(TREE));
+          row.add(new Cell(TREE,i,j));
         }
       }
       ret.add(row);

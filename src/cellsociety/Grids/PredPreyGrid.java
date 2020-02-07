@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import jdk.swing.interop.SwingInterOpUtils;
 
 public class PredPreyGrid extends Grid {
 
@@ -29,7 +30,6 @@ public class PredPreyGrid extends Grid {
   private Random r = new Random();
   private List<Point> emptyCells;
   private List<Point> preyCells;
-  private List<Point> predatorCells;
   private final String PREDATOR = "predator";
   private final String PREY = "prey";
   private final String EMPTY = "empty";
@@ -46,13 +46,11 @@ public class PredPreyGrid extends Grid {
     this.percentPrey = percentPrey;
     this.emptyCells = new ArrayList<>();
     this.preyCells = new ArrayList<>();
-    this.predatorCells = new ArrayList<>();
     createGrid();
     setInits();
   }
 
   /**
-   *
    * @return the instance variables in our simulation
    */
   public static List<String> getDataFields() {
@@ -61,9 +59,8 @@ public class PredPreyGrid extends Grid {
 
   @Override
   public void updateGrid() {
-    storeNeigborState(emptyCells, EMPTY);
-    storeNeigborState(preyCells, PREY);
-    storeNeigborState(predatorCells, PREDATOR);
+    storeNeighborState(emptyCells, EMPTY);
+    storeNeighborState(preyCells, PREY);
 //    System.out.println(predatorCells.size());
     super.updateGrid();
   }
@@ -96,82 +93,83 @@ public class PredPreyGrid extends Grid {
   public void updateCells(int x, int y, List<Cell> neighbors) {
     Cell currentCell = current(x, y);
     //prey can move
-    if (current(x, y).getState().equals(PREY) && checkNeighbors(x, y, emptyCells)) {
-      handlePrey(neighbors, currentCell);
-    }
 
-    if (current(x, y).getState().equals(PREDATOR)) {
-      //handlePredator(x, y, neighbors, currentCell);
+    if (currentCell.getState().equals(PREY) && checkNeighbors(x, y, emptyCells)) {
+      handlePrey(neighbors, currentCell);
     }
   }
 
-//  private void handlePredator(int x, int y, List<Cell> neighbors, Cell currentCell) {
-//    System.out.println(currentCell.getLives());
-//    if (currentCell.getLives() <= 0) {
-//      resetCellToEmpty(currentCell);
-//    }
-//
-//    if (checkNeighbors(x, y, preyCells)) {
-//      Cell newCell = getRandomNeighborByState(neighbors, PREY);
-//      if (newCell != null) {
-//        //predator now in new cell
-//        predatorEatPrey(newCell, currentCell);
-//        newCell.updateLives(predatorEnergyPerPrey);
-//      }
-//    } else if (checkNeighbors(x, y, emptyCells)) {
-//      Cell newCell = getRandomNeighborByState(neighbors, EMPTY);
-//      if (newCell != null) {
-//        //predator now in newCell
-//        moveToRandomEmptyNeighbor(newCell, currentCell);
-//      }
-//    } else if (checkNeighbors(x,y, predatorCells)) {
-//      // predator surrounded by predators
-//      currentCell.updateLives(-1);
-//    }
-//  }
+  @Override
+  protected void handleMiddleCell(int x, int y) {
+    List<Cell> neighbors = getNeighbors(x, y);
+    updateCells(x, y, neighbors);
+  }
 
   private void handlePrey(List<Cell> neighbors, Cell currentCell) {
-    List<Cell> emptyNeighbors = new ArrayList<Cell>();
-    for(Cell c: neighbors) {
+
+    List<Cell> emptyNeighbors = new ArrayList<>();
+    for (Cell c : neighbors) {
       if (c.getState().equals(EMPTY)) {
         emptyNeighbors.add(c);
       }
     }
+
+
     Cell newCell = emptyNeighbors.get(r.nextInt(emptyNeighbors.size()));
     moveCell(currentCell, newCell);
+    newCell.updateLives(1);
+    System.out.println("current lives: " + currentCell.getLives() + ", new lives: "+ newCell.getLives());
   }
 
-  private void moveCell(Cell currentCell, Cell newCell){
+  private void moveCell(Cell currentCell, Cell newCell) {
     copyCellToCell(currentCell, newCell);
-    resetCellToEmpty(currentCell);
+    updateCellsState(currentCell);
+    updateCellsState(newCell);
+    if (newCell.getLives() > preyGenerationRate) {
+      //System.out.println("generating a new prey");
+      resetCellToPreyState(currentCell);
+    } else {
+      resetCellToEmpty(currentCell);
+    }
   }
-
 
   private void copyCellToCell(Cell currentCell, Cell newCell) {
     newCell.updateState(currentCell.getState());
     newCell.setLives(currentCell.getLives());
   }
 
-  private boolean checkCellReproduction(Cell cell) {
-    String state = cell.getState();
-    int lives = cell.getLives();
-    System.out.println("lives: " + lives);
-    return state.equals(PREY) && lives + 1 > preyGenerationRate
-        || state.equals(PREDATOR) && lives + 1 > predatorGenerationRate;
+  private void updateCellsState(Cell cell) {
+    Point coordinate = cell.getCoordinate();
+    if (cell.getState().equals(EMPTY)) {
+      preyCells.remove(coordinate);
+      emptyCells.add(coordinate);
+    }
+    if (cell.getState().equals(PREY)) {
+      emptyCells.remove(coordinate);
+      preyCells.add(coordinate);
+    }
+    if (cell.getState().equals(PREDATOR)) {
+      emptyCells.remove(coordinate);
+    }
   }
 
   private void resetCellToPreyState(Cell cell) {
     cell.updateState(PREY);
     cell.setLives(1);
+    updateCellsState(cell);
   }
 
   private void resetCellToEmpty(Cell cell) {
     cell.updateState(EMPTY);
     cell.setLives(0);
+    updateCellsState(cell);
   }
+
+
 
   private void resetCellToPredatorState(Cell cell) {
     cell.updateState(PREDATOR);
     cell.setLives(predatorStartingEnergy);
+    updateCellsState(cell);
   }
 }

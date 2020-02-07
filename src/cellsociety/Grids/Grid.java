@@ -78,7 +78,7 @@ public class Grid {
         for (int i = 0; i < rows; i++) {
             ArrayList<Cell> row = new ArrayList<>();
             for (int j = 0; j < columns; j++) {
-                row.add(new Cell( "empty"));
+                row.add(new Cell( "empty",i,j));
             }
             ret.add(row);
         }
@@ -153,7 +153,7 @@ public class Grid {
     return false;
   }
 
-  protected void storeNeigborState(List<Point> neighborCells, String state){
+  protected void storeNeighborState(List<Point> neighborCells, String state){
     neighborCells.clear();
     for (List<Cell> row : getGrid()) {
       for (Cell cell : row) {

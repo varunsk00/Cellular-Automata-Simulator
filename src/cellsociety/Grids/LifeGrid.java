@@ -50,7 +50,7 @@ public class LifeGrid extends Grid {
 
   @Override
   public void updateGrid(){
-      storeNeigborState(aliveCells, ALIVE);
+      storeNeighborState(aliveCells, ALIVE);
       super.updateGrid();
   }
 
@@ -60,7 +60,7 @@ public class LifeGrid extends Grid {
       for (int i = 0; i < getRows(); i++) {
           List<Cell> row = new ArrayList<>();
           for (int j = 0; j < getColumns(); j++) {
-              row.add(new Cell(DEAD));
+              row.add(new Cell(DEAD,i,j));
           }
           ret.add(row);
       }
