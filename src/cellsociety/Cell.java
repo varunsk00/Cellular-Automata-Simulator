@@ -28,13 +28,6 @@ public class Cell {
   }
 
   /**
-   * @return the cell's current color
-   */
-  public Color getColor() {
-    return this.color;
-  }
-
-  /**
    * @return the cell's current lives
    */
   public int getLives() {
