@@ -9,11 +9,6 @@ import cellsociety.Cell;
 import java.util.ArrayList;
 
 public class LifeGrid extends Grid {
-  private static final List<String> DATA_FIELDS = List.of(
-      "rows",
-      "columns",
-      "percentAlive"
-  );
   private Random r = new Random();
   private ArrayList<Point> aliveCells;
   private static double percentAlive;
@@ -35,17 +30,9 @@ public class LifeGrid extends Grid {
     }
 
   public LifeGrid(Map<String, String> dataValues) {
-    this(Integer.parseInt(dataValues.get(DATA_FIELDS.get(0))),
-        Integer.parseInt(dataValues.get(DATA_FIELDS.get(1))),
-        Double.parseDouble(dataValues.get(DATA_FIELDS.get(2))));
-  }
-
-  /**
-   *
-   * @return the instance variables in our simulation
-   */
-  public static List<String> getDataFields() {
-    return DATA_FIELDS;
+    this(Integer.parseInt(dataValues.get("rows")),
+        Integer.parseInt(dataValues.get("columns")),
+        Double.parseDouble(dataValues.get("percentAlive")));
   }
 
   @Override

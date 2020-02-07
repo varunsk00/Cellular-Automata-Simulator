@@ -10,13 +10,6 @@ import java.util.Random;
 
 public class SegGrid extends Grid {
 
-  private static final List<String> DATA_FIELDS = List.of(
-      "rows",
-      "columns",
-      "satisfiedThreshold",
-      "percentFull"
-  );
-
   private Random r = new Random();
   private double prob;
   private double percentFull;
@@ -41,19 +34,11 @@ public class SegGrid extends Grid {
     setInits();
   }
 
-  /**
-   *
-   * @return the instance variables in our simulation
-   */
-  public static List<String> getDataFields() {
-    return DATA_FIELDS;
-  }
-
   public SegGrid(Map<String, String> dataValues) {
-    this(Integer.parseInt(dataValues.get(DATA_FIELDS.get(0))),
-        Integer.parseInt(dataValues.get(DATA_FIELDS.get(1))),
-        Double.parseDouble(dataValues.get(DATA_FIELDS.get(2))),
-        Double.parseDouble(dataValues.get(DATA_FIELDS.get(3))));
+    this(Integer.parseInt(dataValues.get("rows")),
+        Integer.parseInt(dataValues.get("columns")),
+        Double.parseDouble(dataValues.get("satisfiedThreshold")),
+        Double.parseDouble(dataValues.get("percentFull")));
   }
 
   @Override

@@ -7,7 +7,6 @@ import cellsociety.Grids.PercGrid;
 import cellsociety.Grids.PredPreyGrid;
 import cellsociety.Grids.SegGrid;
 
-import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;

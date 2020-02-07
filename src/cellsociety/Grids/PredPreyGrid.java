@@ -7,20 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import jdk.swing.interop.SwingInterOpUtils;
 
 public class PredPreyGrid extends Grid {
 
-  private static final List<String> DATA_FIELDS = List.of(
-      "rows",
-      "columns",
-      "predatorStartingEnergy",
-      "predatorEnergyPerPrey",
-      "preyGenerationRate",
-      "predatorGenerationRate",
-      "percentPredator",
-      "percentPrey"
-  );
   private static int predatorStartingEnergy;
   private static int predatorEnergyPerPrey;
   private static int preyGenerationRate;
@@ -50,13 +39,6 @@ public class PredPreyGrid extends Grid {
     setInits();
   }
 
-  /**
-   * @return the instance variables in our simulation
-   */
-  public static List<String> getDataFields() {
-    return DATA_FIELDS;
-  }
-
   @Override
   public void updateGrid() {
     storeNeighborState(emptyCells, EMPTY);
@@ -65,15 +47,16 @@ public class PredPreyGrid extends Grid {
     super.updateGrid();
   }
 
+
   public PredPreyGrid(Map<String, String> dataValues) {
-    this(Integer.parseInt(dataValues.get(DATA_FIELDS.get(0))),
-        Integer.parseInt(dataValues.get(DATA_FIELDS.get(1))),
-        Integer.parseInt(dataValues.get(DATA_FIELDS.get(2))),
-        Integer.parseInt(dataValues.get(DATA_FIELDS.get(3))),
-        Integer.parseInt(dataValues.get(DATA_FIELDS.get(4))),
-        Integer.parseInt(dataValues.get(DATA_FIELDS.get(5))),
-        Double.parseDouble(dataValues.get(DATA_FIELDS.get(6))),
-        Double.parseDouble(dataValues.get(DATA_FIELDS.get(7))));
+    this(Integer.parseInt(dataValues.get("rows")),
+        Integer.parseInt(dataValues.get("columns")),
+        Integer.parseInt(dataValues.get("predatorStartingEnergy")),
+        Integer.parseInt(dataValues.get("predatorEnergyPerPrey")),
+        Integer.parseInt(dataValues.get("preyGenerationRate")),
+        Integer.parseInt(dataValues.get("predatorGenerationRate")),
+        Double.parseDouble(dataValues.get("percentPredator")),
+        Double.parseDouble(dataValues.get("percentPrey")));
   }
 
   private void setInits() {

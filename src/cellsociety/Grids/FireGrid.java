@@ -11,13 +11,6 @@ import java.util.Random;
 
 public class FireGrid extends Grid {
 
-  // field names expected to appear in data file holding values for this object
-  private static final List<String> DATA_FIELDS = List.of(
-      "rows",
-      "columns",
-      "probCatch"
-  );
-
   private List<Point> burnedCells;
   private double probability;
   private Random r = new Random();
@@ -39,18 +32,10 @@ public class FireGrid extends Grid {
     setBurningCell();
   }
 
-  /**
-   *
-   * @return the instance variables in our simulation
-   */
-  public static List<String> getDataFields() {
-    return DATA_FIELDS;
-  }
-
   public FireGrid(Map<String, String> dataValues) {
-    this(Integer.parseInt(dataValues.get(DATA_FIELDS.get(0))),
-        Integer.parseInt(dataValues.get(DATA_FIELDS.get(1))),
-        Double.parseDouble(dataValues.get(DATA_FIELDS.get(2))));
+    this(Integer.parseInt(dataValues.get("rows")),
+        Integer.parseInt(dataValues.get("columns")),
+        Double.parseDouble(dataValues.get("probCatch")));
   }
 
   @Override
