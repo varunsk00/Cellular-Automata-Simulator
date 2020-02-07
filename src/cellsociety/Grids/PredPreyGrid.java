@@ -114,11 +114,13 @@ public class PredPreyGrid extends Grid {
       }
     }
 
-
     Cell newCell = emptyNeighbors.get(r.nextInt(emptyNeighbors.size()));
+
     moveCell(currentCell, newCell);
-    newCell.updateLives(1);
-    System.out.println("current lives: " + currentCell.getLives() + ", new lives: "+ newCell.getLives());
+//    newCell.setLives(currentCell.getLives()+1);
+//    System.out.println(
+//        currentCell.getCoordinate().toString() + "current lives: " + currentCell.getLives() + ", "
+//            + currentCell.getCoordinate().toString() + "new lives: " + newCell.getLives());
   }
 
   private void moveCell(Cell currentCell, Cell newCell) {
@@ -135,7 +137,10 @@ public class PredPreyGrid extends Grid {
 
   private void copyCellToCell(Cell currentCell, Cell newCell) {
     newCell.updateState(currentCell.getState());
-    newCell.setLives(currentCell.getLives());
+    newCell.setLives(currentCell.getLives() + 1);
+    System.out.println(
+        currentCell.getCoordinate().toString() + "current lives: " + currentCell.getLives() + ", "
+            + newCell.getCoordinate().toString() + "new lives: " + newCell.getLives());
   }
 
   private void updateCellsState(Cell cell) {
@@ -164,7 +169,6 @@ public class PredPreyGrid extends Grid {
     cell.setLives(0);
     updateCellsState(cell);
   }
-
 
 
   private void resetCellToPredatorState(Cell cell) {
