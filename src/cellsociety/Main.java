@@ -21,7 +21,6 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import cellsociety.xml.XMLException;
 import cellsociety.xml.XMLParser;
 
@@ -129,19 +128,15 @@ public class Main extends Application {
   }
 
   private void startAnimationLoop() {
-    KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {
-      step(SECOND_DELAY);
-    });
+    KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step());
     animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames().add(frame);
     animation.play();
   }
 
-  // Talk to TA before final about whether elapsedTime is needed
-  private void step(double elapsedTime) {
+  private void step() {
     updateSpeed();
-
     if (header.getLoadStatus()) handleXML();
     else if (header.getSkipStatus()) skipAhead();
     else if (header.getPlayStatus()) updateState();

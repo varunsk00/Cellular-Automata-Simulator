@@ -1,11 +1,11 @@
 package cellsociety.xml;
 
-import cellsociety.Grids.FireGrid;
-import cellsociety.Grids.Grid;
-import cellsociety.Grids.LifeGrid;
-import cellsociety.Grids.PercGrid;
-import cellsociety.Grids.PredPreyGrid;
-import cellsociety.Grids.SegGrid;
+import cellsociety.Models.Grids.FireGrid;
+import cellsociety.Models.Grids.Grid;
+import cellsociety.Models.Grids.LifeGrid;
+import cellsociety.Models.Grids.PercGrid;
+import cellsociety.Models.Grids.PredPreyGrid;
+import cellsociety.Models.Grids.SegGrid;
 
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
