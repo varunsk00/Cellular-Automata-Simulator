@@ -63,7 +63,7 @@ public class Grid {
   /**
    * @return Cells in an immutable list representing Grid
    */
-  private List<List<Cell>> getGrid() {
+  protected List<List<Cell>> getGrid() {
     return Collections.unmodifiableList(this.grid);
   }
 
@@ -118,8 +118,19 @@ public class Grid {
   protected void updateCell(int x, int y, List<Cell> neighbors) {
   }
 
-  public Cell getCell(int x, int y) {
+  protected Cell getCell(int x, int y) {
     return getGrid().get(x).get(y);
+  }
+
+  protected void setCell(Cell cell) {
+    int x  = cell.getCoordinate().x;
+    int y  = cell.getCoordinate().y;
+    current(x,y).updateLives(cell.getLives());
+    current(x,y).updateState(cell.getState());
+  }
+
+  protected void replaceGrid(List<List<Cell>> newGrid){
+    this.grid = newGrid;
   }
 
   protected List<Cell> getAllNeighbors(int x, int y) {
@@ -127,7 +138,6 @@ public class Grid {
     for (int i = x -1; i <= x +1; i++){
       for (int j = y -1; j <= y +1; j++){
         if (isOutOfBounds(i,j) ){
-          System.out.println("Out of bounds:" + x+y);
           continue;
         }
         if (!(i== x && j==y)){

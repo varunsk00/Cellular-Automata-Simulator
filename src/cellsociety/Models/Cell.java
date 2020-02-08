@@ -14,7 +14,6 @@ public class Cell {
    * @param state the initial state for cell Sets the cell's instance variables using update()
    **/
   public Cell(String state, int x, int y) {
-    this.lives = 1;
     this.state = state;
     this.coordinate = new Point(x, y);
   }
@@ -25,7 +24,15 @@ public class Cell {
    * @return a point coordinate
    */
   public Point getCoordinate() {
-    return coordinate;
+    return this.coordinate;
+  }
+
+  public int getX(){
+    return this.coordinate.x;
+  }
+
+  public int getY(){
+    return this.coordinate.y;
   }
 
   /**
