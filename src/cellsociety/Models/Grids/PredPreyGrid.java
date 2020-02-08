@@ -19,9 +19,7 @@ public class PredPreyGrid extends Grid {
   private final String PREDATOR = "predator";
   private final String PREY = "prey";
   private final String EMPTY = "empty";
-  private List<List<Cell>> newGrid;
-  private List<Point> emptyCells;
-  private List<Point> preyCells;
+
 
 
   public PredPreyGrid(Map<String, String> data) {
@@ -32,8 +30,6 @@ public class PredPreyGrid extends Grid {
     this.predatorGenerationRate = parseIntFromMap(data, "predatorGenerationRate");
     this.percentPredator = parseDoubleFromMap(data, "percentPredator");
     this.percentPrey = parseDoubleFromMap(data, "percentPrey");
-    this.emptyCells = new ArrayList<>();
-    this.preyCells = new ArrayList<>();
 
     createGrid();
     setInits();
@@ -41,28 +37,34 @@ public class PredPreyGrid extends Grid {
 
   @Override
   public void updateGrid() {
-    newGrid = this.createGrid();
     super.updateGrid();
-    replaceGrid(newGrid);
+    setCellsToFutureStates();
   }
 
   private void setInits() {
     for (int i = 0; i < getRows(); i++) {
       for (int j = 0; j < getColumns(); j++) {
         if (r.nextFloat() <= percentPredator) {
-          setCell(newPredatorCell(i, j));
+          setCellState(i, j, PREDATOR);
         }
         if (r.nextFloat() <= percentPrey) {
-          setCell(newPreyCell(i, j));
+          setCellState(i, j, PREY);
         }
+      }
+    }
+  }
+
+  private void setCellsToFutureStates() {
+    for (int i = 0; i < getRows(); i++) {
+      for (int j = 0; j < getColumns(); j++) {
+        String state = current(i, j).getNextState();
+        setCellState(i, j, state);
       }
     }
   }
 
   @Override
   public void updateCell(int x, int y, List<Cell> neighbors) {
-    storeNeighborState(emptyCells, EMPTY);
-    storeNeighborState(preyCells, PREY);
     Cell currentCell = current(x, y);
     //prey can move
 
@@ -72,23 +74,18 @@ public class PredPreyGrid extends Grid {
   }
 
   private void handlePrey(List<Cell> neighbors, Cell currentCell) {
-    Point newCell = returnNeighborByState(neighbors);
-    if (newCell==null){
-      System.out.println("no neighbor");
+    Cell newCell = returnRandomEmptyNeighbor(neighbors);
+    if (newCell == null) {
       return;
     }
     moveCell(currentCell, newCell);
   }
 
-
-  private Point returnNeighborByState(List<Cell> neighbors) {
-    System.out.println(preyCells);
-    System.out.println("size of preys" + preyCells.size());
-    System.out.println("size of empties" + emptyCells.size());
+  private Cell returnRandomEmptyNeighbor(List<Cell> neighbors) {
 
     List<Cell> emptyNeighbors = new ArrayList<>();
     for (Cell c : neighbors) {
-      if (c.getState().equals(EMPTY) && emptyCells.contains(c.getCoordinate())) {
+      if (c.getState().equals(EMPTY) && c.getNextState().equals(EMPTY)) {
         emptyNeighbors.add(c);
       }
     }
@@ -96,58 +93,40 @@ public class PredPreyGrid extends Grid {
       return null;
     }
 
-    return emptyNeighbors.get(r.nextInt(emptyNeighbors.size())).getCoordinate();
+    return emptyNeighbors.get(r.nextInt(emptyNeighbors.size()));
   }
 
-  private void moveCell(Cell currentCell, Point newCoordinate) {
-    int newX = newCoordinate.x;
-    int newY = newCoordinate.y;
-    int currentX = currentCell.getX();
-    int currentY = currentCell.getY();
+  private void moveCell(Cell currentCell, Cell newCell) {
+    newCell.setNextState(currentCell.getState());
+    System.out.println("current lives: " + currentCell.getLives());
+    newCell.setLives(currentCell.getLives() + 1);
 
-    currentCell.updateLives(1);
-    System.out.println(currentCell.getLives());
+    System.out.println("new lives: " + newCell.getLives());
 
     //Copy current cell into new position in localGrid
-    changeLocalGrid(currentCell, newX, newY);
-    System.out.println("moving");
-    if (currentCell.getLives() > preyGenerationRate) {
+    if (newCell.getLives() > preyGenerationRate) {
+      System.out.println("spawn");
       //spawns
-      System.out.println("should be spawning");
-      Cell cell = newPreyCell(currentX, currentY);
-      changeLocalGrid(cell, currentX, currentY);
+      resetToPreyCell(currentCell);
 
-    } else if(currentCell.getLives()<= preyGenerationRate) {
+    } else if (newCell.getLives() <= preyGenerationRate) {
       //resets
-      System.out.println("resetting cell at" + currentCell.getCoordinate());
-      Cell cell = newEmptyCell(currentX, currentY);
-      changeLocalGrid(cell, currentX, currentY);
+      resetToEmptyCell(currentCell);
     }
-
   }
 
-  private void changeLocalGrid(Cell cell, int x, int y) {
-    List<Cell> row = newGrid.get(x);
-    row.set(y, cell);
-    newGrid.set(x, row);
-  }
-
-
-  private Cell newPreyCell(int x, int y) {
-    Cell cell = new Cell(PREY, x, y);
+  private void resetToPreyCell(Cell cell) {
+    cell.setState(PREY);
     cell.setLives(1);
-    return cell;
+    cell.setNextState(PREY);
   }
 
-  private Cell newEmptyCell(int x, int y) {
-    Cell cell = new Cell(EMPTY, x, y);
+  private void resetToEmptyCell(Cell cell) {
+    cell.setState(EMPTY);
     cell.setLives(0);
-    return cell;
+    cell.setNextState(EMPTY);
+
   }
 
-  private Cell newPredatorCell(int x, int y) {
-    Cell cell = new Cell(PREDATOR, x, y);
-    return cell;
-  }
 
 }

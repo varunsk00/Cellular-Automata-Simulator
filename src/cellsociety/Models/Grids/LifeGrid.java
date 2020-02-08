@@ -28,7 +28,7 @@ public class LifeGrid extends Grid {
 
   @Override
   public void updateGrid(){
-      storeNeighborState(aliveCells, ALIVE);
+      storeCellsByState(aliveCells, ALIVE);
       super.updateGrid();
   }
 
@@ -75,19 +75,19 @@ public class LifeGrid extends Grid {
         for (int i = 0; i < this.getRows(); i++) {
             for (int j = 0; j < this.getColumns(); j++) {
                 if (r.nextFloat() <= percentAlive){
-                    this.getCell(i,j).updateState(ALIVE);
+                    this.getCell(i,j).setState(ALIVE);
                 }
             }
         }
     }
 
   private void killCell(int x, int y){
-      current(x,y).updateState(DEAD);
+      current(x,y).setState(DEAD);
       System.out.println("died: " + (x) + ", " + (y));
   }
 
   private void surviveCell(int x, int y){
-      current(x,y).updateState(ALIVE);
+      current(x,y).setState(ALIVE);
       System.out.println("survives: " + (x) + ", " + (y));
   }
 }

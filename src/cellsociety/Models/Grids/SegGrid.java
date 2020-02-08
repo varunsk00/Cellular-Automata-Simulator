@@ -36,7 +36,7 @@ public class SegGrid extends Grid {
   public void updateGrid() {
     int x = 0;
     int y = 0;
-    storeNeighborState(sameCells, getCell(x,y).getState());
+    storeCellsByState(sameCells, getCell(x,y).getState());
     super.updateGrid();
   }
 
@@ -55,12 +55,12 @@ public class SegGrid extends Grid {
       int ran_x = r.nextInt(getColumns());
       int ran_y = r.nextInt(getRows());
       while (current(ran_x, ran_y).getState().equals(EMPTY)) {
-        current(ran_x, ran_y).updateState(current(x, y).getState());
+        current(ran_x, ran_y).setState(current(x, y).getState());
         System.out.println("relocated to: " + (ran_x) + ", " + (y));
         ran_x = r.nextInt(getColumns());
         ran_y = r.nextInt(getRows());
       }
-      current(x, y).updateState(EMPTY);
+      current(x, y).setState(EMPTY);
     }
   }
 
@@ -69,10 +69,10 @@ public class SegGrid extends Grid {
       for (int j = 0; j < this.getColumns(); j++) {
 
         if (r.nextFloat() <= percentFull / 2) {
-          this.current(i, j).updateState(X);
+          this.current(i, j).setState(X);
         }
         if (r.nextFloat() <= percentFull / 2) {
-          this.current(i, j).updateState(O);
+          this.current(i, j).setState(O);
         }
       }
     }

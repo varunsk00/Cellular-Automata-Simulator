@@ -31,7 +31,7 @@ public class FireGrid extends Grid {
 
   @Override
   public void updateGrid() {
-    storeNeighborState(burnedCells, BURNING);
+    storeCellsByState(burnedCells, BURNING);
     super.updateGrid();
   }
 
@@ -64,16 +64,16 @@ public class FireGrid extends Grid {
   }
 
   private void setBurningCell() {
-    this.getCell(this.getRows() / 2, this.getColumns() / 2).updateState(BURNING);
+    this.getCell(this.getRows() / 2, this.getColumns() / 2).setState(BURNING);
   }
 
   private void burnCell(int x, int y) {
-    current(x, y).updateState(BURNING);
+    current(x, y).setState(BURNING);
     System.out.println("caught fire: " + (x) + ", " + (y));
   }
 
   private void extinguishCell(int x, int y) {
-    current(x, y).updateState(EMPTY);
+    current(x, y).setState(EMPTY);
     System.out.println("extinguished: " + (x) + ", " + (y));
   }
 }

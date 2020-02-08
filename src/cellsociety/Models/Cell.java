@@ -5,8 +5,11 @@ import java.awt.Point;
 public class Cell {
 
   private String state;
+  private String nextState;
+
   private int lives;
   private Point coordinate;
+
 
   /**
    * Constructs a new cell
@@ -15,7 +18,16 @@ public class Cell {
    **/
   public Cell(String state, int x, int y) {
     this.state = state;
+    this.nextState = state;
     this.coordinate = new Point(x, y);
+  }
+
+  public String getNextState() {
+    return nextState;
+  }
+
+  public void setNextState(String nextState) {
+    this.nextState = nextState;
   }
 
   /**
@@ -49,7 +61,7 @@ public class Cell {
    *
    * @param state the new state for cell Sets the cell's instance variables to new values
    **/
-  public void updateState(String state) {
+  public void setState(String state) {
     this.state = state;
   }
 

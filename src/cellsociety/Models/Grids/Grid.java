@@ -122,11 +122,8 @@ public class Grid {
     return getGrid().get(x).get(y);
   }
 
-  protected void setCell(Cell cell) {
-    int x  = cell.getCoordinate().x;
-    int y  = cell.getCoordinate().y;
-    current(x,y).updateLives(cell.getLives());
-    current(x,y).updateState(cell.getState());
+  protected void setCellState(int x, int y, String state) {
+    current(x,y).setState(state);
   }
 
   protected void replaceGrid(List<List<Cell>> newGrid){
@@ -208,7 +205,7 @@ public class Grid {
     return false;
   }
 
-  protected void storeNeighborState(List<Point> neighborCells, String state) {
+  protected void storeCellsByState(List<Point> neighborCells, String state) {
     neighborCells.clear();
     for (List<Cell> row : getGrid()) {
       for (Cell cell : row) {
