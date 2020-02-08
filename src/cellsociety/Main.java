@@ -41,7 +41,7 @@ public class Main extends Application {
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-  private double SCENE_WIDTH = 1000;
+  private double SCENE_WIDTH = 500;
   private double SCENE_HEIGHT = 500;
 
   public static final String DATA_FILE_EXTENSION = "*.xml";

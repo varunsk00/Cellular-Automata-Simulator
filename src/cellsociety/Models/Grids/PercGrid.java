@@ -30,7 +30,7 @@ public class PercGrid extends Grid {
 
   @Override
   public void updateGrid(){
-    storeNeighborState(fullCells, FULL);
+    storeCellsByState(fullCells, FULL);
     super.updateGrid();
   }
 
@@ -44,7 +44,7 @@ public class PercGrid extends Grid {
   private void setFullCells(){
     for (int i = 0; i < this.getColumns(); i++) {
       if (this.current(0, i).getState() != BLOCKED) {
-        this.current(0, i).updateState(FULL);
+        this.current(0, i).setState(FULL);
       }
     }
   }
@@ -53,7 +53,7 @@ public class PercGrid extends Grid {
     for (int i = 0; i < this.getRows(); i++) {
       for (int j = 0; j < this.getColumns(); j++) {
         if (r.nextFloat() <= percentBlocked){
-          this.getCell(i,j).updateState(BLOCKED);
+          this.getCell(i,j).setState(BLOCKED);
         }
       }
     }
@@ -64,7 +64,7 @@ public class PercGrid extends Grid {
   }
 
   private void leakCell(int x, int y){
-    current(x,y).updateState(FULL);
+    current(x,y).setState(FULL);
     System.out.println("leaked: " + (x) + ", " + (y));
   }
 }

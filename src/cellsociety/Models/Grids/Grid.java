@@ -63,7 +63,7 @@ public class Grid {
   /**
    * @return Cells in an immutable list representing Grid
    */
-  private List<List<Cell>> getGrid() {
+  protected List<List<Cell>> getGrid() {
     return Collections.unmodifiableList(this.grid);
   }
 
@@ -118,8 +118,16 @@ public class Grid {
   protected void updateCell(int x, int y, List<Cell> neighbors) {
   }
 
-  public Cell getCell(int x, int y) {
+  protected Cell getCell(int x, int y) {
     return getGrid().get(x).get(y);
+  }
+
+  protected void setCellState(int x, int y, String state) {
+    current(x,y).setState(state);
+  }
+
+  protected void replaceGrid(List<List<Cell>> newGrid){
+    this.grid = newGrid;
   }
 
   protected List<Cell> getAllNeighbors(int x, int y) {
@@ -142,7 +150,6 @@ public class Grid {
     for (int i = col -1; i <= col +1; i++){
       for (int j = row -1; j <= row +1; j++){
         if (isOutOfBounds(i,j) ){
-          System.out.println("Out of bounds:" + col+row);
           continue;
         }
         if (!(i==col+1 && j==row+1) || !(i==col+1 && j==row-1)){
@@ -158,7 +165,6 @@ public class Grid {
     for (int i = x -1; i <= x +1; i++){
       for (int j = y -1; j <= y +1; j++){
         if (isOutOfBounds(i,j) ){
-          System.out.println("Out of bounds:" + x+y);
           continue;
         }
         if (i==x || j==y){
@@ -197,7 +203,7 @@ public class Grid {
     return false;
   }
 
-  protected void storeNeighborState(List<Point> neighborCells, String state) {
+  protected void storeCellsByState(List<Point> neighborCells, String state) {
     neighborCells.clear();
     for (List<Cell> row : getGrid()) {
       for (Cell cell : row) {
