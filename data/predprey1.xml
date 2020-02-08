@@ -8,6 +8,6 @@
   <predatorEnergyPerPrey>1</predatorEnergyPerPrey>
   <preyGenerationRate>3</preyGenerationRate>
   <predatorGenerationRate>3</predatorGenerationRate>
-  <percentPredator>0.1</percentPredator>
-  <percentPrey>0.1</percentPrey>
+  <percentPredator>0.2</percentPredator>
+  <percentPrey>0.2</percentPrey>
 </data>

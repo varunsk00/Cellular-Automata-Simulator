@@ -14,10 +14,11 @@ public class PredPreyGrid extends Grid {
   private static int predatorGenerationRate;
   private static double percentPredator;
   private static double percentPrey;
-  private Random r = new Random();
   private final String PREDATOR = "predator";
   private final String PREY = "prey";
   private final String EMPTY = "empty";
+
+  private Random r = new Random();
 
 
   public PredPreyGrid(Map<String, String> data) {
@@ -49,12 +50,12 @@ public class PredPreyGrid extends Grid {
       for (int j = 0; j < getColumns(); j++) {
         if (r.nextFloat() <= percentPredator) {
           setCellState(i, j, PREDATOR);
-          current(i,j).setNextState(PREDATOR);
+          current(i, j).setNextState(PREDATOR);
           current(i, j).updateLives(predatorStartingEnergy);
         }
         if (r.nextFloat() <= percentPrey) {
           setCellState(i, j, PREY);
-          current(i,j).setNextState(PREY);
+          current(i, j).setNextState(PREY);
         }
       }
     }
@@ -79,7 +80,6 @@ public class PredPreyGrid extends Grid {
     if (currentCell.getState().equals(PREY) && currentCell.getNextState().equals(PREY)) {
       handlePrey(neighbors, currentCell);
     }
-
   }
 
   private void handlePrey(List<Cell> neighbors, Cell currentCell) {
@@ -91,31 +91,32 @@ public class PredPreyGrid extends Grid {
   }
 
   private void handlePredator(List<Cell> neighbors, Cell currentCell) {
-    System.out.println("lives: " + currentCell.getLives());
-
     Cell newCell = returnRandomNeighborByState(neighbors, PREY);
     //if there is a prey in neighbors
     if (newCell != null) {
       predatorEatPrey(currentCell, newCell);
       return;
     }
+    //if there are empty neighbors
     newCell = returnRandomNeighborByState(neighbors, EMPTY);
     if (newCell != null) {
-      newCell.setNextState(currentCell.getState());
-      newCell.setLives(currentCell.getLives() - 1);
-      resetToEmptyCell(currentCell);
-      if (newCell.getLives()<0){
-        System.out.println("Death by moving");
-        resetToEmptyCell(newCell);
-      }
+      movePredator(currentCell, newCell);
     }
-    //if move or stand still, decrease lives by 1
+    //there are no empty or prey neighbors, stay in same position and lose life
     else {
-      currentCell.updateLives(- 1);
-      if (currentCell.getLives()<0){
-        System.out.println("Death by still");
+      currentCell.updateLives(-1);
+      if (currentCell.getLives() < 0) {
         resetToEmptyCell(currentCell);
       }
+    }
+  }
+
+  private void movePredator(Cell currentCell, Cell newCell) {
+    newCell.setNextState(currentCell.getState());
+    newCell.setLives(currentCell.getLives() - 1);
+    resetToEmptyCell(currentCell);
+    if (newCell.getLives() < 0) {
+      resetToEmptyCell(newCell);
     }
   }
 
@@ -139,12 +140,10 @@ public class PredPreyGrid extends Grid {
     if (newCell.getLives() > predatorGenerationRate) {
       //spawns
       resetToPredatorCell(currentCell);
-    } else if (newCell.getLives() <= predatorGenerationRate) {
+    } else {
       //resets
       resetToEmptyCell(currentCell);
     }
-
-
   }
 
   private void movePrey(Cell currentCell, Cell newCell) {
@@ -156,7 +155,7 @@ public class PredPreyGrid extends Grid {
       //spawns
       resetToPreyCell(currentCell);
 
-    } else if (newCell.getLives() <= preyGenerationRate) {
+    } else {
       //resets
       resetToEmptyCell(currentCell);
     }
