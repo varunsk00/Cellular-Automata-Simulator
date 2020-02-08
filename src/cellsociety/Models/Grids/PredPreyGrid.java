@@ -111,15 +111,6 @@ public class PredPreyGrid extends Grid {
     }
   }
 
-  private void movePredator(Cell currentCell, Cell newCell) {
-    newCell.setNextState(currentCell.getState());
-    newCell.setLives(currentCell.getLives() - 1);
-    resetToEmptyCell(currentCell);
-    if (newCell.getLives() < 0) {
-      resetToEmptyCell(newCell);
-    }
-  }
-
   private Cell returnRandomNeighborByState(List<Cell> neighbors, String state) {
     List<Cell> emptyNeighbors = new ArrayList<>();
     for (Cell c : neighbors) {
@@ -131,6 +122,15 @@ public class PredPreyGrid extends Grid {
       return null;
     }
     return emptyNeighbors.get(r.nextInt(emptyNeighbors.size()));
+  }
+  
+  private void movePredator(Cell currentCell, Cell newCell) {
+    newCell.setNextState(currentCell.getState());
+    newCell.setLives(currentCell.getLives() - 1);
+    resetToEmptyCell(currentCell);
+    if (newCell.getLives() < 0) {
+      resetToEmptyCell(newCell);
+    }
   }
 
   private void predatorEatPrey(Cell currentCell, Cell newCell) {
@@ -178,6 +178,5 @@ public class PredPreyGrid extends Grid {
     cell.setNextState(PREDATOR);
     cell.setLives(predatorStartingEnergy);
   }
-
 
 }
