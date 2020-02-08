@@ -1,11 +1,6 @@
 package cellsociety.Controllers.xml;
 
-import cellsociety.Models.Grids.FireGrid;
-import cellsociety.Models.Grids.Grid;
-import cellsociety.Models.Grids.LifeGrid;
-import cellsociety.Models.Grids.PercGrid;
-import cellsociety.Models.Grids.PredPreyGrid;
-import cellsociety.Models.Grids.SegGrid;
+import cellsociety.Models.Grids.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -113,6 +108,8 @@ public class XMLParser {
         return new SegGrid(results);
       case "PredPrey":
         return new PredPreyGrid(results);
+      case "RockPaperScissors":
+        return new RPSGrid(results);
     }
     return null;
   }
