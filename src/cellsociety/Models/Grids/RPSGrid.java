@@ -56,14 +56,14 @@ public class RPSGrid extends Grid {
         if(r.nextFloat() <= growthRate){
             if(emptyNeighbors.size() > 0){
                 Cell randomEmptyNeighbor = emptyNeighbors.get(r.nextInt(emptyNeighbors.size()));
-                randomEmptyNeighbor.updateState(current(x,y).getState());
+                randomEmptyNeighbor.setState(current(x,y).getState());
                 System.out.println("Parent: " + current(x,y).getCoordinate());
                 System.out.println("Child: " + randomEmptyNeighbor.getCoordinate());
             }
         }
         //decay
         else if (r.nextFloat() <=  decay){
-            current(x,y).updateState(EMPTY);
+            current(x,y).setState(EMPTY);
             System.out.println("DEAD");
         }
 
@@ -74,22 +74,22 @@ public class RPSGrid extends Grid {
             double sigmoid = 1/(1+Math.exp(-(k-m)/s));
             if (r.nextFloat() <=  sigmoid){
                 if(current(x,y).getState().equals(R) && randomNeighbor.getState().equals(S)){
-                    current(randomNeighbor.getCoordinate().x, randomNeighbor.getCoordinate().y).updateState(EMPTY);
+                    current(randomNeighbor.getCoordinate().x, randomNeighbor.getCoordinate().y).setState(EMPTY);
                 }
                 if(current(x,y).getState().equals(R) && randomNeighbor.getState().equals(P)){
-                    current(x, y).updateState(EMPTY);
+                    current(x, y).setState(EMPTY);
                 }
                 if(current(x,y).getState().equals(P) && randomNeighbor.getState().equals(R)){
-                    current(randomNeighbor.getCoordinate().x, randomNeighbor.getCoordinate().y).updateState(EMPTY);
+                    current(randomNeighbor.getCoordinate().x, randomNeighbor.getCoordinate().y).setState(EMPTY);
                 }
                 if(current(x,y).getState().equals(P) && randomNeighbor.getState().equals(S)){
-                    current(x, y).updateState(EMPTY);
+                    current(x, y).setState(EMPTY);
                 }
                 if(current(x,y).getState().equals(S) && randomNeighbor.getState().equals(P)){
-                    current(randomNeighbor.getCoordinate().x, randomNeighbor.getCoordinate().y).updateState(EMPTY);
+                    current(randomNeighbor.getCoordinate().x, randomNeighbor.getCoordinate().y).setState(EMPTY);
                 }
                 if(current(x,y).getState().equals(S) && randomNeighbor.getState().equals(R)) {
-                    current(x, y).updateState(EMPTY);
+                    current(x, y).setState(EMPTY);
                 }
         }
 
@@ -97,8 +97,8 @@ public class RPSGrid extends Grid {
         for(Cell c: neighbors){
             if (r.nextFloat() <= 0.5*diffusivityRate && (!c.getState().equals(EMPTY) && !current(x,y).equals(EMPTY))){
                 String current_state = current(x,y).getState();
-                current(x,y).updateState(c.getState());
-                c.updateState(current_state);
+                current(x,y).setState(c.getState());
+                c.setState(current_state);
                 System.out.println("SWAP");
         }
     }
@@ -106,8 +106,8 @@ public class RPSGrid extends Grid {
 }
 
     private void setInits() {
-        this.current(r.nextInt(getRows()),r.nextInt(getColumns())).updateState(R);
-        this.current(r.nextInt(getRows()),r.nextInt(getColumns())).updateState(P);
-        this.current(r.nextInt(getRows()),r.nextInt(getColumns())).updateState(S);
+        this.current(r.nextInt(getRows()),r.nextInt(getColumns())).setState(R);
+        this.current(r.nextInt(getRows()),r.nextInt(getColumns())).setState(P);
+        this.current(r.nextInt(getRows()),r.nextInt(getColumns())).setState(S);
     }
 }

@@ -123,7 +123,7 @@ public class PredPreyGrid extends Grid {
     }
     return emptyNeighbors.get(r.nextInt(emptyNeighbors.size()));
   }
-  
+
   private void movePredator(Cell currentCell, Cell newCell) {
     newCell.setNextState(currentCell.getState());
     newCell.setLives(currentCell.getLives() - 1);
