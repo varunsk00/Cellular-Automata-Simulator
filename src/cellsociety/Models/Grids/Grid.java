@@ -138,7 +138,39 @@ public class Grid {
     return neighbors;
   }
 
-  private boolean isOutOfBounds(int x, int y) {
+  protected List<Cell> getHexNeighbors(int col, int row) {
+    List<Cell> neighbors = new ArrayList<>();
+    for (int i = col -1; i <= col +1; i++){
+      for (int j = row -1; j <= row +1; j++){
+        if (isOutOfBounds(i,j) ){
+          System.out.println("Out of bounds:" + col+row);
+          continue;
+        }
+        if (!(i==col+1 && j==row+1) || !(i==col+1 && j==row-1)){
+          neighbors.add(getCell(i,j));
+        }
+      }
+    }
+    return neighbors;
+  }
+
+  protected List<Cell> getNeighbors(int x, int y) {
+    List<Cell> neighbors = new ArrayList<>();
+    for (int i = x -1; i <= x +1; i++){
+      for (int j = y -1; j <= y +1; j++){
+        if (isOutOfBounds(i,j) ){
+          System.out.println("Out of bounds:" + x+y);
+          continue;
+        }
+        if (i==x || j==y){
+          neighbors.add(getCell(i,j));
+        }
+      }
+    }
+    return neighbors;
+  }
+
+  protected boolean isOutOfBounds(int x, int y) {
     return y < 0 || y >= rows || x < 0 || x >= columns;
   }
 
