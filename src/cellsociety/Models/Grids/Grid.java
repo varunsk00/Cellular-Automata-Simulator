@@ -150,7 +150,6 @@ public class Grid {
     for (int i = col -1; i <= col +1; i++){
       for (int j = row -1; j <= row +1; j++){
         if (isOutOfBounds(i,j) ){
-          System.out.println("Out of bounds:" + col+row);
           continue;
         }
         if (!(i==col+1 && j==row+1) || !(i==col+1 && j==row-1)){
@@ -166,7 +165,6 @@ public class Grid {
     for (int i = x -1; i <= x +1; i++){
       for (int j = y -1; j <= y +1; j++){
         if (isOutOfBounds(i,j) ){
-          System.out.println("Out of bounds:" + x+y);
           continue;
         }
         if (i==x || j==y){

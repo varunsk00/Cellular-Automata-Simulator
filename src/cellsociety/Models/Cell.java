@@ -20,6 +20,7 @@ public class Cell {
     this.state = state;
     this.nextState = state;
     this.coordinate = new Point(x, y);
+    this.lives=0;
   }
 
   public String getNextState() {
