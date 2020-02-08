@@ -145,14 +145,14 @@ public class Grid {
     return neighbors;
   }
 
-  protected List<Cell> getHexNeighbors(int col, int row) {
+  protected List<Cell> getHexNeighbors(int row, int col) {
     List<Cell> neighbors = new ArrayList<>();
-    for (int i = col -1; i <= col +1; i++){
-      for (int j = row -1; j <= row +1; j++){
+    for (int i = row -1; i <= row +1; i++){
+      for (int j = col -1; j <= col +1; j++){
         if (isOutOfBounds(i,j) ){
           continue;
         }
-        if (!(i==col+1 && j==row+1) || !(i==col+1 && j==row-1)){
+        if (!(i==row+1 && j==col+1) || !(i==row-1 && j==col+1)){
           neighbors.add(getCell(i,j));
         }
       }
