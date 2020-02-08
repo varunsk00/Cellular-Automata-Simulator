@@ -1,0 +1,12 @@
+<?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
+<data grid="RockPaperScissors">
+    <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
+    <title>Pock Paper Scissors</title>
+    <rows>50</rows>
+    <columns>50</columns>
+    <s-empiricalTest>0.6</s-empiricalTest>
+    <sigmoidFunctionRate>0.0</sigmoidFunctionRate>
+    <decayRate>0.1</decayRate>
+    <growthRate>0.8</growthRate>
+    <diffusivityRate>0.8</diffusivityRate>
+</data>
