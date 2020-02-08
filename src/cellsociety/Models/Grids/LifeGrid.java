@@ -46,7 +46,7 @@ public class LifeGrid extends Grid {
   }
 
   @Override
-  protected void updateCells(int x, int y, List<Cell> neighbors){
+  protected void updateCell(int x, int y, List<Cell> neighbors){
         int alive_count= 0;
         for (Cell c: neighbors){
             if (c.getState() == "alive"){

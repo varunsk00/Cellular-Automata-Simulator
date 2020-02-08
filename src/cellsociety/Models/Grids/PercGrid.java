@@ -35,7 +35,7 @@ public class PercGrid extends Grid {
   }
 
   @Override
-  protected void updateCells(int x, int y, List<Cell> neighbors){
+  protected void updateCell(int x, int y, List<Cell> neighbors){
     if (isFillable(x,y)) {
       leakCell(x,y);
     }

@@ -58,19 +58,13 @@ public class PredPreyGrid extends Grid {
   }
 
   @Override
-  public void updateCells(int x, int y, List<Cell> neighbors) {
+  public void updateCell(int x, int y, List<Cell> neighbors) {
     Cell currentCell = current(x, y);
     //prey can move
 
     if (currentCell.getState().equals(PREY) && checkNeighbors(x, y, emptyCells)) {
       handlePrey(neighbors, currentCell);
     }
-  }
-
-  @Override
-  protected void handleMiddleCell(int x, int y) {
-    List<Cell> neighbors = getNeighbors(x, y);
-    updateCells(x, y, neighbors);
   }
 
   private void handlePrey(List<Cell> neighbors, Cell currentCell) {
@@ -85,6 +79,7 @@ public class PredPreyGrid extends Grid {
     Cell newCell = emptyNeighbors.get(r.nextInt(emptyNeighbors.size()));
 
     moveCell(currentCell, newCell);
+
 //    newCell.setLives(currentCell.getLives()+1);
 //    System.out.println(
 //        currentCell.getCoordinate().toString() + "current lives: " + currentCell.getLives() + ", "

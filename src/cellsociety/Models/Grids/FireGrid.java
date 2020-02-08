@@ -53,7 +53,7 @@ public class FireGrid extends Grid {
   }
 
   @Override
-  protected void updateCells(int x, int y, List<Cell> neighbors) {
+  protected void updateCell(int x, int y, List<Cell> neighbors) {
     if (current(x, y).getState().equals(BURNING)) {
       extinguishCell(x, y);
     }
