@@ -91,22 +91,32 @@ public class PredPreyGrid extends Grid {
   }
 
   private void handlePredator(List<Cell> neighbors, Cell currentCell) {
-//    System.out.println("lives: " + currentCell.getLives());
+    System.out.println("lives: " + currentCell.getLives());
+
     Cell newCell = returnRandomNeighborByState(neighbors, PREY);
     //if there is a prey in neighbors
     if (newCell != null) {
-//      System.out
-//          .println("predator " + currentCell.getCoordinate() + " eats " + newCell.getCoordinate());
       predatorEatPrey(currentCell, newCell);
       return;
     }
     newCell = returnRandomNeighborByState(neighbors, EMPTY);
     if (newCell != null) {
       newCell.setNextState(currentCell.getState());
+      newCell.setLives(currentCell.getLives() - 1);
       resetToEmptyCell(currentCell);
+      if (newCell.getLives()<0){
+        System.out.println("Death by moving");
+        resetToEmptyCell(newCell);
+      }
     }
     //if move or stand still, decrease lives by 1
-    newCell.updateLives(currentCell.getLives() - 1);
+    else {
+      currentCell.updateLives(- 1);
+      if (currentCell.getLives()<0){
+        System.out.println("Death by still");
+        resetToEmptyCell(currentCell);
+      }
+    }
   }
 
   private Cell returnRandomNeighborByState(List<Cell> neighbors, String state) {
@@ -133,8 +143,7 @@ public class PredPreyGrid extends Grid {
       //resets
       resetToEmptyCell(currentCell);
     }
-    System.out.println("current state: " + currentCell.getState());
-    System.out.println("next state: " + currentCell.getNextState());
+
 
   }
 
