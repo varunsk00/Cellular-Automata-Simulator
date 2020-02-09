@@ -1,13 +1,34 @@
 <?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
 <data grid="PredPrey">
-  <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
-  <title>Predator Prey</title>
-  <rows>50</rows>
-  <columns>50</columns>
-  <predatorStartingEnergy>3</predatorStartingEnergy>
-  <predatorEnergyPerPrey>1</predatorEnergyPerPrey>
-  <preyGenerationRate>3</preyGenerationRate>
-  <predatorGenerationRate>3</predatorGenerationRate>
-  <percentPredator>0.2</percentPredator>
-  <percentPrey>0.2</percentPrey>
+  <Scene>
+    <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt</author>
+    <title>Predator Prey</title>
+    <rows>50</rows>
+    <columns>50</columns>
+  </Scene>
+  <Simulation>
+    <predatorStartingEnergy>3</predatorStartingEnergy>
+    <predatorEnergyPerPrey>1</predatorEnergyPerPrey>
+    <preyGenerationRate>3</preyGenerationRate>
+    <predatorGenerationRate>3</predatorGenerationRate>
+    <percentPredator>0.2</percentPredator>
+    <percentPrey>0.2</percentPrey>
+  </Simulation>
+  <Cells>
+    <Cell>
+      <Color>#ff9900</Color>
+      <State>predator</State>
+      <InitialProportion>0.2</InitialProportion>
+    </Cell>
+    <Cell>
+      <Color>#00cc00</Color>
+      <State>prey</State>
+      <InitialProportion>0.2</InitialProportion>
+    </Cell>
+    <Cell>
+      <Color>#ffffff</Color>
+      <State>empty</State>
+      <InitialProportion>1</InitialProportion>
+    </Cell>
+  </Cells>
 </data>
