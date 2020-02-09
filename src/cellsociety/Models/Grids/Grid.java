@@ -15,9 +15,6 @@ public class Grid {
   private List<List<Cell>> grid;
   private int rows;
   private int columns;
-  private String title;
-  private String author;
-  private int countState;
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -30,7 +27,6 @@ public class Grid {
     this.rows = rows;
     this.columns = columns;
     this.grid = createGrid();
-    this.countState = 0;
   }
 
   public Grid(Map<String, Double> data) throws XMLException{
@@ -45,26 +41,6 @@ public class Grid {
       return (int) d;
     }
     throw new XMLException("%s must be an integer", prop);
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public String getAuthor() {
-    return author;
-  }
-
-  protected int parseIntFromMap(Map<String, String> data, String key) {
-    return Integer.parseInt(data.get(key));
-  }
-
-  protected double parseDoubleFromMap(Map<String, String> data, String key) {
-    return Double.parseDouble(data.get(key));
-  }
-
-  protected String parseStringFromMap(Map<String, String> data, String key) {
-    return data.get(key);
   }
 
   /**
@@ -104,7 +80,6 @@ public class Grid {
         updateCell(i, j, neighbors);
       }
     }
-    this.countState++;
   }
 
   /**
@@ -131,10 +106,6 @@ public class Grid {
 
   protected void setCellState(int x, int y, String state) {
     current(x,y).setState(state);
-  }
-
-  protected void replaceGrid(List<List<Cell>> newGrid){
-    this.grid = newGrid;
   }
 
   protected List<Cell> getAllNeighbors(int x, int y) {

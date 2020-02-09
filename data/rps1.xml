@@ -1,7 +1,11 @@
 <?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
 <data simulationType="RockPaperScissors">
-    <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
+  <details>
+    <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt</author>
     <title>Pock Paper Scissors</title>
+    <gridType>rectangle</gridType>
+  </details>
+  <simulationProps>
     <rows>50</rows>
     <columns>50</columns>
     <s-empiricalTest>0.6</s-empiricalTest>
@@ -9,4 +13,11 @@
     <decayRate>0.1</decayRate>
     <growthRate>0.8</growthRate>
     <diffusivityRate>0.8</diffusivityRate>
+  </simulationProps>
+  <cellTypes>
+    <state name="R">#0000ff</state>
+    <state name="P">#ff0000</state>
+    <state name="S">#00cc00</state>
+    <state name="empty">#ffffff</state>
+  </cellTypes>
 </data>

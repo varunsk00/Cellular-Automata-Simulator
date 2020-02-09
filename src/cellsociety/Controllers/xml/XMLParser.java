@@ -2,6 +2,7 @@ package cellsociety.Controllers.xml;
 
 import cellsociety.Models.Grids.*;
 
+import java.util.ResourceBundle;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,7 +22,7 @@ import org.xml.sax.SAXException;
  *
  * @author Rhondu Smithwick
  * @author Robert C. Duvall
- * @author Jaidha Rosenblatt TODO: remove error messages into resource bundle
+ * @author Jaidha Rosenblatt
  */
 public class XMLParser {
 
@@ -29,13 +30,14 @@ public class XMLParser {
   private File myFile;
   private Element root;
   private String gridType;
+  private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");;
 
   /**
    * Create parser for XML files of given type.
    */
   public XMLParser(File dataFile) throws NullPointerException {
     if (dataFile == null) {
-      throw new NullPointerException("Please upload a valid XML file");
+      throw new NullPointerException(myResources.getString("NullFile"));
     }
     DOCUMENT_BUILDER = getDocumentBuilder();
     myFile = dataFile;
@@ -52,7 +54,6 @@ public class XMLParser {
 
     // read data associated with the fields given by the object
     Map<String, Double> results = getSimulationProperties();
-    System.out.println(results);
     return returnGridByType(results);
   }
 
@@ -82,7 +83,7 @@ public class XMLParser {
   private NodeList getNodeListFromSectionName(String name) {
     NodeList allVariables = root.getElementsByTagName(name);
     if (allVariables.getLength() == 0) {
-      throw new XMLException("%s section was not found", name);
+      throw new XMLException(myResources.getString("SectionNotFound"), name);
     }
     Element attributes = (Element) allVariables.item(0);
     return attributes.getElementsByTagName("*");
@@ -91,7 +92,7 @@ public class XMLParser {
   public Map<String, String> getMapBySection(String section) throws XMLException {
     NodeList variables = getNodeListFromSectionName(section);
     if (variables.getLength() == 0) {
-      throw new XMLException("%s section was not found", section);
+      throw new XMLException(myResources.getString("SectionNotFound"), section);
     }
     Map<String, String> results = new HashMap<>();
     for (int i = 0; i < variables.getLength(); i++) {
@@ -109,9 +110,7 @@ public class XMLParser {
 
     for (int i = 0; i < variables.getLength(); i++) {
       Node temp = variables.item(i);
-      System.out.println("temp: " + temp);
       if (temp.getNodeType() == Node.ELEMENT_NODE) {
-        System.out.println(temp.getNodeName() + Double.parseDouble(temp.getTextContent()));
         results.put(temp.getNodeName(), Double.parseDouble(temp.getTextContent()));
       }
     }
@@ -134,7 +133,7 @@ public class XMLParser {
       case "RockPaperScissors":
         return new RPSGrid(results);
     }
-    throw new XMLException("Not a valid type of simulation");
+    throw new XMLException(myResources.getString("InvalidSimulationType"));
   }
 
 

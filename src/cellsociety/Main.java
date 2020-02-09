@@ -180,12 +180,10 @@ public class Main extends Application {
 
     try {
       XMLParser parser = new XMLParser(dataFile);
-      Map<String, String> map = parser.getMapBySection("cellTypes");
-      Map<String, String> map2 = parser.getMapBySection("details");
-      System.out.println(map2.get("author"));
+      Map<String, String> details = parser.getMapBySection("details");
       Grid tempGrid = parser.getGrid();
-      SimulationView tempSimulation = new SimulationView(parser.getGridType(), tempGrid.getAuthor(),
-          tempGrid.getTitle(), tempGrid.getStats());
+      SimulationView tempSimulation = new SimulationView(parser.getGridType(), details.get("author"),
+          details.get("title"), tempGrid.getStats());
       tempSimulation.updateGridView(tempGrid);
 
       allGrids.add(tempGrid);

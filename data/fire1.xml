@@ -1,8 +1,18 @@
 <?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
 <data simulationType="Fire">
-  <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
-  <title>Fire</title>
-  <rows>20</rows>
-  <columns>20</columns>
-  <probCatch>0.6</probCatch>
+  <details>
+    <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt</author>
+    <title>Fire</title>
+    <gridType>rectangle</gridType>
+  </details>
+  <simulationProps>
+    <rows>20</rows>
+    <columns>20</columns>
+    <probCatch>0.6</probCatch>
+  </simulationProps>
+  <cellTypes>
+    <state name="burning">#ff3300</state>
+    <state name="tree">#009933</state>
+    <state name="empty">#ffff00</state>
+  </cellTypes>
 </data>
