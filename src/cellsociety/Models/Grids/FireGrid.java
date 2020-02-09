@@ -24,10 +24,11 @@ public class FireGrid extends Grid {
    **/
   public FireGrid(Map<String, Double> data) {
     super(data);
-    this.probability = data.get("probCatch");
+    this.probability = getDoubleFromData(data, "probCatch");
     burnedCells = new ArrayList<>();
     setBurningCell();
   }
+
 
   @Override
   public void updateGrid() {

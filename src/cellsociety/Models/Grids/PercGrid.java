@@ -22,7 +22,7 @@ public class PercGrid extends Grid {
    **/
   public PercGrid(Map<String, Double> data) {
     super(data);
-    this.percentBlocked = data.get("percentBlocked");
+    this.percentBlocked = getDoubleFromData(data, "percentBlocked");
     this.fullCells = new ArrayList<>();
     setFullCells();
     setBlockedCells();

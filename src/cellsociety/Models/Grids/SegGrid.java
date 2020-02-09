@@ -16,6 +16,7 @@ public class SegGrid extends Grid {
   private final String X = "X";
   private final String O = "O";
   private final String EMPTY = "empty";
+  private static final int numberOfNeighbors = 8;
 
 
   /**
@@ -25,12 +26,11 @@ public class SegGrid extends Grid {
    **/
   public SegGrid(Map<String, Double> data) {
     super(data);
-    this.prob = data.get("satisfiedThreshold") * 8;
-    this.percentFull = data.get("percentFull");
+    this.prob = getDoubleFromData(data,"satisfiedThreshold") * numberOfNeighbors;
+    this.percentFull = getDoubleFromData(data, "percentFull");
     this.sameCells = new ArrayList<>();
     setInits();
   }
-
 
   @Override
   public void updateGrid() {

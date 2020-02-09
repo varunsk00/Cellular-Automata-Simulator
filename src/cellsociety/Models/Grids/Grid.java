@@ -32,17 +32,27 @@ public class Grid {
   }
 
   public Grid(Map<String, Double> data) throws XMLException{
-    this.rows = convertDoubleToInt(data, "rows");
-    this.columns = convertDoubleToInt(data, "columns");
+    this.rows = getIntFromData(data, "rows");
+    this.columns = getIntFromData(data, "columns");
     this.grid = createGrid();
   }
 
-  protected int convertDoubleToInt(Map<String, Double> data, String prop) throws XMLException {
-    double d = data.get(prop);
-    if (d % 1 == 0){
-      return (int) d;
+  protected int getIntFromData(Map<String, Double> data, String prop) throws XMLException {
+    if (!data.containsKey(prop)){
+      throw new XMLException(myResources.getString("NullValue"), prop);
     }
-    throw new XMLException(myResources.getString("ParseInt"), prop);
+    double d = data.get(prop);
+    if (d % 1 != 0){
+      throw new XMLException(myResources.getString("ParseInt"), prop);
+    }
+    return (int) d;
+  }
+
+  protected double getDoubleFromData (Map<String, Double> data, String prop){
+    if (!data.containsKey(prop)){
+      throw new XMLException(myResources.getString("NullValue"), prop);
+    }
+    return data.get(prop);
   }
 
   /**

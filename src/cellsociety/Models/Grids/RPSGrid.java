@@ -30,11 +30,11 @@ public class RPSGrid extends Grid {
      **/
     public RPSGrid(Map<String, Double> data) {
         super(data);
-        this.s = data.get("s-empiricalTest");
-        this.m = data.get("sigmoidFunctionRate");
-        this.K = data.get("decayRate");
-        this.diffusivityRate = data.get("diffusivityRate");
-        this.growthRate = data.get("growthRate");
+        this.s = getDoubleFromData(data,"s-empiricalTest");
+        this.m = getDoubleFromData(data,"sigmoidFunctionRate");
+        this.K = getDoubleFromData(data,"decayRate");
+        this.diffusivityRate = getDoubleFromData(data, "diffusivityRate");
+        this.growthRate = getDoubleFromData(data,"growthRate");
         setInits();
     }
 

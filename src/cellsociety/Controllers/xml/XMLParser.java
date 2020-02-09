@@ -145,5 +145,4 @@ public class XMLParser {
     throw new XMLException(myResources.getString("InvalidSimulationType"));
   }
 
-
 }
