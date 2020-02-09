@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
  * Every simulation needs a header, which should be instantiated in Main and added to the top of the BorderPane
  * @author Eric Doppelt
  */
-public class Header {
+public class ButtonControls {
 
   private ResourceBundle myResources;
 
@@ -37,7 +37,7 @@ public class Header {
    * Assumes that language exists in Resources folder, otherwise throws an InvocationTargetException error
    * @param language is the language of the ResourceBundle
    */
-  public Header(String language) {
+  public ButtonControls(String language) {
 
     myResources = ResourceBundle.getBundle(language);
     this.playPressed = false;

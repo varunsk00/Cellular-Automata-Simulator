@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
  * Every simulation needs a Footer, which should be instantiated in the start() method in Main and added to the bottom of the BorderPane
  * @author Eric Doppelt
  */
-public class Footer {
+public class SliderControls {
 
     private ResourceBundle myResources;
 
@@ -40,7 +40,7 @@ public class Footer {
      * renderFooter() adds Labels and Sliders to set values as mentioned in class description
      * @param language is the String that represents the language for the ResourceBundle
      */
-    public Footer(String language) {
+    public SliderControls(String language) {
         this.myResources = ResourceBundle.getBundle(language);
         renderFooter();
     }

@@ -1,9 +1,9 @@
 package cellsociety.Visuals;
 
 import cellsociety.Models.Grids.Grid;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Shape;
 
 import java.util.Map;
 
@@ -11,12 +11,12 @@ public class SimulationView {
 
     private VBox mySimulation;
     private StatView myStatView;
-    private GridView myGridView;
+    private HexGridView myHexGridView;
 
-    public SimulationView(String language, String author, String title, Map stats) {
+    public SimulationView(String language, String author, String title, Shape shape, Map stats) {
         mySimulation = new VBox();
         setStatView(title, author, stats);
-        setGridView(language);
+        setGridView(language, shape);
     }
 
     private void setStatView(String title, String author, Map stats) {
@@ -24,10 +24,10 @@ public class SimulationView {
         mySimulation.getChildren().add(myStatView.getStatBox());
     }
 
-    private void setGridView(String language) {
-        myGridView = new GridView(language);
-        mySimulation.getChildren().add(myGridView.getGridPane());
-        mySimulation.setVgrow(myGridView.getGridPane(), Priority.ALWAYS);
+    private void setGridView(String language, Shape shape) {
+        myHexGridView = new HexGridView(language);
+        mySimulation.getChildren().add(myHexGridView.getGridPane());
+        mySimulation.setVgrow(myHexGridView.getGridPane(), Priority.ALWAYS);
     }
 
     public VBox getSimulationView() {
@@ -35,7 +35,7 @@ public class SimulationView {
     }
 
     public void updateGridView(Grid grid) {
-        myGridView.updateGridView(grid);
+        myHexGridView.updateGridView(grid);
         myStatView.updateStats(grid.getStats());
     }
 }
