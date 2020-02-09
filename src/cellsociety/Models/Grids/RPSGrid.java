@@ -40,70 +40,88 @@ public class RPSGrid extends Grid {
 
     @Override
     protected void updateCell(int x, int y, List<Cell> neighbors) {
+        int k = 0;
+        Cell randomNeighbor = neighbors.get(r.nextInt(neighbors.size()));
         time = time + (1.0/(double)(getRows()*getColumns()));
         double decay = 1 - Math.exp(-K*time);
-        int k = 0;
         List<Cell> emptyNeighbors = new ArrayList<>();
         for(Cell c: neighbors){
-            if (c.getState().equals(EMPTY)){
-                emptyNeighbors.add(c);
-            }
-            else if (c.getState().equals(current(x,y).getState()) && !c.getState().equals(EMPTY)) {
-                k++;
-            }
+            calculateEmptyNeighbors(c, emptyNeighbors);
+            calculateK(c,x,y,k);
         }
-        //reproduction
-        if(r.nextFloat() <= growthRate){
-            if(emptyNeighbors.size() > 0){
-                Cell randomEmptyNeighbor = emptyNeighbors.get(r.nextInt(emptyNeighbors.size()));
-                randomEmptyNeighbor.setState(current(x,y).getState());
-                System.out.println("Parent: " + current(x,y).getCoordinate());
-                System.out.println("Child: " + randomEmptyNeighbor.getCoordinate());
-            }
+        double sigmoid = 1 / (1 + Math.exp(-(k - m) / s));
+        if(probability() <= growthRate){
+            reproduceCell(x, y, emptyNeighbors);
         }
-        //decay
-        else if (r.nextFloat() <=  decay){
-            current(x,y).setState(EMPTY);
-            System.out.println("DEAD");
+        else if (probability() <= decay){
+            killCell(x,y);
         }
-
-        //conjugation
-        else{
-            //RPS Mechanic
-            Cell randomNeighbor = neighbors.get(r.nextInt(neighbors.size()));
-            double sigmoid = 1/(1+Math.exp(-(k-m)/s));
-            if (r.nextFloat() <=  sigmoid){
-                if(current(x,y).getState().equals(R) && randomNeighbor.getState().equals(S)){
-                    current(randomNeighbor.getCoordinate().x, randomNeighbor.getCoordinate().y).setState(EMPTY);
-                }
-                if(current(x,y).getState().equals(R) && randomNeighbor.getState().equals(P)){
-                    current(x, y).setState(EMPTY);
-                }
-                if(current(x,y).getState().equals(P) && randomNeighbor.getState().equals(R)){
-                    current(randomNeighbor.getCoordinate().x, randomNeighbor.getCoordinate().y).setState(EMPTY);
-                }
-                if(current(x,y).getState().equals(P) && randomNeighbor.getState().equals(S)){
-                    current(x, y).setState(EMPTY);
-                }
-                if(current(x,y).getState().equals(S) && randomNeighbor.getState().equals(P)){
-                    current(randomNeighbor.getCoordinate().x, randomNeighbor.getCoordinate().y).setState(EMPTY);
-                }
-                if(current(x,y).getState().equals(S) && randomNeighbor.getState().equals(R)) {
-                    current(x, y).setState(EMPTY);
-                }
+        if (probability() <= sigmoid && isCellFull(current(x,y)) && isCellFull(randomNeighbor)) {
+            rockPaperScissors(current(x,y), randomNeighbor);
         }
-
-        //bacteria movement
-        for(Cell c: neighbors){
-            if (r.nextFloat() <= 0.5*diffusivityRate && (!c.getState().equals(EMPTY) && !current(x,y).equals(EMPTY))){
-                String current_state = current(x,y).getState();
-                current(x,y).setState(c.getState());
-                c.setState(current_state);
-                System.out.println("SWAP");
+        else if (probability() <= 0.5*diffusivityRate && (randomNeighbor.getState().equals(current(x,y).getState()) || randomNeighbor.getState().equals(EMPTY))){
+            diffuseCell(current(x,y), randomNeighbor);
         }
     }
-}
-}
+
+    private void calculateEmptyNeighbors(Cell c, List<Cell> emptyNeighbors){
+        if (c.getState().equals(EMPTY)){
+            emptyNeighbors.add(c);
+        }
+    }
+
+    private void calculateK(Cell c, int x, int y, int k){
+        if (c.getState().equals(current(x,y).getState()) && !c.getState().equals(EMPTY)) {
+            k++;
+        }
+    }
+
+    private void reproduceCell(int x, int y, List<Cell> emptyNeighbors){
+        if(emptyNeighbors.size() > 0){
+            Cell randomEmptyNeighbor = emptyNeighbors.get(r.nextInt(emptyNeighbors.size()));
+            randomEmptyNeighbor.setState(current(x,y).getState());
+        }
+    }
+
+    private void killCell(int x, int y){
+        current(x,y).setState(EMPTY);
+        System.out.println("DEAD");
+    }
+
+    private void rockPaperScissors(Cell a, Cell b){
+        if(firstWinner(a,b)){
+            b.setState(EMPTY);
+        }
+        else if (tie(a,b)){
+            return;
+        }
+        else{
+            a.setState(EMPTY);
+        }
+    }
+
+    private boolean firstWinner(Cell a, Cell b){
+        return a.getState().equals(R) && b.getState().equals(S) || a.getState().equals(P) && b.getState().equals(R) || a.getState().equals(S) && b.getState().equals(P);
+    }
+
+    private boolean tie(Cell a, Cell b){
+        return a.getState().equals(b.getState());
+    }
+
+    private boolean isCellFull(Cell a){
+        return !a.getState().equals(EMPTY);
+    }
+
+    private void diffuseCell(Cell a, Cell b){
+        String current_state = a.getState();
+        a.setState(b.getState());
+        b.setState(current_state);
+        System.out.println("Diffuse");
+    }
+
+    private double probability(){
+        return r.nextFloat();
+    }
 
     private void setInits() {
         this.current(r.nextInt(getRows()),r.nextInt(getColumns())).setState(R);
