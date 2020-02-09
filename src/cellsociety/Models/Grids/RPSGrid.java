@@ -68,7 +68,7 @@ public class RPSGrid extends Grid {
         }
 
         //conjugation
-        else{
+        else if (r.nextFloat() <= 0.5){
             //RPS Mechanic
             Cell randomNeighbor = neighbors.get(r.nextInt(neighbors.size()));
             double sigmoid = 1/(1+Math.exp(-(k-m)/s));
