@@ -1,5 +1,5 @@
 <?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
-<data grid="Life">
+<data simulationType="Life">
   <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
   <title>Life</title>
   <rows>20</rows>

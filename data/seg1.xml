@@ -1,5 +1,5 @@
 <?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
-<data grid="Segregation">
+<data simulationType="Segregation">
   <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
   <title>Segregation</title>
   <rows>20</rows>

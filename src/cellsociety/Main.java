@@ -23,12 +23,14 @@ import cellsociety.Controllers.xml.XMLException;
 import cellsociety.Controllers.xml.XMLParser;
 
 /**
- * Main class of the program runs the JavaFX Application
- * Creates a JavaFX program based on a chosen XML file via a FileChooser that creates a Cellular Automaton simulation
- * Depends on a Footer and Header to get User Input, and then a Grid Subclass and GridViewer to create, update, and visualize the Grid
- * Depends on XMLException and XMLParser to load in the grid via an XML file
- * Assumes that the Grid Size won't be too large, since lag begins to start for simulations at 100x100 Grid size
- * Once grids become bigger than 100x100, they begin to skip frames since the computer is too slow to render each frame
+ * Main class of the program runs the JavaFX Application Creates a JavaFX program based on a chosen
+ * XML file via a FileChooser that creates a Cellular Automaton simulation Depends on a Footer and
+ * Header to get User Input, and then a Grid Subclass and GridViewer to create, update, and
+ * visualize the Grid Depends on XMLException and XMLParser to load in the grid via an XML file
+ * Assumes that the Grid Size won't be too large, since lag begins to start for simulations at
+ * 100x100 Grid size Once grids become bigger than 100x100, they begin to skip frames since the
+ * computer is too slow to render each frame
+ *
  * @author Eric Doppelt, Jaidha Rosenblatt, Varun Kosgi
  */
 
@@ -41,8 +43,8 @@ public class Main extends Application {
   private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-  private double SCENE_WIDTH = 500;
-  private double SCENE_HEIGHT = 500;
+  private static final double SCENE_WIDTH = 500;
+  private static final double SCENE_HEIGHT = 500;
 
   public static final String DATA_FILE_EXTENSION = "*.xml";
   public final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
@@ -64,6 +66,7 @@ public class Main extends Application {
 
   /**
    * Launches the JavaFX program
+   *
    * @param args Usual String Array passed to Main
    */
 
@@ -72,9 +75,8 @@ public class Main extends Application {
   }
 
   /**
-   * Begins our JavaFX application
-   * Starts the Animation Loop and sets the Border Pane, filling it with a Header, Footer, and Gridview
-   * Sets the stage and scene and shows it
+   * Begins our JavaFX application Starts the Animation Loop and sets the Border Pane, filling it
+   * with a Header, Footer, and Gridview Sets the stage and scene and shows it
    */
   @Override
   public void start(Stage primaryStage) {
@@ -96,7 +98,8 @@ public class Main extends Application {
 
   private void setBorderPane() {
     root = new BorderPane();
-    root.setBackground(new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
+    root.setBackground(
+        new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
     root.setMaxWidth(SCENE_WIDTH);
     root.setMaxHeight(SCENE_WIDTH);
   }
@@ -117,7 +120,8 @@ public class Main extends Application {
     totalGrids = 0;
 
     center = new HBox();
-    center.setBackground(new Background(new BackgroundFill(GRID_BACKGROUND, CornerRadii.EMPTY, Insets.EMPTY)));
+    center.setBackground(
+        new Background(new BackgroundFill(GRID_BACKGROUND, CornerRadii.EMPTY, Insets.EMPTY)));
     root.setCenter(center);
   }
 
@@ -131,10 +135,15 @@ public class Main extends Application {
 
   private void step() {
     updateSpeed();
-    if (header.getLoadStatus()) handleXML();
-    else if (header.getSkipStatus()) skipAhead();
-    else if (header.getClearStatus()) updateClear();
-    else if (header.getPlayStatus()) updateState();
+    if (header.getLoadStatus()) {
+      handleXML();
+    } else if (header.getSkipStatus()) {
+      skipAhead();
+    } else if (header.getClearStatus()) {
+      updateClear();
+    } else if (header.getPlayStatus()) {
+      updateState();
+    }
 
   }
 
@@ -143,7 +152,7 @@ public class Main extends Application {
     System.out.println(totalGrids);
 
     for (int i = 0; i < footer.getSkipValue(); i++) {
-      for (Grid tempGrid: allGrids) {
+      for (Grid tempGrid : allGrids) {
         tempGrid.updateGrid();
       }
     }
@@ -167,27 +176,28 @@ public class Main extends Application {
   private void handleXML() {
     header.togglePause();
 
-      File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
+    File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
 
-      if (dataFile == null) {
-        header.setLoadOff();
-        return;
-      }
+    try {
+      XMLParser parser = new XMLParser(dataFile);
+      Grid tempGrid = parser.getGrid();
+      SimulationView tempSimulation = new SimulationView(parser.getGridType(), tempGrid.getAuthor(),
+          tempGrid.getTitle(), tempGrid.getStats());
+      tempSimulation.updateGridView(tempGrid);
 
-      try {
-        XMLParser parser = new XMLParser("grid", dataFile);
-        Grid tempGrid = parser.getGrid();
-        SimulationView tempSimulation = new SimulationView(parser.getGridType(), tempGrid.getAuthor(), tempGrid.getTitle(), tempGrid.getStats());
-        tempSimulation.updateGridView(tempGrid);
-
-        allGrids.add(tempGrid);
-        allSimulationViews.add(tempSimulation);
-        center.getChildren().add(tempSimulation.getSimulationView());
-        center.setHgrow(tempSimulation.getSimulationView(), Priority.ALWAYS);
-        totalGrids++;
-      } catch (XMLException e) {
-        System.out.println(e.getMessage());
-      }
+      allGrids.add(tempGrid);
+      allSimulationViews.add(tempSimulation);
+      center.getChildren().add(tempSimulation.getSimulationView());
+      center.setHgrow(tempSimulation.getSimulationView(), Priority.ALWAYS);
+      totalGrids++;
+    } catch (XMLException e) {
+      System.out.println(e.getMessage());
+    }
+    catch (NullPointerException e){
+      System.out.println(e.getMessage());
+      header.setLoadOff();
+      return;
+    }
     header.setLoadOff();
   }
 
@@ -197,17 +207,17 @@ public class Main extends Application {
 
   private void updateState() {
     for (int i = 0; i < totalGrids; i++) {
-        allGrids.get(i).updateGrid();
-        allSimulationViews.get(i).
-                updateGridView(allGrids.get(i));
-      }
-    }
-
-    private void updateClear() {
-      allGrids.clear();
-      allSimulationViews.clear();
-      center.getChildren().clear();
-      header.setClearOff();
+      allGrids.get(i).updateGrid();
+      allSimulationViews.get(i).
+          updateGridView(allGrids.get(i));
     }
   }
+
+  private void updateClear() {
+    allGrids.clear();
+    allSimulationViews.clear();
+    center.getChildren().clear();
+    header.setClearOff();
+  }
+}
 

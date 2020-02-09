@@ -1,5 +1,5 @@
 <?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
-<data grid="RockPaperScissors">
+<data simulationType="RockPaperScissors">
     <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
     <title>Pock Paper Scissors</title>
     <rows>50</rows>

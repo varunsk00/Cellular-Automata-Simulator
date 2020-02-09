@@ -1,5 +1,5 @@
 <?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
-<data grid="Percolation">
+<data simulationType="Percolation">
   <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
   <title>Percolation</title>
   <rows>20</rows>

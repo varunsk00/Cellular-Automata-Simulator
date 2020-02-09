@@ -25,17 +25,19 @@ import org.xml.sax.SAXException;
  */
 public class XMLParser {
 
-  private final String TYPE_ATTRIBUTE;
   private final DocumentBuilder DOCUMENT_BUILDER;
   private File myFile;
   private Element root;
+  private String gridType;
 
   /**
    * Create parser for XML files of given type.
    */
-  public XMLParser(String type, File dataFile) {
+  public XMLParser(File dataFile) throws NullPointerException {
+    if (dataFile == null) {
+      throw new NullPointerException("Please upload a valid XML file");
+    }
     DOCUMENT_BUILDER = getDocumentBuilder();
-    TYPE_ATTRIBUTE = type;
     myFile = dataFile;
     root = getRootElement();
   }
@@ -46,16 +48,16 @@ public class XMLParser {
    * @return Grid object based on grid type in cellsociety.Controllers.xml file
    */
   public Grid getGrid() {
-    String type = getAttribute(root, TYPE_ATTRIBUTE);
+    gridType = root.getAttribute("simulationType");
 
     // read data associated with the fields given by the object
     Map<String, String> results = createDataFieldMap(root);
-    return returnGridByType(type, results);
+    return returnGridByType(results);
   }
 
 
   public String getGridType() {
-    return getAttribute(root, TYPE_ATTRIBUTE);
+    return this.gridType;
   }
 
 
@@ -69,7 +71,6 @@ public class XMLParser {
         results.put(temp.getNodeName(), temp.getTextContent());
       }
     }
-
     return results;
   }
 
@@ -83,11 +84,6 @@ public class XMLParser {
     }
   }
 
-  private String getAttribute(Element e, String attributeName) {
-    return e.getAttribute(attributeName);
-  }
-
-
   private DocumentBuilder getDocumentBuilder() {
     try {
       return DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -96,8 +92,8 @@ public class XMLParser {
     }
   }
 
-  private Grid returnGridByType(String type, Map<String, String> results) {
-    switch (type) {
+  private Grid returnGridByType(Map<String, String> results) {
+    switch (gridType) {
       case "Fire":
         return new FireGrid(results);
       case "Percolation":

@@ -14,9 +14,9 @@ public class PredPreyGrid extends Grid {
   private static int predatorGenerationRate;
   private static double percentPredator;
   private static double percentPrey;
-  private final String PREDATOR = "predator";
-  private final String PREY = "prey";
-  private final String EMPTY = "empty";
+  private static final String PREDATOR = "predator";
+  private static final String PREY = "prey";
+  private static final String EMPTY = "empty";
 
   private Random r = new Random();
 
@@ -150,7 +150,6 @@ public class PredPreyGrid extends Grid {
     newCell.setNextState(currentCell.getState());
     newCell.setLives(currentCell.getLives() + 1);
 
-    //Copy current cell into new position in localGrid
     if (newCell.getLives() > preyGenerationRate) {
       //spawns
       resetToPreyCell(currentCell);
