@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import cellsociety.Models.Cell;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 
 public class Grid {
@@ -15,6 +16,7 @@ public class Grid {
   private List<List<Cell>> grid;
   private int rows;
   private int columns;
+  private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");;
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -40,7 +42,7 @@ public class Grid {
     if (d % 1 == 0){
       return (int) d;
     }
-    throw new XMLException("%s must be an integer", prop);
+    throw new XMLException(myResources.getString("ParseInt"), prop);
   }
 
   /**

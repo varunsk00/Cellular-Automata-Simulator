@@ -111,11 +111,20 @@ public class XMLParser {
     for (int i = 0; i < variables.getLength(); i++) {
       Node temp = variables.item(i);
       if (temp.getNodeType() == Node.ELEMENT_NODE) {
-        results.put(temp.getNodeName(), Double.parseDouble(temp.getTextContent()));
+        results.put(temp.getNodeName(), parseDoubleFromString(temp));
       }
     }
 
     return results;
+  }
+
+  private double parseDoubleFromString(Node temp) {
+    try{
+      return Double.parseDouble(temp.getTextContent());
+    }
+    catch (NumberFormatException e){
+      throw new XMLException(myResources.getString("ParseDouble"),temp.getNodeName());
+    }
   }
 
   private Grid returnGridByType(Map<String, Double> results) throws XMLException {
