@@ -1,5 +1,6 @@
 package cellsociety.Models.Grids;
 
+import cellsociety.Controllers.xml.XMLException;
 import java.awt.Point;
 import java.util.Collections;
 import java.util.List;
@@ -32,12 +33,18 @@ public class Grid {
     this.countState = 0;
   }
 
-  public Grid(Map<String, String> data) {
-    this.rows = parseIntFromMap(data, "rows");
-    this.columns = parseIntFromMap(data, "columns");
-    this.author = parseStringFromMap(data, "author");
-    this.title = parseStringFromMap(data, "title");
+  public Grid(Map<String, Double> data) throws XMLException{
+    this.rows = convertDoubleToInt(data, "rows");
+    this.columns = convertDoubleToInt(data, "columns");
     this.grid = createGrid();
+  }
+
+  protected int convertDoubleToInt(Map<String, Double> data, String prop) throws XMLException {
+    double d = data.get(prop);
+    if (d % 1 == 0){
+      return (int) d;
+    }
+    throw new XMLException("%s must be an integer", prop);
   }
 
   public String getTitle() {

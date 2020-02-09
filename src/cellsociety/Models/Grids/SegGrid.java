@@ -23,10 +23,10 @@ public class SegGrid extends Grid {
    * based on given rows and columns
    *
    **/
-  public SegGrid(Map<String, String> data) {
+  public SegGrid(Map<String, Double> data) {
     super(data);
-    this.prob = parseDoubleFromMap(data,"satisfiedThreshold") * 8;
-    this.percentFull = parseDoubleFromMap(data, "percentFull");
+    this.prob = data.get("satisfiedThreshold") * 8;
+    this.percentFull = data.get("percentFull");
     this.sameCells = new ArrayList<>();
     setInits();
   }

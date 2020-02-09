@@ -20,9 +20,9 @@ public class PercGrid extends Grid {
    * based on given rows and columns
    *
    **/
-  public PercGrid(Map<String, String> data) {
+  public PercGrid(Map<String, Double> data) {
     super(data);
-    this.percentBlocked = parseDoubleFromMap(data, "percentBlocked");
+    this.percentBlocked = data.get("percentBlocked");
     this.fullCells = new ArrayList<>();
     setFullCells();
     setBlockedCells();

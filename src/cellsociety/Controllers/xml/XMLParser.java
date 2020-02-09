@@ -21,7 +21,7 @@ import org.xml.sax.SAXException;
  *
  * @author Rhondu Smithwick
  * @author Robert C. Duvall
- * @author Jaidha Rosenblatt
+ * @author Jaidha Rosenblatt TODO: remove error messages into resource bundle
  */
 public class XMLParser {
 
@@ -47,31 +47,18 @@ public class XMLParser {
    *
    * @return Grid object based on grid type in cellsociety.Controllers.xml file
    */
-  public Grid getGrid() {
+  public Grid getGrid() throws XMLException {
     gridType = root.getAttribute("simulationType");
 
     // read data associated with the fields given by the object
-    Map<String, String> results = createDataFieldMap(root);
+    Map<String, Double> results = getSimulationProperties();
+    System.out.println(results);
     return returnGridByType(results);
   }
 
 
   public String getGridType() {
     return this.gridType;
-  }
-
-
-  private Map<String, String> createDataFieldMap(Element root) {
-    Map<String, String> results = new HashMap<>();
-
-    NodeList nList = root.getChildNodes();
-    for (int i = 0; i < nList.getLength(); i++) {
-      Node temp = nList.item(i);
-      if (temp.getNodeType() == Node.ELEMENT_NODE) {
-        results.put(temp.getNodeName(), temp.getTextContent());
-      }
-    }
-    return results;
   }
 
   private Element getRootElement() {
@@ -92,7 +79,47 @@ public class XMLParser {
     }
   }
 
-  private Grid returnGridByType(Map<String, String> results) {
+  private NodeList getNodeListFromSectionName(String name) {
+    NodeList allVariables = root.getElementsByTagName(name);
+    if (allVariables.getLength() == 0) {
+      throw new XMLException("%s section was not found", name);
+    }
+    Element attributes = (Element) allVariables.item(0);
+    return attributes.getElementsByTagName("*");
+  }
+
+  public Map<String, String> getMapBySection(String section) throws XMLException {
+    NodeList variables = getNodeListFromSectionName(section);
+    if (variables.getLength() == 0) {
+      throw new XMLException("%s section was not found", section);
+    }
+    Map<String, String> results = new HashMap<>();
+    for (int i = 0; i < variables.getLength(); i++) {
+      Node temp = variables.item(i);
+      if (temp.getNodeType() == Node.ELEMENT_NODE) {
+        results.put(temp.getNodeName(), temp.getTextContent());
+      }
+    }
+    return results;
+  }
+
+  public Map<String, Double> getSimulationProperties() throws XMLException {
+    NodeList variables = getNodeListFromSectionName("simulationProps");
+    Map<String, Double> results = new HashMap<>();
+
+    for (int i = 0; i < variables.getLength(); i++) {
+      Node temp = variables.item(i);
+      System.out.println("temp: " + temp);
+      if (temp.getNodeType() == Node.ELEMENT_NODE) {
+        System.out.println(temp.getNodeName() + Double.parseDouble(temp.getTextContent()));
+        results.put(temp.getNodeName(), Double.parseDouble(temp.getTextContent()));
+      }
+    }
+
+    return results;
+  }
+
+  private Grid returnGridByType(Map<String, Double> results) throws XMLException {
     switch (gridType) {
       case "Fire":
         return new FireGrid(results);
@@ -107,6 +134,8 @@ public class XMLParser {
       case "RockPaperScissors":
         return new RPSGrid(results);
     }
-    return null;
+    throw new XMLException("Not a valid type of simulation");
   }
+
+
 }

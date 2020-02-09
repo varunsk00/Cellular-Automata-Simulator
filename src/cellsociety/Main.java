@@ -6,6 +6,7 @@ import cellsociety.Visuals.SimulationView;
 import cellsociety.Controllers.Header;
 import java.io.File;
 
+import java.util.Map;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -175,11 +176,13 @@ public class Main extends Application {
 
   private void handleXML() {
     header.togglePause();
-
     File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
 
     try {
       XMLParser parser = new XMLParser(dataFile);
+      Map<String, String> map = parser.getMapBySection("cellTypes");
+      Map<String, String> map2 = parser.getMapBySection("details");
+      System.out.println(map2.get("author"));
       Grid tempGrid = parser.getGrid();
       SimulationView tempSimulation = new SimulationView(parser.getGridType(), tempGrid.getAuthor(),
           tempGrid.getTitle(), tempGrid.getStats());

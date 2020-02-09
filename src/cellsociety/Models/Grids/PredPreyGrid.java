@@ -21,14 +21,14 @@ public class PredPreyGrid extends Grid {
   private Random r = new Random();
 
 
-  public PredPreyGrid(Map<String, String> data) {
+  public PredPreyGrid(Map<String, Double> data) {
     super(data);
-    this.predatorStartingEnergy = parseIntFromMap(data, "predatorStartingEnergy");
-    this.predatorEnergyPerPrey = parseIntFromMap(data, "predatorEnergyPerPrey");
-    this.preyGenerationRate = parseIntFromMap(data, "preyGenerationRate");
-    this.predatorGenerationRate = parseIntFromMap(data, "predatorGenerationRate");
-    this.percentPredator = parseDoubleFromMap(data, "percentPredator");
-    this.percentPrey = parseDoubleFromMap(data, "percentPrey");
+    this.predatorStartingEnergy = convertDoubleToInt(data, "predatorStartingEnergy");
+    this.predatorEnergyPerPrey = convertDoubleToInt(data, "predatorEnergyPerPrey");
+    this.preyGenerationRate = convertDoubleToInt(data, "preyGenerationRate");
+    this.predatorGenerationRate = convertDoubleToInt(data, "predatorGenerationRate");
+    this.percentPredator = data.get("percentPredator");
+    this.percentPrey = data.get("percentPrey");
 
     createGrid();
     setInits();

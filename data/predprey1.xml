@@ -1,35 +1,30 @@
 <?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
 <data simulationType="PredPrey">
-  <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt</author>
-  <title>Predator Prey</title>
-  <rows>50</rows>
-  <columns>50</columns>
-  <gridType>rectangle</gridType>
-  <predatorStartingEnergy>3</predatorStartingEnergy>
-  <predatorEnergyPerPrey>1</predatorEnergyPerPrey>
-  <preyGenerationRate>3</preyGenerationRate>
-  <predatorGenerationRate>3</predatorGenerationRate>
-  <percentPredator>0.2</percentPredator>
-  <percentPrey>0.2</percentPrey>
-  <Cells>
-    <Cell>
-      <Color>#ff9900</Color>
-      <State>predator</State>
-    </Cell>
-    <Cell>
-      <Color>#00cc00</Color>
-      <State>prey</State>
-    </Cell>
-    <Cell>
-      <Color>#ffffff</Color>
-      <State>empty</State>
-    </Cell>
-  </Cells>
-  <Layout>
-    <Cell>
+  <details>
+    <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt</author>
+    <title>Predator Prey</title>
+    <gridType>rectangle</gridType>
+  </details>
+  <simulationProps>
+    <rows>50</rows>
+    <columns>50</columns>
+    <predatorStartingEnergy>3</predatorStartingEnergy>
+    <predatorEnergyPerPrey>1</predatorEnergyPerPrey>
+    <preyGenerationRate>3</preyGenerationRate>
+    <predatorGenerationRate>3</predatorGenerationRate>
+    <percentPredator>0.2</percentPredator>
+    <percentPrey>0.2</percentPrey>
+  </simulationProps>
+  <cellTypes>
+    <state name="predator">#ff9900</state>
+    <state name="prey">#00cc00</state>
+    <state name="empty">#ffffff</state>
+  </cellTypes>
+  <layout>
+    <cell>
       <x>10</x>
       <y>10</y>
-      <State>predator</State>
-    </Cell>
-  </Layout>
+      <state>predator</state>
+    </cell>
+  </layout>
 </data>

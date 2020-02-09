@@ -22,9 +22,9 @@ public class FireGrid extends Grid {
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
    * based on given rows and columns
    **/
-  public FireGrid(Map<String, String> data) {
+  public FireGrid(Map<String, Double> data) {
     super(data);
-    this.probability = parseDoubleFromMap(data, "probCatch");
+    this.probability = data.get("probCatch");
     burnedCells = new ArrayList<>();
     setBurningCell();
   }

@@ -28,13 +28,13 @@ public class RPSGrid extends Grid {
      * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
      * based on given rows and columns
      **/
-    public RPSGrid(Map<String, String> data) {
+    public RPSGrid(Map<String, Double> data) {
         super(data);
-        this.s = parseDoubleFromMap(data, "s-empiricalTest");
-        this.m = parseDoubleFromMap(data, "sigmoidFunctionRate");
-        this.K = parseDoubleFromMap(data, "decayRate");
-        this.diffusivityRate = parseDoubleFromMap(data, "diffusivityRate");
-        this.growthRate = parseDoubleFromMap(data, "growthRate");
+        this.s = data.get("s-empiricalTest");
+        this.m = data.get("sigmoidFunctionRate");
+        this.K = data.get("decayRate");
+        this.diffusivityRate = data.get("diffusivityRate");
+        this.growthRate = data.get("growthRate");
         setInits();
     }
 
