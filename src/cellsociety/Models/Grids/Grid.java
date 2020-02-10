@@ -18,6 +18,7 @@ public class Grid {
   private int columns;
   private Map<String, String> stateMap;
   private Map<String, String> details;
+  protected int numIterations;
 
   private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");
   ;
@@ -33,6 +34,7 @@ public class Grid {
     this.rows = rows;
     this.columns = columns;
     this.grid = createGrid();
+    this.numIterations = 0;
   }
 
   public Grid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, List<String> states)
@@ -121,6 +123,7 @@ public class Grid {
         updateCell(i, j, neighbors);
       }
     }
+    numIterations++;
   }
 
   /**
@@ -250,5 +253,9 @@ public class Grid {
       }
     }
     return stats;
+  }
+
+  public int getNumIterations() {
+    return numIterations;
   }
 }

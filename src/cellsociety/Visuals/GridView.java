@@ -4,9 +4,12 @@ import cellsociety.Models.Grids.Grid;
 import javafx.scene.layout.GridPane;
 import java.util.ResourceBundle;
 
+/**
+ * Abstract GridView class that creates a basic GridPane layout to be filled with CellShapes in GridView subclasses
+ * Creates
+ */
 public abstract class GridView {
     protected GridPane myGridPane;
-    protected ResourceBundle myResources;
 
     public GridView() {
         myGridPane = new GridPane();
