@@ -16,11 +16,13 @@ public class Grid {
   private List<List<Cell>> grid;
   private int rows;
   private int columns;
+  private String gridType;
   private Map<String, String> stateMap;
   private Map<String, String> details;
+  protected int numIterations;
 
-  private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");
-  ;
+  private ResourceBundle myResources = ResourceBundle.getBundle("Standard");
+
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -33,6 +35,7 @@ public class Grid {
     this.rows = rows;
     this.columns = columns;
     this.grid = createGrid();
+    this.numIterations = 0;
   }
 
   public Grid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, List<String> states)
@@ -40,6 +43,7 @@ public class Grid {
     checkValidStates(states, cellTypes);
     this.stateMap = cellTypes;
     this.details = details;
+    this.gridType = details.get("gridType");
     this.rows = getIntFromData(data, "rows");
     this.columns = getIntFromData(data, "columns");
     this.grid = createGrid();
@@ -53,6 +57,16 @@ public class Grid {
     return details;
   }
 
+  protected void setInitState(Map<String, Point> layout) throws XMLException{
+    for (String state : layout.keySet()){
+      Point p = layout.get(state);
+
+      if (p.getX() > columns - 1 || p.getX() < 0 || p.getY() > rows - 1 || p.getY() < 0){
+        throw new XMLException(myResources.getString("CellOutOfBounds"));
+      }
+      setCellState(p.x, p.y, state);
+    }
+  }
   protected void checkValidStates(List<String> states, Map<String, String> data) {
     for (String state : data.keySet()) {
       if (!states.contains(state)) {
@@ -121,6 +135,7 @@ public class Grid {
         updateCell(i, j, neighbors);
       }
     }
+    numIterations++;
   }
 
   /**
@@ -149,11 +164,7 @@ public class Grid {
     current(x, y).setState(state);
   }
 
-  protected void replaceGrid(List<List<Cell>> newGrid){
-    this.grid = newGrid;
-  }
-
-  protected List<Cell> getAllNeighbors(int x, int y) {
+  private List<Cell> getAllRectangleNeighbors(int x, int y) {
     List<Cell> neighbors = new ArrayList<>();
     for (int i = x - 1; i <= x + 1; i++) {
       for (int j = y - 1; j <= y + 1; j++) {
@@ -183,7 +194,27 @@ public class Grid {
     return neighbors;
   }
 
-  protected List<Cell> getNeighbors(int x, int y) {
+  protected List<Cell> getNeighbors(int x, int y) throws XMLException{
+    switch (gridType){
+      case "rectangle":
+        return getRectangleNeighbors(x, y);
+      case "hexagon":
+        return getHexNeighbors(x, y);
+    }
+    throw new XMLException(myResources.getString("InvalidGridType"));
+  }
+
+  protected List<Cell> getAllNeighbors(int x, int y) throws XMLException{
+    switch (gridType){
+      case "rectangle":
+        return getAllRectangleNeighbors(x, y);
+      case "hexagon":
+        return getHexNeighbors(x, y);
+    }
+    throw new XMLException(myResources.getString("InvalidGridType"));
+  }
+
+  private List<Cell> getRectangleNeighbors(int x, int y) {
     List<Cell> neighbors = new ArrayList<>();
     for (int i = x - 1; i <= x + 1; i++) {
       for (int j = y - 1; j <= y + 1; j++) {
@@ -250,5 +281,9 @@ public class Grid {
       }
     }
     return stats;
+  }
+
+  public int getNumIterations() {
+    return numIterations;
   }
 }

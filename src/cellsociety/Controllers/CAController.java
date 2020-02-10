@@ -51,8 +51,6 @@ public class CAController extends Application {
     private Stage myStage;
     private Timeline animation;
 
-    private int myTime;
-
     /**
      * Begins our JavaFX application
      * Starts the Animation Loop and sets the Border Pane, filling it with a Header, Footer, and Gridview
@@ -77,7 +75,6 @@ public class CAController extends Application {
         setCenter();
 
         allGraphs = new ArrayList<>();
-        myTime = 0;
 
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.getStylesheets()
@@ -183,8 +180,7 @@ public class CAController extends Application {
             center.setHgrow(tempSimulation.getSimulationView(), Priority.ALWAYS);
             totalGrids++;
 
-            allGraphs.add(new GraphView(details.get("title"), myTime, tempGrid.getStateMap().keySet(), tempGrid.getStats(), myStage));
-
+            allGraphs.add(new GraphView(details.get("title"), tempGrid, tempGrid.getStateMap().keySet(), myStage));
 
         } catch (XMLException e) {
             System.out.println(e.getMessage());
@@ -197,12 +193,12 @@ public class CAController extends Application {
     }
 
     private void updateState() {
-        myTime++;
         for (int i = 0; i < totalGrids; i++) {
-            allGrids.get(i).updateGrid();
+            Grid tempGrid = allGrids.get(i);
+            tempGrid.updateGrid();
             allSimulationViews.get(i).
-                    updateGridView(allGrids.get(i));
-            allGraphs.get(i).updateGraph(myTime, allGrids.get(i).getStats());
+                    updateGridView(tempGrid);
+            allGraphs.get(i).updateGraph(tempGrid.getNumIterations(), tempGrid.getStats());
         }
     }
 
@@ -212,7 +208,6 @@ public class CAController extends Application {
         for (GraphView tempGraph : allGraphs) tempGraph.close();
 
         totalGrids = 0;
-        myTime = 0;
         center.getChildren().clear();
         header.setClearOff();
     }

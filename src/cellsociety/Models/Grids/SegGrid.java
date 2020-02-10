@@ -25,12 +25,21 @@ public class SegGrid extends Grid {
    * based on given rows and columns
    *
    **/
-  public SegGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details) {
+  public SegGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, Map<String, Point> layout) {
     super(data, cellTypes, details, states);
     this.prob = getDoubleFromData(data,"satisfiedThreshold") * numberOfNeighbors;
     this.percentFull = getDoubleFromData(data, "percentFull");
     this.sameCells = new ArrayList<>();
-    setInits();
+    setLayout(layout);
+  }
+
+  private void setLayout(Map<String, Point> layout) {
+    if (layout == null){
+      setInits();
+    }
+    else{
+      setInitState(layout);
+    }
   }
 
   @Override

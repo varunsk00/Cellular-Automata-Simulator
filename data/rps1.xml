@@ -20,4 +20,21 @@
     <S>#00cc00</S>
     <empty>#ffffff</empty>
   </cellTypes>
+  <layout>
+    <cell>
+      <x>10</x>
+      <y>10</y>
+      <state>R</state>
+    </cell>
+    <cell>
+      <x>30</x>
+      <y>30</y>
+      <state>P</state>
+    </cell>
+    <cell>
+      <x>3</x>
+      <y>7</y>
+      <state>S</state>
+    </cell>
+  </layout>
 </data>

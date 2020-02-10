@@ -27,14 +27,23 @@ public class RPSGrid extends Grid {
      * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
      * based on given rows and columns
      **/
-    public RPSGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details) {
+    public RPSGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, Map<String, Point> layout) {
       super(data, cellTypes, details, states);
         this.s = getDoubleFromData(data,"s-empiricalTest");
         this.m = getDoubleFromData(data,"sigmoidFunctionRate");
         this.K = getDoubleFromData(data,"decayRate");
         this.diffusivityRate = getDoubleFromData(data, "diffusivityRate");
         this.growthRate = getDoubleFromData(data,"growthRate");
+        setLayout(layout);
+    }
+
+    private void setLayout(Map<String, Point> layout) {
+      if (layout == null){
         setInits();
+      }
+      else{
+        setInitState(layout);
+      }
     }
 
     @Override
