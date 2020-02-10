@@ -6,8 +6,11 @@ public class Cell {
 
   private String state;
   private String nextState;
+  private boolean fed = false;
 
   private int lives;
+  private int foodPher = 0;
+  private int homePher = 0;
   private Point coordinate;
 
 
@@ -73,6 +76,22 @@ public class Cell {
     return lives;
   }
 
+  public int getFoodPher() {
+    return foodPher;
+  }
+
+  public int getHomePher() {
+    return homePher;
+  }
+
+  public void updateFoodPher(int change) {
+    this.foodPher = this.foodPher + change;
+  }
+
+  public void updateHomePher(int change) {
+    this.homePher = this.homePher + change;
+  }
+
   /**
    * update the cell's lives based on a given change
    *
@@ -89,7 +108,14 @@ public class Cell {
    */
   public void setLives(int lives) {
     this.lives = lives;
+  }
 
+  public void setFed(boolean newState) {
+    this.fed = newState;
+  }
+
+  public boolean isFed() {
+    return this.fed;
   }
 
   /**

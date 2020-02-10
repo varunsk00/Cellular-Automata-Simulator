@@ -16,7 +16,6 @@ public class Grid {
   private int columns;
   private String title;
   private String author;
-  private int countState;
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -29,7 +28,6 @@ public class Grid {
     this.rows = rows;
     this.columns = columns;
     this.grid = createGrid();
-    this.countState = 0;
   }
 
   public Grid(Map<String, String> data) {
@@ -97,7 +95,6 @@ public class Grid {
         updateCell(i, j, neighbors);
       }
     }
-    this.countState++;
   }
 
   /**

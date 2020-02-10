@@ -54,7 +54,6 @@ public class HexGridView extends GridView {
                     myGridPane.add(addedBuffer, j, i);
                     myGridPane.setHgrow(addedBuffer, Priority.ALWAYS);
                     myGridPane.setVgrow(addedBuffer, Priority.ALWAYS);
-                    System.out.println("FRONTBUFFER: " + i + " , " + j);
                     frontBuffer =  true;
                 }
 
@@ -88,7 +87,6 @@ public class HexGridView extends GridView {
                     myGridPane.add(addedBuffer, 2*j + 2, i);
                     myGridPane.setHgrow(addedBuffer, Priority.ALWAYS);
                     myGridPane.setVgrow(addedBuffer, Priority.ALWAYS);
-                    System.out.println("BACKBUFFER: " + i + " , " + (int)(j + 1));
                 }
             }
             frontBuffer = false;
