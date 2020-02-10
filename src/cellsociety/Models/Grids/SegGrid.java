@@ -7,8 +7,13 @@ import cellsociety.Models.Cells.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This class simulates community self-segregation
+ *
+ * @author Varun Kosgi
+ * @author Jaidha Rosenblatt
+ */
 public class SegGrid extends Grid {
-    private Random r = new Random();
     private double prob;
     private double percentFull;
     private ArrayList<Point> sameCells;
@@ -17,7 +22,7 @@ public class SegGrid extends Grid {
     private final String X = states.get(0);
     private final String O = states.get(1);
     private final String EMPTY = states.get(2);
-
+    private Random r = new Random();
 
     /**
      * Constructs a new SegGrid Simulation
