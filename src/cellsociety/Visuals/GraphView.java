@@ -30,8 +30,8 @@ public class GraphView {
     private static final int ITERATION_TICK_UNITS = 1;
     private static final String RESOURCE_LANGUAGE = "StandardGraph";
 
-    private int WINDOW_HEIGHT = 300;
-    private int WINDOW_WIDTH = 500;
+    private static final int WINDOW_HEIGHT = 300;
+    private static final int WINDOW_WIDTH = 500;
 
     /**
      * General Constructor for a GraphView object that creates a new window for a given simulation

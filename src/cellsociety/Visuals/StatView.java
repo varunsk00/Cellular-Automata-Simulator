@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * StatView class holds the title, author, and count for each type of state in the Simulation
@@ -16,16 +17,17 @@ import java.util.Map;
  */
 public class StatView {
 
-    private static final String TITLE_SETUP = "Title: ";
-    private static final String AUTHOR_SETUP = "Author: ";
+    private static final String RESOURCE_LANGUAGE = "Standard";
     private static final Color BACKGROUND_COLOR = Color.GREY;
     private static final BackgroundFill STAT_BACKGROUND = new BackgroundFill(BACKGROUND_COLOR, CornerRadii.EMPTY, Insets.EMPTY);
+
     private VBox statBox;
     private HBox myGeneralInfo;
     private HBox myStatsInfo;
     private Map<String, Integer> myStats;
     private String myTitle;
     private String myAuthor;
+    private ResourceBundle myResourceBundle;
 
     /**
      * Basic constructor takes in the title, author, and stats of the simulation to display
@@ -35,6 +37,7 @@ public class StatView {
      * @param stats is a Map connecting each state to its current count in the instance of the simulation
      */
     public StatView(String title, String author, Map stats) {
+        myResourceBundle = ResourceBundle.getBundle(RESOURCE_LANGUAGE);
         myTitle = title;
         myAuthor = author;
         myStats = stats;
@@ -75,8 +78,8 @@ public class StatView {
 
     private void visualizeInfo() {
         myGeneralInfo = new HBox();
-        addLabel(AUTHOR_SETUP + myAuthor, myGeneralInfo);
-        addLabel(TITLE_SETUP + myTitle, myGeneralInfo);
+        addLabel(String.format("%s %s", myResourceBundle.getString("Author"), myAuthor), myGeneralInfo);
+        addLabel(String.format("%s %s", myResourceBundle.getString("Title"), myTitle), myGeneralInfo);
     }
 
     private void visualizeStats() {

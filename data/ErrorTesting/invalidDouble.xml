@@ -8,18 +8,11 @@
   <simulationProps>
     <rows>20</rows>
     <columns>20</columns>
-    <probCatch>0.6</probCatch>
+    <probCatch>hello</probCatch>
   </simulationProps>
   <cellTypes>
     <burning>#ff3300</burning>
     <tree>#009933</tree>
     <empty>#ffff00</empty>
   </cellTypes>
-  <layout>
-    <cell>
-      <x>10</x>
-      <y>10</y>
-      <state>burning</state>
-    </cell>
-  </layout>
 </data>

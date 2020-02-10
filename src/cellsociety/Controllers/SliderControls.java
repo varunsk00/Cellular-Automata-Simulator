@@ -10,25 +10,25 @@ import javafx.scene.layout.VBox;
 import java.util.ResourceBundle;
 
 /**
- * Footer class serves as a controller unit, allowing the user to input two variables: simulation speed and number of frames to skip.
- * Footer works in conjunction with Header via the Main class. Once a value has been set in the Footer through a Slider,
- * the main class has a button to press to add the effect of the value into the simulation.
+ * SliderControls class serves as a controller unit, allowing the user to input two variables: simulation speed and number of frames to skip.
+ * SliderControls works in conjunction with ButtonControls via the CAController class. Once a value for Frames to Skip has been set in the SliderControls through a Slider,
+ * the CAController has an encapsulated ButtonControls class with a Button to press to add the effect of the value into the simulation.
  * Display is dynamic and shrinks/grows to increases/decreases in the width of the Window
- * Every simulation needs a Footer, which should be instantiated in the start() method in Main and added to the bottom of the BorderPane
+ * Every simulation needs a SliderControls, which should be instantiated in the start() method in Main and added to the bottom of the BorderPane
  * @author Eric Doppelt
  */
 public class SliderControls {
 
     private ResourceBundle myResources;
 
-    private static int MIN_FRAME_SPEED = 1;
-    private static int MAX_FRAME_SPEED = 5;
+    private static final int MIN_FRAME_SPEED = 1;
+    private static final int MAX_FRAME_SPEED = 5;
     private static int DEFAULT_FRAME_SPEED = 1;
 
 
-    private static int MIN_SKIP = 1;
-    private static int MAX_SKIP = 10;
-    private static int DEFAULT_SKIP = 1;
+    private static final int MIN_SKIP = 1;
+    private static final int MAX_SKIP = 10;
+    private static final int DEFAULT_SKIP = 1;
 
     private Slider frameSpeed;
     private Slider framesSkipped;
@@ -36,7 +36,7 @@ public class SliderControls {
     private VBox footer;
 
     /**
-     * Constructor for a Footer that sets the language of the Footer and calls renderFooter()
+     * Constructor for a SliderControls that sets the language of the Footer and calls renderFooter()
      * renderFooter() adds Labels and Sliders to set values as mentioned in class description
      * @param language is the String that represents the language for the ResourceBundle
      */
@@ -54,7 +54,7 @@ public class SliderControls {
     }
 
     /**
-     * Basic getter method that returns the value from the Slider determing the number of frames to skip ahead
+     * Basic getter method that returns the value from the Slider determining the number of frames to skip ahead
      * @return the value in the framesSkipped slider
      */
     public double getSkipValue() {

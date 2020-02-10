@@ -23,20 +23,27 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Ultimate Constructor for the CA Simulator
+ * Dependent on Every Class in cellsociety
+ * Creates a BorderPane with a ButtonControls on top, a SliderControls on Bottom, and SimulationView between in the center
+ * Capable of spawning Pop Up Windows for GraphViews and XML Error Messages
+ * Use this by creating an instance in Main passing String[] args to it
+ * @authors Eric Doppelt, Jaidha Rosenblatt
+ */
 public class CAController extends Application {
 
     private static final String STYLESHEET = "cellsociety/Resources/default.css";
     private static final String RESOURCE_LANGUAGE = "Standard";
 
     private static double FRAMES_PER_SECOND = 1;
-    private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private double SCENE_WIDTH = 1000;
-    private double SCENE_HEIGHT = 500;
+    private static final double SCENE_WIDTH = 1000;
+    private static final double SCENE_HEIGHT = 500;
 
     public static final String DATA_FILE_EXTENSION = "*.xml";
-    public final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
+    public static final FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
 
     private static final Color GRID_BACKGROUND = Color.BEIGE;
     private static final Color ALL_COLOR = Color.ALICEBLUE;
@@ -53,20 +60,31 @@ public class CAController extends Application {
     private Stage myStage;
     private Timeline animation;
 
+
     /**
-     * Begins our JavaFX application
-     * Starts the Animation Loop and sets the Border Pane, filling it with a Header, Footer, and Gridview
-     * Sets the stage and scene and shows it
+     * Empty Constructor Needed to run the application due to Application requirements
+     * Not called explicitely in code
      */
+    public CAController() {}
 
-    public CAController() {
-        System.out.println("Creating CAController");
-    }
-
+    /**
+     * Constructor used in Main to begin the program
+     * Begins our JavaFX application
+     * Starts the Animation Loop and sets the Border Pane, filling it with a ButtonControls, SliderControls, and SimulationViews
+     * Sets the stage and scene and shows it
+     * @param args is the String[] passed in by main
+     */
     public CAController(String[] args) {
         launch(args);
     }
 
+    /**
+     * Start method for the Application
+     * Sets the BorderPane and fills it with ButtonControls (in the header) and SliderControls (in the Footer)
+     * Sets the Center with SimulationView objects to represent the Simulation
+     * Initializes allGraphs explicitely and allGrids and allSimulationViews in nested methods
+     * @param primaryStage is the stage to display the Application
+     */
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Simulation");
         startAnimationLoop();
