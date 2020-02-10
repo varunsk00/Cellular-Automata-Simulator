@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
-import cellsociety.Models.Cell;
+import cellsociety.Models.Cells.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
