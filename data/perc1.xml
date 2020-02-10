@@ -1,8 +1,18 @@
 <?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
-<data grid="Percolation">
-  <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
-  <title>Percolation</title>
-  <rows>20</rows>
-  <columns>20</columns>
-  <percentBlocked>0.4</percentBlocked>
+<data simulationType="Percolation">
+  <details>
+    <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt</author>
+    <title>Percolation</title>
+    <gridType>rectangle</gridType>
+  </details>
+  <simulationProps>
+    <rows>20</rows>
+    <columns>20</columns>
+    <percentBlocked>0.4</percentBlocked>
+  </simulationProps>
+  <cellTypes>
+    <full>#0000ff</full>
+    <blocked>#000000</blocked>
+    <empty>#ffffff</empty>
+  </cellTypes>
 </data>

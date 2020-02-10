@@ -1,5 +1,6 @@
 package cellsociety.Models.Grids;
 
+import cellsociety.Controllers.xml.XMLException;
 import java.awt.Point;
 import java.util.Collections;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import cellsociety.Models.Cell;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 
 public class Grid {
@@ -14,8 +16,11 @@ public class Grid {
   private List<List<Cell>> grid;
   private int rows;
   private int columns;
-  private String title;
-  private String author;
+  private Map<String, String> stateMap;
+  private Map<String, String> details;
+
+  private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");
+  ;
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -30,32 +35,53 @@ public class Grid {
     this.grid = createGrid();
   }
 
-  public Grid(Map<String, String> data) {
-    this.rows = parseIntFromMap(data, "rows");
-    this.columns = parseIntFromMap(data, "columns");
-    this.author = parseStringFromMap(data, "author");
-    this.title = parseStringFromMap(data, "title");
+  public Grid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, List<String> states)
+      throws XMLException {
+    checkValidStates(states, cellTypes);
+    this.stateMap = cellTypes;
+    this.details = details;
+    this.rows = getIntFromData(data, "rows");
+    this.columns = getIntFromData(data, "columns");
     this.grid = createGrid();
   }
 
-  public String getTitle() {
-    return title;
+  public Map<String, String> getStateMap() {
+    return stateMap;
   }
 
-  public String getAuthor() {
-    return author;
+  public Map<String, String> getDetails() {
+    return details;
   }
 
-  protected int parseIntFromMap(Map<String, String> data, String key) {
-    return Integer.parseInt(data.get(key));
+  protected void checkValidStates(List<String> states, Map<String, String> data) {
+    for (String state : data.keySet()) {
+      if (!states.contains(state)) {
+        throw new XMLException(myResources.getString("InvalidState"), state);
+      }
+    }
+    for (String state : states) {
+      if (!data.containsKey(state)) {
+        throw new XMLException(myResources.getString("MissingState"), state);
+      }
+    }
   }
 
-  protected double parseDoubleFromMap(Map<String, String> data, String key) {
-    return Double.parseDouble(data.get(key));
+  protected int getIntFromData(Map<String, Double> data, String prop) throws XMLException {
+    if (!data.containsKey(prop)) {
+      throw new XMLException(myResources.getString("NullValue"), prop);
+    }
+    double d = data.get(prop);
+    if (d % 1 != 0) {
+      throw new XMLException(myResources.getString("ParseInt"), prop);
+    }
+    return (int) d;
   }
 
-  protected String parseStringFromMap(Map<String, String> data, String key) {
-    return data.get(key);
+  protected double getDoubleFromData(Map<String, Double> data, String prop) {
+    if (!data.containsKey(prop)) {
+      throw new XMLException(myResources.getString("NullValue"), prop);
+    }
+    return data.get(prop);
   }
 
   /**
@@ -120,7 +146,7 @@ public class Grid {
   }
 
   protected void setCellState(int x, int y, String state) {
-    current(x,y).setState(state);
+    current(x, y).setState(state);
   }
 
   protected void replaceGrid(List<List<Cell>> newGrid){
@@ -129,13 +155,13 @@ public class Grid {
 
   protected List<Cell> getAllNeighbors(int x, int y) {
     List<Cell> neighbors = new ArrayList<>();
-    for (int i = x -1; i <= x +1; i++){
-      for (int j = y -1; j <= y +1; j++){
-        if (isOutOfBounds(i,j) ){
+    for (int i = x - 1; i <= x + 1; i++) {
+      for (int j = y - 1; j <= y + 1; j++) {
+        if (isOutOfBounds(i, j)) {
           continue;
         }
-        if (!(i== x && j==y)){
-          neighbors.add(getCell(i,j));
+        if (!(i == x && j == y)) {
+          neighbors.add(getCell(i, j));
         }
       }
     }
@@ -144,13 +170,13 @@ public class Grid {
 
   protected List<Cell> getHexNeighbors(int row, int col) {
     List<Cell> neighbors = new ArrayList<>();
-    for (int i = row -1; i <= row +1; i++){
-      for (int j = col -1; j <= col +1; j++){
-        if (isOutOfBounds(i,j) ){
+    for (int i = row - 1; i <= row + 1; i++) {
+      for (int j = col - 1; j <= col + 1; j++) {
+        if (isOutOfBounds(i, j)) {
           continue;
         }
-        if (!(i==row+1 && j==col+1) || !(i==row-1 && j==col+1)){
-          neighbors.add(getCell(i,j));
+        if (!(i == row + 1 && j == col + 1) || !(i == row - 1 && j == col + 1)) {
+          neighbors.add(getCell(i, j));
         }
       }
     }
@@ -159,13 +185,13 @@ public class Grid {
 
   protected List<Cell> getNeighbors(int x, int y) {
     List<Cell> neighbors = new ArrayList<>();
-    for (int i = x -1; i <= x +1; i++){
-      for (int j = y -1; j <= y +1; j++){
-        if (isOutOfBounds(i,j) ){
+    for (int i = x - 1; i <= x + 1; i++) {
+      for (int j = y - 1; j <= y + 1; j++) {
+        if (isOutOfBounds(i, j)) {
           continue;
         }
-        if (i==x || j==y){
-          neighbors.add(getCell(i,j));
+        if (i == x || j == y) {
+          neighbors.add(getCell(i, j));
         }
       }
     }

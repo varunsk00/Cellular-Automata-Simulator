@@ -1,8 +1,17 @@
 <?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
-<data grid="Life">
-  <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
-  <title>Life</title>
-  <rows>20</rows>
-  <columns>20</columns>
-  <percentAlive>0.4</percentAlive>
+<data simulationType="Life">
+  <details>
+    <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt</author>
+    <title>Game of Life</title>
+    <gridType>rectangle</gridType>
+  </details>
+  <simulationProps>
+    <rows>20</rows>
+    <columns>20</columns>
+    <percentAlive>0.4</percentAlive>
+  </simulationProps>
+  <cellTypes>
+    <alive>#000000</alive>
+    <dead>#ffffff</dead>
+  </cellTypes>
 </data>
