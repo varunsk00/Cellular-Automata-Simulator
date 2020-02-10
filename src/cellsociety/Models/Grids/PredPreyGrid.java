@@ -14,21 +14,22 @@ public class PredPreyGrid extends Grid {
   private static int predatorGenerationRate;
   private static double percentPredator;
   private static double percentPrey;
-  private final String PREDATOR = "predator";
-  private final String PREY = "prey";
-  private final String EMPTY = "empty";
+  private static final List<String> states = List.of("predator", "prey", "empty");
+  private static final String PREDATOR = states.get(0);
+  private static final String PREY = states.get(1);
+  private static final String EMPTY = states.get(2);
 
   private Random r = new Random();
 
 
-  public PredPreyGrid(Map<String, String> data) {
-    super(data);
-    this.predatorStartingEnergy = parseIntFromMap(data, "predatorStartingEnergy");
-    this.predatorEnergyPerPrey = parseIntFromMap(data, "predatorEnergyPerPrey");
-    this.preyGenerationRate = parseIntFromMap(data, "preyGenerationRate");
-    this.predatorGenerationRate = parseIntFromMap(data, "predatorGenerationRate");
-    this.percentPredator = parseDoubleFromMap(data, "percentPredator");
-    this.percentPrey = parseDoubleFromMap(data, "percentPrey");
+  public PredPreyGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details) {
+    super(data, cellTypes, details, states);
+    this.predatorStartingEnergy = getIntFromData(data, "predatorStartingEnergy");
+    this.predatorEnergyPerPrey = getIntFromData(data, "predatorEnergyPerPrey");
+    this.preyGenerationRate = getIntFromData(data, "preyGenerationRate");
+    this.predatorGenerationRate = getIntFromData(data, "predatorGenerationRate");
+    this.percentPredator = getDoubleFromData(data, "percentPredator");
+    this.percentPrey = getDoubleFromData(data,"percentPrey");
 
     createGrid();
     setInits();
@@ -150,7 +151,6 @@ public class PredPreyGrid extends Grid {
     newCell.setNextState(currentCell.getState());
     newCell.setLives(currentCell.getLives() + 1);
 
-    //Copy current cell into new position in localGrid
     if (newCell.getLives() > preyGenerationRate) {
       //spawns
       resetToPreyCell(currentCell);

@@ -1,13 +1,30 @@
 <?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
-<data grid="PredPrey">
-  <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
-  <title>Predator Prey</title>
-  <rows>50</rows>
-  <columns>50</columns>
-  <predatorStartingEnergy>3</predatorStartingEnergy>
-  <predatorEnergyPerPrey>1</predatorEnergyPerPrey>
-  <preyGenerationRate>3</preyGenerationRate>
-  <predatorGenerationRate>3</predatorGenerationRate>
-  <percentPredator>0.2</percentPredator>
-  <percentPrey>0.2</percentPrey>
+<data simulationType="PredPrey">
+  <details>
+    <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt</author>
+    <title>Predator Prey</title>
+    <gridType>rectangle</gridType>
+  </details>
+  <simulationProps>
+    <rows>50</rows>
+    <columns>50</columns>
+    <predatorStartingEnergy>3</predatorStartingEnergy>
+    <predatorEnergyPerPrey>1</predatorEnergyPerPrey>
+    <preyGenerationRate>3</preyGenerationRate>
+    <predatorGenerationRate>3</predatorGenerationRate>
+    <percentPredator>0.2</percentPredator>
+    <percentPrey>0.2</percentPrey>
+  </simulationProps>
+  <cellTypes>
+    <predator>#ff9900</predator>
+    <prey>#00cc00</prey>
+    <empty>#ffffff</empty>
+  </cellTypes>
+  <layout>
+    <cell>
+      <x>10</x>
+      <y>10</y>
+      <state>predator</state>
+    </cell>
+  </layout>
 </data>

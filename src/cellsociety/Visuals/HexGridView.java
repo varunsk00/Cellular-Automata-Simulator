@@ -2,6 +2,7 @@ package cellsociety.Visuals;
 
 import cellsociety.Models.Cell;
 import cellsociety.Models.Grids.Grid;
+import java.util.Map;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
@@ -19,6 +20,7 @@ public class HexGridView extends GridView {
 
     private Shape myRightHex;
     private Shape myLeftHex;
+    private Map<String, String> stateMap;
 
     /**
      * Basic constructor for a GridView object
@@ -26,8 +28,7 @@ public class HexGridView extends GridView {
      * Future variations can store a grid to the GridPane to be updated for efficiency purposes
      * Creates the GridPane and sets Horizontal and Vertical Gaps to 1
      */
-    public HexGridView(String language) {
-        super(language);
+    public HexGridView() {
         myRightHex = getRightHex();
         myLeftHex = getLeftHex();
     }
@@ -43,7 +44,7 @@ public class HexGridView extends GridView {
     @Override
     public void updateGridView(Grid grid) {
         myGridPane.getChildren().clear();
-
+        stateMap = grid.getStateMap();
         boolean rowHasFrontBuffer = false;
 
         for (int i = 0; i < grid.getRows(); i++) {
@@ -72,7 +73,7 @@ public class HexGridView extends GridView {
         if (buffer) column++;
         int row = cell.getCoordinate().y;
 
-        Color regionColor = Color.web(myResources.getString(cell.getState()));
+        Color regionColor = Color.web(stateMap.get(cell.getState()));
 
         Region addedLeftHex = makeHalfHex(myLeftHex, regionColor);
         Region addedRightHex = makeHalfHex(myRightHex, regionColor);

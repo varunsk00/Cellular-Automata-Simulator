@@ -5,6 +5,7 @@ import cellsociety.Controllers.xml.XMLParser;
 import cellsociety.Models.Grids.Grid;
 import cellsociety.Visuals.GraphView;
 import cellsociety.Visuals.SimulationView;
+import java.util.Map;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -168,9 +169,12 @@ public class CAController extends Application {
         }
 
         try {
-            XMLParser parser = new XMLParser("grid", dataFile);
+            XMLParser parser = new XMLParser(dataFile);
             Grid tempGrid = parser.getGrid();
-            SimulationView tempSimulation = new SimulationView(parser.getGridType(), tempGrid.getAuthor(), tempGrid.getTitle(), "Hexagon", tempGrid.getStats());
+            Map<String, String> details = tempGrid.getDetails();
+
+
+          SimulationView tempSimulation = new SimulationView(details.get("author"), details.get("title"), details.get("gridType"), tempGrid.getStats());
             tempSimulation.updateGridView(tempGrid);
 
             allGrids.add(tempGrid);

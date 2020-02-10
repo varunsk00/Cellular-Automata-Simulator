@@ -8,10 +8,8 @@ public abstract class GridView {
     protected GridPane myGridPane;
     protected ResourceBundle myResources;
 
-    public GridView(String language) {
-        System.out.println("called");
+    public GridView() {
         myGridPane = new GridPane();
-        myResources = ResourceBundle.getBundle(language);
     }
 
     /**
