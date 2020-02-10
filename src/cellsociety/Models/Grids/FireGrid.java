@@ -15,7 +15,7 @@ import java.util.Random;
  */
 public class FireGrid extends Grid {
     private List<Point> burnedCells;
-    private double probability;
+    private static double probability;
     private Random r = new Random();
     private static final List<String> states = List.of("burning","tree","empty");
     /*
