@@ -3,6 +3,7 @@ package cellsociety.Controllers;
 import cellsociety.Controllers.xml.XMLException;
 import cellsociety.Controllers.xml.XMLParser;
 import cellsociety.Models.Grids.Grid;
+import cellsociety.Visuals.GraphView;
 import cellsociety.Visuals.SimulationView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,8 +12,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Shape;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -41,6 +40,7 @@ public class CAController extends Application {
 
     private List<SimulationView> allSimulationViews;
     private List<Grid> allGrids;
+    private List<GraphView> allGraphs;
     private int totalGrids;
 
     private BorderPane root;
@@ -50,7 +50,7 @@ public class CAController extends Application {
     private Stage myStage;
     private Timeline animation;
 
-    private Shape myShape = new Polygon();
+    private int myTime;
 
     /**
      * Begins our JavaFX application
@@ -58,7 +58,9 @@ public class CAController extends Application {
      * Sets the stage and scene and shows it
      */
 
-    public CAController() {}
+    public CAController() {
+        System.out.println("Creating CAController");
+    }
 
     public CAController(String[] args) {
         launch(args);
@@ -72,6 +74,9 @@ public class CAController extends Application {
         setHeader();
         setFooter();
         setCenter();
+
+        allGraphs = new ArrayList<>();
+        myTime = 0;
 
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.getStylesheets()
@@ -174,6 +179,9 @@ public class CAController extends Application {
             center.setHgrow(tempSimulation.getSimulationView(), Priority.ALWAYS);
             totalGrids++;
 
+            allGraphs.add(new GraphView(parser.getGridType(), myTime, tempGrid.getStats()));
+
+
         } catch (XMLException e) {
             System.out.println(e.getMessage());
         }
@@ -185,16 +193,20 @@ public class CAController extends Application {
     }
 
     private void updateState() {
+        myTime++;
         for (int i = 0; i < totalGrids; i++) {
             allGrids.get(i).updateGrid();
             allSimulationViews.get(i).
                     updateGridView(allGrids.get(i));
+            allGraphs.get(i).updateGraph(myTime, allGrids.get(i).getStats());
         }
     }
 
     private void updateClear() {
         allGrids.clear();
         allSimulationViews.clear();
+        for (GraphView tempGraph : allGraphs) tempGraph.close();
+
         totalGrids = 0;
         center.getChildren().clear();
         header.setClearOff();
