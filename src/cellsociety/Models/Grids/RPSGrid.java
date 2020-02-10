@@ -7,28 +7,34 @@ import cellsociety.Models.Cells.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This class simulates Bacterial Competition using the rules of Rock Paper Scissors
+ *
+ * @author Varun Kosgi
+ * @author Jaidha Rosenblatt
+ */
 public class RPSGrid extends Grid {
-
     private Random r = new Random();
-
-  private static final List<String> states = List.of("R", "P", "S", "empty");
-  private final String R = states.get(0);
+    private static final List<String> states = List.of("R", "P", "S", "empty");
+    private final String R = states.get(0);
     private final String P = states.get(1);
     private final String S = states.get(2);
     private final String EMPTY = states.get(3);
-    private double s;
-    private double m;
-    private double time = 0.0;
-    private double K;
-    private double diffusivityRate;
+    private static double s;
+    private static double m;
+    private static double time = 0.0;
+    private static double K;
+    private static double diffusivityRate;
+    private static double growthRate;
     private double equationConstant = 0.5*diffusivityRate;
-    private double growthRate;
-
 
     /**
-     * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
-     * based on given rows and columns
-     **/
+     * Constructs a new RockPaperScissors Simulation
+     * @param data map for this simulation's specific variables
+     * @param cellTypes map from state to colors
+     * @param details miscellaneous grid information, such as authors, titles, gridtype, etc.
+     * @param layout map from Cell states to points, if null -> random generated initial state
+     */
     public RPSGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, Map<String, Point> layout) {
       super(data, cellTypes, details, states);
         this.s = getDoubleFromData(data,"s-empiricalTest");
@@ -37,15 +43,6 @@ public class RPSGrid extends Grid {
         this.diffusivityRate = getDoubleFromData(data, "diffusivityRate");
         this.growthRate = getDoubleFromData(data,"growthRate");
         setLayout(layout);
-    }
-
-    private void setLayout(Map<String, Point> layout) {
-      if (layout == null){
-        setLocalInitState();
-      }
-      else{
-        setInitState(layout);
-      }
     }
 
     @Override
@@ -73,6 +70,15 @@ public class RPSGrid extends Grid {
             diffuseCell(current(x,y), randomNeighbor);
         }
         numIterations++;
+    }
+
+    private void setLayout(Map<String, Point> layout) {
+      if (layout == null){
+        setLocalInitState();
+      }
+      else{
+        setInitState(layout);
+      }
     }
 
     private void calculateEmptyNeighbors(Cell c, List<Cell> emptyNeighbors){
