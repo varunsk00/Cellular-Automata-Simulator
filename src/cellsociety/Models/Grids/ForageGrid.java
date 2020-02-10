@@ -66,6 +66,17 @@ public class ForageGrid extends Grid {
         return ret;
     }
 
+    @Override
+    protected void updateCell(int x, int y, List<Cell> neighbors) {
+        ForageCell currentCell = (ForageCell) current(x, y);
+        if(currentCell.isHungry() || currentCell.isFull()){
+            handleAnt(currentCell, neighbors);
+        }
+        if(currentCell.getState().equals(NEST)){
+            current(x,y).setNextState(ANT);
+        }
+    }
+
     private void setLayout(Map<String, Point> layout) {
     if (layout == null){
       setLocalStateInits();
@@ -81,17 +92,6 @@ public class ForageGrid extends Grid {
               String state = current(i, j).getNextState();
               setCellState(i, j, state);
           }
-      }
-    }
-
-    @Override
-    protected void updateCell(int x, int y, List<Cell> neighbors) {
-      ForageCell currentCell = (ForageCell) current(x, y);
-      if(currentCell.isHungry() || currentCell.isFull()){
-          handleAnt(currentCell, neighbors);
-      }
-      if(currentCell.getState().equals(NEST)){
-          current(x,y).setNextState(ANT);
       }
     }
 
