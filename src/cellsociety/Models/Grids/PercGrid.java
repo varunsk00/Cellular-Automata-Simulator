@@ -11,17 +11,18 @@ public class PercGrid extends Grid {
   private ArrayList<Point> fullCells;
   private static double percentBlocked;
   private Random r = new Random();
-  private final String FULL = "full";
-  private final String BLOCKED = "blocked";
-  private final String EMPTY = "empty";
+  private static final List<String> states = List.of("full", "blocked", "empty");
+  private final String FULL = states.get(0);
+  private final String BLOCKED = states.get(1);
+  private final String EMPTY = states.get(2);
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
    * based on given rows and columns
    *
    **/
-  public PercGrid(Map<String, Double> data) {
-    super(data);
+  public PercGrid(Map<String, Double> data, Map<String, String> cellTypes) {
+    super(data, cellTypes, states);
     this.percentBlocked = getDoubleFromData(data, "percentBlocked");
     this.fullCells = new ArrayList<>();
     setFullCells();

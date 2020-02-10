@@ -13,10 +13,11 @@ public class SegGrid extends Grid {
   private double prob;
   private double percentFull;
   private ArrayList<Point> sameCells;
-  private final String X = "X";
-  private final String O = "O";
-  private final String EMPTY = "empty";
   private static final int numberOfNeighbors = 8;
+  private static final List<String> states = List.of("X", "O", "empty");
+  private final String X = states.get(0);
+  private final String O = states.get(1);
+  private final String EMPTY = states.get(2);
 
 
   /**
@@ -24,8 +25,8 @@ public class SegGrid extends Grid {
    * based on given rows and columns
    *
    **/
-  public SegGrid(Map<String, Double> data) {
-    super(data);
+  public SegGrid(Map<String, Double> data, Map<String, String> cellTypes) {
+    super(data, cellTypes, states);
     this.prob = getDoubleFromData(data,"satisfiedThreshold") * numberOfNeighbors;
     this.percentFull = getDoubleFromData(data, "percentFull");
     this.sameCells = new ArrayList<>();

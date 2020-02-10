@@ -16,7 +16,9 @@ public class Grid {
   private List<List<Cell>> grid;
   private int rows;
   private int columns;
-  private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");;
+  private Map<String, String> stateMap;
+  private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");
+  ;
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -31,25 +33,45 @@ public class Grid {
     this.grid = createGrid();
   }
 
-  public Grid(Map<String, Double> data) throws XMLException{
+  public Grid(Map<String, Double> data, Map<String, String> cellTypes, List<String> states)
+      throws XMLException {
+    checkValidStates(states, cellTypes);
+    this.stateMap = cellTypes;
     this.rows = getIntFromData(data, "rows");
     this.columns = getIntFromData(data, "columns");
     this.grid = createGrid();
   }
 
+  public Map<String, String> getStateMap() {
+    return stateMap;
+  }
+
+  protected void checkValidStates(List<String> states, Map<String, String> data) {
+    for (String state : data.keySet()) {
+      if (!states.contains(state)) {
+        throw new XMLException(myResources.getString("InvalidState"), state);
+      }
+    }
+    for (String state : states) {
+      if (!data.containsKey(state)) {
+        throw new XMLException(myResources.getString("MissingState"), state);
+      }
+    }
+  }
+
   protected int getIntFromData(Map<String, Double> data, String prop) throws XMLException {
-    if (!data.containsKey(prop)){
+    if (!data.containsKey(prop)) {
       throw new XMLException(myResources.getString("NullValue"), prop);
     }
     double d = data.get(prop);
-    if (d % 1 != 0){
+    if (d % 1 != 0) {
       throw new XMLException(myResources.getString("ParseInt"), prop);
     }
     return (int) d;
   }
 
-  protected double getDoubleFromData (Map<String, Double> data, String prop){
-    if (!data.containsKey(prop)){
+  protected double getDoubleFromData(Map<String, Double> data, String prop) {
+    if (!data.containsKey(prop)) {
       throw new XMLException(myResources.getString("NullValue"), prop);
     }
     return data.get(prop);
@@ -98,6 +120,7 @@ public class Grid {
    * Initializes an ArrayList of ArrayLists representative of the grid
    **/
   protected List<List<Cell>> createGrid() {
+
     List<List<Cell>> ret = new ArrayList<>();
     for (int i = 0; i < rows; i++) {
       ArrayList<Cell> row = new ArrayList<>();
@@ -117,18 +140,18 @@ public class Grid {
   }
 
   protected void setCellState(int x, int y, String state) {
-    current(x,y).setState(state);
+    current(x, y).setState(state);
   }
 
   protected List<Cell> getAllNeighbors(int x, int y) {
     List<Cell> neighbors = new ArrayList<>();
-    for (int i = x -1; i <= x +1; i++){
-      for (int j = y -1; j <= y +1; j++){
-        if (isOutOfBounds(i,j) ){
+    for (int i = x - 1; i <= x + 1; i++) {
+      for (int j = y - 1; j <= y + 1; j++) {
+        if (isOutOfBounds(i, j)) {
           continue;
         }
-        if (!(i== x && j==y)){
-          neighbors.add(getCell(i,j));
+        if (!(i == x && j == y)) {
+          neighbors.add(getCell(i, j));
         }
       }
     }
@@ -137,13 +160,13 @@ public class Grid {
 
   protected List<Cell> getHexNeighbors(int row, int col) {
     List<Cell> neighbors = new ArrayList<>();
-    for (int i = row -1; i <= row +1; i++){
-      for (int j = col -1; j <= col +1; j++){
-        if (isOutOfBounds(i,j) ){
+    for (int i = row - 1; i <= row + 1; i++) {
+      for (int j = col - 1; j <= col + 1; j++) {
+        if (isOutOfBounds(i, j)) {
           continue;
         }
-        if (!(i==row+1 && j==col+1) || !(i==row-1 && j==col+1)){
-          neighbors.add(getCell(i,j));
+        if (!(i == row + 1 && j == col + 1) || !(i == row - 1 && j == col + 1)) {
+          neighbors.add(getCell(i, j));
         }
       }
     }
@@ -152,13 +175,13 @@ public class Grid {
 
   protected List<Cell> getNeighbors(int x, int y) {
     List<Cell> neighbors = new ArrayList<>();
-    for (int i = x -1; i <= x +1; i++){
-      for (int j = y -1; j <= y +1; j++){
-        if (isOutOfBounds(i,j) ){
+    for (int i = x - 1; i <= x + 1; i++) {
+      for (int j = y - 1; j <= y + 1; j++) {
+        if (isOutOfBounds(i, j)) {
           continue;
         }
-        if (i==x || j==y){
-          neighbors.add(getCell(i,j));
+        if (i == x || j == y) {
+          neighbors.add(getCell(i, j));
         }
       }
     }

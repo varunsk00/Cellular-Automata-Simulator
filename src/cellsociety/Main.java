@@ -195,6 +195,7 @@ public class Main extends Application {
       System.out.println(e.getMessage());
     }
     catch (NullPointerException e){
+      e.printStackTrace();
       System.out.println(e.getMessage());
       header.setLoadOff();
       return;

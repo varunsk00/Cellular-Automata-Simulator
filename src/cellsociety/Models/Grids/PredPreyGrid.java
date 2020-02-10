@@ -14,15 +14,16 @@ public class PredPreyGrid extends Grid {
   private static int predatorGenerationRate;
   private static double percentPredator;
   private static double percentPrey;
-  private static final String PREDATOR = "predator";
-  private static final String PREY = "prey";
-  private static final String EMPTY = "empty";
+  private static final List<String> states = List.of("predator", "prey", "empty");
+  private static final String PREDATOR = states.get(0);
+  private static final String PREY = states.get(1);
+  private static final String EMPTY = states.get(2);
 
   private Random r = new Random();
 
 
-  public PredPreyGrid(Map<String, Double> data) {
-    super(data);
+  public PredPreyGrid(Map<String, Double> data, Map<String, String> cellTypes) {
+    super(data, cellTypes, states);
     this.predatorStartingEnergy = getIntFromData(data, "predatorStartingEnergy");
     this.predatorEnergyPerPrey = getIntFromData(data, "predatorEnergyPerPrey");
     this.preyGenerationRate = getIntFromData(data, "preyGenerationRate");

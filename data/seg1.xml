@@ -12,8 +12,8 @@
     <percentFull>0.5</percentFull>
   </simulationProps>
   <cellTypes>
-    <state name="X">#0000ff</state>
-    <state name="O">#ff0000</state>
-    <state name="empty">#ffffff</state>
+    <X>#0000ff</X>
+    <O>#ff0000</O>
+    <empty>#ffffff</empty>
   </cellTypes>
 </data>

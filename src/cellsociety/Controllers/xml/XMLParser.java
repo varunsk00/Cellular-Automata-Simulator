@@ -30,7 +30,8 @@ public class XMLParser {
   private File myFile;
   private Element root;
   private String gridType;
-  private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");;
+  private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");
+  ;
 
   /**
    * Create parser for XML files of given type.
@@ -54,11 +55,16 @@ public class XMLParser {
 
     // read data associated with the fields given by the object
     Map<String, Double> results = getSimulationProperties();
-    return returnGridByType(results);
+    Map<String, String> cellTypes = getMapBySection("cellTypes");
+
+    return returnGridByType(results, cellTypes);
   }
 
 
   public String getGridType() {
+//    if (!gridType.equals("rectangle") & !gridType.equals("rectangle")){
+//      throw new XMLException(myResources.getString("InvalidGridType"));
+//    }
     return this.gridType;
   }
 
@@ -119,28 +125,28 @@ public class XMLParser {
   }
 
   private double parseDoubleFromString(Node temp) {
-    try{
+    try {
       return Double.parseDouble(temp.getTextContent());
-    }
-    catch (NumberFormatException e){
-      throw new XMLException(myResources.getString("ParseDouble"),temp.getNodeName());
+    } catch (NumberFormatException e) {
+      throw new XMLException(myResources.getString("ParseDouble"), temp.getNodeName());
     }
   }
 
-  private Grid returnGridByType(Map<String, Double> results) throws XMLException {
+  private Grid returnGridByType(Map<String, Double> results, Map<String, String> cellTypes)
+      throws XMLException {
     switch (gridType) {
       case "Fire":
-        return new FireGrid(results);
+        return new FireGrid(results, cellTypes);
       case "Percolation":
-        return new PercGrid(results);
+        return new PercGrid(results, cellTypes);
       case "Life":
-        return new LifeGrid(results);
+        return new LifeGrid(results, cellTypes);
       case "Segregation":
-        return new SegGrid(results);
+        return new SegGrid(results, cellTypes);
       case "PredPrey":
-        return new PredPreyGrid(results);
+        return new PredPreyGrid(results, cellTypes);
       case "RockPaperScissors":
-        return new RPSGrid(results);
+        return new RPSGrid(results, cellTypes);
     }
     throw new XMLException(myResources.getString("InvalidSimulationType"));
   }

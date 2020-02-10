@@ -11,8 +11,8 @@
     <percentBlocked>0.4</percentBlocked>
   </simulationProps>
   <cellTypes>
-    <state name="full">#0000ff</state>
-    <state name="blocked">#000000</state>
-    <state name="empty">#ffffff</state>
+    <full>#0000ff</full>
+    <blocked>#000000</blocked>
+    <empty>#ffffff</empty>
   </cellTypes>
 </data>

@@ -15,9 +15,9 @@
     <diffusivityRate>0.8</diffusivityRate>
   </simulationProps>
   <cellTypes>
-    <state name="R">#0000ff</state>
-    <state name="P">#ff0000</state>
-    <state name="S">#00cc00</state>
-    <state name="empty">#ffffff</state>
+    <R>#0000ff</R>
+    <P>#ff0000</P>
+    <S>#00cc00</S>
+    <empty>#ffffff</empty>
   </cellTypes>
 </data>

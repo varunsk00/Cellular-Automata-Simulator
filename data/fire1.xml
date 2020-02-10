@@ -11,8 +11,8 @@
     <probCatch>0.6</probCatch>
   </simulationProps>
   <cellTypes>
-    <state name="burning">#ff3300</state>
-    <state name="tree">#009933</state>
-    <state name="empty">#ffff00</state>
+    <burning>#ff3300</burning>
+    <tree>#009933</tree>
+    <empty>#ffff00</empty>
   </cellTypes>
 </data>

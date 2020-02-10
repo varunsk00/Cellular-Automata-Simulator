@@ -16,9 +16,9 @@
     <percentPrey>0.2</percentPrey>
   </simulationProps>
   <cellTypes>
-    <state name="predator">#ff9900</state>
-    <state name="prey">#00cc00</state>
-    <state name="empty">#ffffff</state>
+    <predator>#ff9900</predator>
+    <prey>#00cc00</prey>
+    <empty>#ffffff</empty>
   </cellTypes>
   <layout>
     <cell>

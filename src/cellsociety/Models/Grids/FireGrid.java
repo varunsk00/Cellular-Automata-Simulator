@@ -1,12 +1,15 @@
 package cellsociety.Models.Grids;
 
+import cellsociety.Controllers.xml.XMLException;
 import java.awt.Point;
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Map;
 
 import cellsociety.Models.Cell;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
 
 
 public class FireGrid extends Grid {
@@ -14,21 +17,25 @@ public class FireGrid extends Grid {
   private List<Point> burnedCells;
   private double probability;
   private Random r = new Random();
+  private static final List<String> states = List.of("burning","tree","empty");
+//  private final String BURNING = states.get(0);
+//  private final String TREE = states.get(1);
+//  private final String EMPTY = states.get(2);
   private final String BURNING = "burning";
   private final String TREE = "tree";
   private final String EMPTY = "empty";
+
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
    * based on given rows and columns
    **/
-  public FireGrid(Map<String, Double> data) {
-    super(data);
+  public FireGrid(Map<String, Double> data, Map<String, String> cellTypes) {
+    super(data, cellTypes, states);
     this.probability = getDoubleFromData(data, "probCatch");
     burnedCells = new ArrayList<>();
     setBurningCell();
   }
-
 
   @Override
   public void updateGrid() {

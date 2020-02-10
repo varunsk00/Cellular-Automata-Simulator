@@ -12,10 +12,11 @@ public class RPSGrid extends Grid {
     private Random r = new Random();
 
     private ArrayList<Point> sameCells;
-    private final String R = "R";
-    private final String P = "P";
-    private final String S = "S";
-    private final String EMPTY = "empty";
+  private static final List<String> states = List.of("R", "P", "S", "empty");
+  private final String R = states.get(0);
+    private final String P = states.get(1);
+    private final String S = states.get(2);
+    private final String EMPTY = states.get(3);
     private double s;
     private double m;
     private double time = 0.0;
@@ -28,8 +29,8 @@ public class RPSGrid extends Grid {
      * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
      * based on given rows and columns
      **/
-    public RPSGrid(Map<String, Double> data) {
-        super(data);
+    public RPSGrid(Map<String, Double> data, Map<String, String> cellTypes) {
+      super(data, cellTypes, states);
         this.s = getDoubleFromData(data,"s-empiricalTest");
         this.m = getDoubleFromData(data,"sigmoidFunctionRate");
         this.K = getDoubleFromData(data,"decayRate");

@@ -25,8 +25,8 @@ public class GridView {
    * Future variations can store a grid to the GridPane to be updated for efficiency purposes
    * Creates the GridPane and sets Horizontal and Vertical Gaps to 1
    */
-  public GridView(String language) {
-    myResources = ResourceBundle.getBundle(language);    myGridPane = new GridPane();
+  public GridView() {
+    myGridPane = new GridPane();
     myGridPane.setHgap(1);
     myGridPane.setVgap(1);
   }
@@ -55,7 +55,8 @@ public class GridView {
     for (int i = 0; i < grid.getColumns(); i++) {
       for (int j = 0; j < grid.getRows(); j++) {
         Region addedShape = new Region();
-        Color regionColor = Color.web(myResources.getString(grid.current(j, i).getState()));
+
+        Color regionColor = Color.web(grid.getStateMap().get(grid.current(j, i).getState()));
         Background regionBackground = new Background(new BackgroundFill(regionColor, CornerRadii.EMPTY, Insets.EMPTY));
         addedShape.setBackground(regionBackground);
         myGridPane.add(addedShape, i, j);

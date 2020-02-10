@@ -11,7 +11,7 @@
     <percentAlive>0.4</percentAlive>
   </simulationProps>
   <cellTypes>
-    <state name="alive">#000000</state>
-    <state name="dead">#ffffff</state>
+    <alive>#000000</alive>
+    <dead>#ffffff</dead>
   </cellTypes>
 </data>

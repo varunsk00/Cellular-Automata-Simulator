@@ -25,7 +25,7 @@ public class SimulationView {
     }
 
     private void setGridView(String language) {
-        myGridView = new GridView(language);
+        myGridView = new GridView();
         mySimulation.getChildren().add(myGridView.getGridPane());
         mySimulation.setVgrow(myGridView.getGridPane(), Priority.ALWAYS);
     }
