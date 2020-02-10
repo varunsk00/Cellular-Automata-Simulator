@@ -1,10 +1,7 @@
 package cellsociety.Visuals;
 
 import cellsociety.Models.Grids.Grid;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Paint;
-
 import java.util.ResourceBundle;
 
 public abstract class GridView {

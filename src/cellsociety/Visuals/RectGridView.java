@@ -6,7 +6,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 /**
  * Converts a Grid object to a dynamic GridPane object that can be displayed in Main

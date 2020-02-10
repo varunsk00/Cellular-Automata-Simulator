@@ -1,20 +1,19 @@
 package cellsociety.Visuals;
 
+import cellsociety.Models.Cell;
 import cellsociety.Models.Grids.Grid;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
-import java.util.ResourceBundle;
 
 /**
- * Converts a Grid object to a dynamic GridPane object that can be displayed in Main
- * GridPane is dynamic in size and changes based on changes to the size of the window
- * GridPane does not store a Grid, but future implementations could make GridPane instance variable mutable
- * to prevent clearing the GridPane on every update() call
- * @authors Eric Doppelt, Jaidha Rosenblatt
+ * Converts a Grid object to a dynamic GridPane object with Hexagon cell shapes that can be displayed in CAController
+ * HexGridView extends GridView inheriting a GridPane
+ * The GridPane is dynamic in size and changes based on changes to the size of the window
+ * @authors Eric Doppelt
  */
 public class HexGridView extends GridView {
 
@@ -45,52 +44,64 @@ public class HexGridView extends GridView {
     public void updateGridView(Grid grid) {
         myGridPane.getChildren().clear();
 
-        boolean frontBuffer = false;
+        boolean rowHasFrontBuffer = false;
 
         for (int i = 0; i < grid.getRows(); i++) {
             for (int j = 0; j < grid.getColumns(); j++) {
                 if (j == 0 && i % 2 != 0) {
-                    Region addedBuffer = new Region();
-                    myGridPane.add(addedBuffer, j, i);
-                    myGridPane.setHgrow(addedBuffer, Priority.ALWAYS);
-                    myGridPane.setVgrow(addedBuffer, Priority.ALWAYS);
-                    frontBuffer =  true;
+                    addBuffer(i, j);
+                    rowHasFrontBuffer =  true;
                 }
 
-                Region addedLeftHex = new Region();
-                addedLeftHex.setShape(myLeftHex);
-
-                Region addedRightHex = new Region();
-                addedRightHex.setShape(myRightHex);
-
-
-                Color regionColor = Color.web(myResources.getString(grid.current(j, i).getState()));
-                Background regionBackground = new Background(new BackgroundFill(regionColor, CornerRadii.EMPTY, Insets.EMPTY));
-                addedLeftHex.setBackground(regionBackground);
-                addedRightHex.setBackground(regionBackground);
-
-                int x = 2 * j;
-                if (frontBuffer) x++;
-
-                myGridPane.add(addedLeftHex, x, i);
-                myGridPane.setHgrow(addedLeftHex, Priority.ALWAYS);
-                myGridPane.setVgrow(addedLeftHex, Priority.ALWAYS);
-
-
-                myGridPane.add(addedRightHex, ++x, i);
-                myGridPane.setHgrow(addedRightHex, Priority.ALWAYS);
-                myGridPane.setVgrow(addedRightHex, Priority.ALWAYS);
-
+                addHexagon(grid.current(i, j), rowHasFrontBuffer);
 
                 if (j == grid.getColumns() - 1 && i % 2 == 0) {
-                    Region addedBuffer = new Region();
-                    myGridPane.add(addedBuffer, 2*j + 2, i);
-                    myGridPane.setHgrow(addedBuffer, Priority.ALWAYS);
-                    myGridPane.setVgrow(addedBuffer, Priority.ALWAYS);
+                    addBuffer(i, endBufferIndex(j));
                 }
             }
-            frontBuffer = false;
+            rowHasFrontBuffer = false;
         }
+    }
+
+    private int endBufferIndex(int j) {
+        return 2 * j + 2;
+    }
+
+    private void addHexagon(Cell cell, boolean buffer) {
+        int column = 2 * cell.getCoordinate().x;
+        if (buffer) column++;
+        int row = cell.getCoordinate().y;
+
+        Color regionColor = Color.web(myResources.getString(cell.getState()));
+
+        Region addedLeftHex = makeHalfHex(myLeftHex, regionColor);
+        Region addedRightHex = makeHalfHex(myRightHex, regionColor);
+
+        myGridPane.add(addedLeftHex, column, row);
+        myGridPane.add(addedRightHex, ++column, row);
+
+        makeNodeDynamic(addedLeftHex);
+        makeNodeDynamic(addedRightHex);
+    }
+
+    private Region makeHalfHex(Shape shape, Color color) {
+        Region tempHalfHex = new Region();
+        tempHalfHex.setShape(shape);
+        Background regionBackground = new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
+        tempHalfHex.setBackground(regionBackground);
+        return tempHalfHex;
+    }
+
+    private void addBuffer(int i, int j) {
+        Region addedBuffer = new Region();
+        myGridPane.add(addedBuffer, j, i);
+        myGridPane.setHgrow(addedBuffer, Priority.ALWAYS);
+        myGridPane.setVgrow(addedBuffer, Priority.ALWAYS);
+    }
+
+    private void makeNodeDynamic(Node region) {
+        myGridPane.setHgrow(region, Priority.ALWAYS);
+        myGridPane.setVgrow(region, Priority.ALWAYS);
     }
 
     private Shape getRightHex() {
