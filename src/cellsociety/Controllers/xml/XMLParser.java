@@ -157,6 +157,8 @@ public class XMLParser {
         return new PredPreyGrid(results, cellTypes, details);
       case "RockPaperScissors":
         return new RPSGrid(results, cellTypes, details);
+      case "Foraging":
+        return new ForageGrid(results, cellTypes, details);
     }
     throw new XMLException(myResources.getString("InvalidSimulationType"));
   }
