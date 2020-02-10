@@ -1,20 +1,15 @@
 package cellsociety.Visuals;
 
 import cellsociety.Models.Grids.Grid;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Paint;
-
 import java.util.ResourceBundle;
 
 public abstract class GridView {
     protected GridPane myGridPane;
     protected ResourceBundle myResources;
 
-    public GridView(String language) {
-        System.out.println("called");
+    public GridView() {
         myGridPane = new GridPane();
-        myResources = ResourceBundle.getBundle(language);
     }
 
     /**

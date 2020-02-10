@@ -3,7 +3,6 @@ package cellsociety.Visuals;
 import cellsociety.Models.Grids.Grid;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 
 import java.util.Map;
 
@@ -13,10 +12,10 @@ public class SimulationView {
     private StatView myStatView;
     private GridView myGridView;
 
-    public SimulationView(String language, String author, String title, String type, Map stats) {
+    public SimulationView(String author, String title, String type, Map stats) {
         mySimulation = new VBox();
         setStatView(title, author, stats);
-        setGridView(language, type);
+        setGridView(type);
     }
 
     private void setStatView(String title, String author, Map stats) {
@@ -24,13 +23,13 @@ public class SimulationView {
         mySimulation.getChildren().add(myStatView.getStatBox());
     }
 
-    private void setGridView(String language, String type) {
+    private void setGridView(String type) {
         switch(type) {
-            case "Rectangle":
-                myGridView = new RectGridView(language);
+            case "rectangle":
+                myGridView = new RectGridView();
                 break;
-            case "Hexagon":
-                myGridView = new HexGridView(language);
+            case "hexagon":
+                myGridView = new HexGridView();
                 break;
         }
         System.out.println("TYPE" + myGridView.getClass());

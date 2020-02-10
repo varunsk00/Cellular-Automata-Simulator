@@ -2,11 +2,11 @@ package cellsociety.Visuals;
 
 import cellsociety.Models.Cell;
 import cellsociety.Models.Grids.Grid;
+import java.util.Map;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 /**
  * Converts a Grid object to a dynamic GridPane object that can be displayed in Main
@@ -16,6 +16,7 @@ import javafx.scene.paint.Paint;
  * @authors Eric Doppelt, Jaidha Rosenblatt
  */
 public class RectGridView extends GridView {
+    private Map<String, String> stateMap;
 
     /**
      * Basic constructor for a GridView object
@@ -23,8 +24,8 @@ public class RectGridView extends GridView {
      * Future variations can store a grid to the GridPane to be updated for efficiency purposes
      * Creates the GridPane and sets Horizontal and Vertical Gaps to 1
      */
-    public RectGridView(String language) {
-        super(language);
+    public RectGridView() {
+        super();
         myGridPane.setHgap(1);
         myGridPane.setVgap(1);
     }
@@ -39,6 +40,7 @@ public class RectGridView extends GridView {
      */
     @Override
     public void updateGridView(Grid grid) {
+        stateMap = grid.getStateMap();
         myGridPane.getChildren().clear();
 
         for (int i = 0; i < grid.getColumns(); i++) {
@@ -52,7 +54,7 @@ public class RectGridView extends GridView {
 
     private Region createRectangle(Cell tempCell) {
         Region tempRectangle = new Region();
-        Color regionColor = Color.web(myResources.getString(tempCell.getState()));
+        Color regionColor = Color.web(stateMap.get(tempCell.getState()));
         Background regionBackground = new Background(new BackgroundFill(regionColor, CornerRadii.EMPTY, Insets.EMPTY));
         tempRectangle.setBackground(regionBackground);
         return tempRectangle;
