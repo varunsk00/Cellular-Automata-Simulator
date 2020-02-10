@@ -7,26 +7,47 @@ import java.util.Random;
 import cellsociety.Models.Cells.*;
 import java.util.ArrayList;
 
+/**
+ * This class simulates the Game of Life
+ *
+ * @author Varun Kosgi
+ * @author Jaidha Rosenblatt
+ */
 public class LifeGrid extends Grid {
   private Random r = new Random();
   private ArrayList<Point> aliveCells;
   private static double percentAlive;
   private static final List<String> states = List.of("dead","alive");
+  /*
+  These two strings are commented out because of an unknown bug related
+  to the parsing of the List. The strings are instead hard-coded.
+   */
 //  private final String DEAD = states.get(0);
 //  private final String ALIVE = states.get(1);
   private final String DEAD = "dead";
   private final String ALIVE = "alive";
 
   /**
-   * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
-   * based on given rows and columns
-   *
-   **/
+   * Constructs a new Game of Life Simulation
+   * @param data map for this simulation's specific variables
+   * @param cellTypes map from state to colors
+   * @param details miscellaneous grid information, such as authors, titles, gridtype, etc.
+   * @param layout map from Cell states to points, if null -> random generated initial state
+   */
   public LifeGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, Map<String, Point> layout) {
     super(data,cellTypes,details, states);
     this.percentAlive = getDoubleFromData(data,"percentAlive");
     this.aliveCells = new ArrayList<>();
     setLayout(layout);
+  }
+
+  /**
+   * Overrides updateGrid() method to store the coordinates of Cells that are alive
+   */
+  @Override
+  public void updateGrid(){
+    storeCellsByState(aliveCells, ALIVE);
+    super.updateGrid();
   }
 
   private void setLayout(Map<String, Point> layout) {
@@ -36,12 +57,6 @@ public class LifeGrid extends Grid {
     else{
       setInitState(layout);
     }
-  }
-
-  @Override
-  public void updateGrid(){
-    storeCellsByState(aliveCells, ALIVE);
-    super.updateGrid();
   }
 
   @Override
