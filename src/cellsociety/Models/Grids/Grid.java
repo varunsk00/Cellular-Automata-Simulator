@@ -105,7 +105,7 @@ public class Grid {
     for (int i = 0; i < rows; i++) {
       ArrayList<Cell> row = new ArrayList<>();
       for (int j = 0; j < columns; j++) {
-        row.add(new Cell("empty", i, j));
+        row.add(new Cell("empty", j, i));
       }
       ret.add(row);
     }

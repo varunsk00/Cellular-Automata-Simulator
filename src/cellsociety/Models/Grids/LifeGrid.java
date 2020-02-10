@@ -38,7 +38,7 @@ public class LifeGrid extends Grid {
       for (int i = 0; i < getRows(); i++) {
           List<Cell> row = new ArrayList<>();
           for (int j = 0; j < getColumns(); j++) {
-              row.add(new Cell(DEAD,i,j));
+              row.add(new Cell(DEAD,j,i));
           }
           ret.add(row);
       }
