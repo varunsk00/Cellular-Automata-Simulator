@@ -1,15 +1,12 @@
 package cellsociety.Models.Grids;
 
-import cellsociety.Controllers.xml.XMLException;
 import java.awt.Point;
-import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Map;
 
-import cellsociety.Models.Cell;
+import cellsociety.Models.Cells.*;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Set;
 
 
 public class FireGrid extends Grid {
