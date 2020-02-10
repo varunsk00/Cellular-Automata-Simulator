@@ -16,10 +16,8 @@ import java.util.ResourceBundle;
  * to prevent clearing the GridPane on every update() call
  * @authors Eric Doppelt, Jaidha Rosenblatt
  */
-public class HexGridView {
+public class HexGridView extends GridView {
 
-    private GridPane myGridPane;
-    private ResourceBundle myResources;
     private Shape myRightHex;
     private Shape myLeftHex;
 
@@ -30,19 +28,9 @@ public class HexGridView {
      * Creates the GridPane and sets Horizontal and Vertical Gaps to 1
      */
     public HexGridView(String language) {
-        myResources = ResourceBundle.getBundle(language);
-        myGridPane = new GridPane();
+        super(language);
         myRightHex = getRightHex();
         myLeftHex = getLeftHex();
-    }
-
-    /**
-     * Basic getter method to get the GridPane object
-     *
-     * @return myGridPane instance variable representing the last grid passed through update
-     */
-    public GridPane getGridPane() {
-        return myGridPane;
     }
 
     /**
@@ -53,8 +41,8 @@ public class HexGridView {
      *
      * @param grid takes in a grid to be represented via a GridPane
      */
+    @Override
     public void updateGridView(Grid grid) {
-
         myGridPane.getChildren().clear();
 
         boolean frontBuffer = false;
@@ -63,7 +51,6 @@ public class HexGridView {
             for (int j = 0; j < grid.getColumns(); j++) {
                 if (j == 0 && i % 2 != 0) {
                     Region addedBuffer = new Region();
-                    addedBuffer.setBackground(new Background(new BackgroundFill((Paint)Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
                     myGridPane.add(addedBuffer, j, i);
                     myGridPane.setHgrow(addedBuffer, Priority.ALWAYS);
                     myGridPane.setVgrow(addedBuffer, Priority.ALWAYS);
@@ -98,7 +85,6 @@ public class HexGridView {
 
                 if (j == grid.getColumns() - 1 && i % 2 == 0) {
                     Region addedBuffer = new Region();
-                    addedBuffer.setBackground(new Background(new BackgroundFill((Paint)Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
                     myGridPane.add(addedBuffer, 2*j + 2, i);
                     myGridPane.setHgrow(addedBuffer, Priority.ALWAYS);
                     myGridPane.setVgrow(addedBuffer, Priority.ALWAYS);
@@ -109,7 +95,6 @@ public class HexGridView {
         }
     }
 
-    // SOURCE: https://www.tutorialspoint.com/javafx/2dshapes_polygon.htm
     private Shape getRightHex() {
         Polygon rightHex = new Polygon();
         rightHex.getPoints().addAll(0.0, 0.0,

@@ -165,7 +165,7 @@ public class CAController extends Application {
         try {
             XMLParser parser = new XMLParser("grid", dataFile);
             Grid tempGrid = parser.getGrid();
-            SimulationView tempSimulation = new SimulationView(parser.getGridType(), tempGrid.getAuthor(), tempGrid.getTitle(), myShape, tempGrid.getStats());
+            SimulationView tempSimulation = new SimulationView(parser.getGridType(), tempGrid.getAuthor(), tempGrid.getTitle(), "Hexagon", tempGrid.getStats());
             tempSimulation.updateGridView(tempGrid);
 
             allGrids.add(tempGrid);

@@ -1,10 +1,12 @@
 package cellsociety.Visuals;
 
+import cellsociety.Models.Cell;
 import cellsociety.Models.Grids.Grid;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import java.util.ResourceBundle;
+import javafx.scene.paint.Paint;
 
 /**
  * Converts a Grid object to a dynamic GridPane object that can be displayed in Main
@@ -13,10 +15,7 @@ import java.util.ResourceBundle;
  * to prevent clearing the GridPane on every update() call
  * @authors Eric Doppelt, Jaidha Rosenblatt
  */
-public class RectGridView {
-
-    private GridPane myGridPane;
-    private ResourceBundle myResources;
+public class RectGridView extends GridView {
 
     /**
      * Basic constructor for a GridView object
@@ -25,18 +24,9 @@ public class RectGridView {
      * Creates the GridPane and sets Horizontal and Vertical Gaps to 1
      */
     public RectGridView(String language) {
-        myResources = ResourceBundle.getBundle(language);    myGridPane = new GridPane();
+        super(language);
         myGridPane.setHgap(1);
         myGridPane.setVgap(1);
-    }
-
-    /**
-     * Basic getter method to get the GridPane object
-     *
-     * @return myGridPane instance variable representing the last grid passed through update
-     */
-    public GridPane getGridPane() {
-        return myGridPane;
     }
 
     /**
@@ -47,21 +37,29 @@ public class RectGridView {
      *
      * @param grid takes in a grid to be represented via a GridPane
      */
+    @Override
     public void updateGridView(Grid grid) {
-
         myGridPane.getChildren().clear();
 
         for (int i = 0; i < grid.getColumns(); i++) {
             for (int j = 0; j < grid.getRows(); j++) {
-                Region addedShape = new Region();
-                Color regionColor = Color.web(myResources.getString(grid.current(j, i).getState()));
-                Background regionBackground = new Background(new BackgroundFill(regionColor, CornerRadii.EMPTY, Insets.EMPTY));
-                addedShape.setBackground(regionBackground);
+                Region addedShape = createRectangle(grid.current(j, i));
                 myGridPane.add(addedShape, i, j);
-                myGridPane.setHgrow(addedShape, Priority.ALWAYS);
-                myGridPane.setVgrow(addedShape, Priority.ALWAYS);
+                makeRectangleGrow(addedShape);
             }
         }
+    }
+
+    private Region createRectangle(Cell tempCell) {
+        Region tempRectangle = new Region();
+        Color regionColor = Color.web(myResources.getString(tempCell.getState()));
+        Background regionBackground = new Background(new BackgroundFill(regionColor, CornerRadii.EMPTY, Insets.EMPTY));
+        tempRectangle.setBackground(regionBackground);
+        return tempRectangle;
+    }
+    private void makeRectangleGrow(Node growNode) {
+        myGridPane.setHgrow(growNode, Priority.ALWAYS);
+        myGridPane.setVgrow(growNode, Priority.ALWAYS);
     }
 }
 
