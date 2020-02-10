@@ -14,8 +14,8 @@ public class LifeGrid extends Grid {
   private static final List<String> states = List.of("dead","alive");
 //  private final String DEAD = states.get(0);
 //  private final String ALIVE = states.get(1);
-  private final String DEAD = "dead";
-  private final String ALIVE = "alive";
+  private static final String DEAD = "dead";
+  private static final String ALIVE = "alive";
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells

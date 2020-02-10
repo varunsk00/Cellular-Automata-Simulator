@@ -18,9 +18,9 @@ public class FireGrid extends Grid {
 //  private final String BURNING = states.get(0);
 //  private final String TREE = states.get(1);
 //  private final String EMPTY = states.get(2);
-  private final String BURNING = "burning";
-  private final String TREE = "tree";
-  private final String EMPTY = "empty";
+  private static final String BURNING = "burning";
+  private static final String TREE = "tree";
+  private static final String EMPTY = "empty";
 
 
   public FireGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, Map<String, Point> layout) {

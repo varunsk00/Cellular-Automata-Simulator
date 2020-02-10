@@ -18,8 +18,6 @@ import java.util.ResourceBundle;
 public class StatView {
 
     private static final String RESOURCE_LANGUAGE = "Standard";
-    private static final String TITLE_SETUP = "Title:";
-    private static final String AUTHOR_SETUP = "Author:";
     private static final Color BACKGROUND_COLOR = Color.GREY;
     private static final BackgroundFill STAT_BACKGROUND = new BackgroundFill(BACKGROUND_COLOR, CornerRadii.EMPTY, Insets.EMPTY);
 

@@ -21,14 +21,14 @@ public class SliderControls {
 
     private ResourceBundle myResources;
 
-    private static int MIN_FRAME_SPEED = 1;
-    private static int MAX_FRAME_SPEED = 5;
+    private static final int MIN_FRAME_SPEED = 1;
+    private static final int MAX_FRAME_SPEED = 5;
     private static int DEFAULT_FRAME_SPEED = 1;
 
 
-    private static int MIN_SKIP = 1;
-    private static int MAX_SKIP = 10;
-    private static int DEFAULT_SKIP = 1;
+    private static final int MIN_SKIP = 1;
+    private static final int MAX_SKIP = 10;
+    private static final int DEFAULT_SKIP = 1;
 
     private Slider frameSpeed;
     private Slider framesSkipped;

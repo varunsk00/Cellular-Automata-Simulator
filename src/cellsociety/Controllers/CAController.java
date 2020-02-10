@@ -37,14 +37,13 @@ public class CAController extends Application {
     private static final String RESOURCE_LANGUAGE = "Standard";
 
     private static double FRAMES_PER_SECOND = 1;
-    private static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private double SCENE_WIDTH = 1000;
-    private double SCENE_HEIGHT = 500;
+    private static final double SCENE_WIDTH = 1000;
+    private static final double SCENE_HEIGHT = 500;
 
     public static final String DATA_FILE_EXTENSION = "*.xml";
-    public final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
+    public static final FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
 
     private static final Color GRID_BACKGROUND = Color.BEIGE;
     private static final Color ALL_COLOR = Color.ALICEBLUE;

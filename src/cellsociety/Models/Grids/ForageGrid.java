@@ -10,7 +10,7 @@ public class ForageGrid extends Grid {
   private Random r = new Random();
   private double maxPheremones;
   private double percentFood;
-  private final int constant = 1;
+  private static final int constant = 1;
   private static final List<String> states = List.of("food", "empty", "nest", "ant", "fullant");
   private final String FOOD = states.get(0);
   private final String EMPTY = states.get(1);
