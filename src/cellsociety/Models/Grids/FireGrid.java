@@ -23,13 +23,8 @@ public class FireGrid extends Grid {
   private final String EMPTY = "empty";
 
 
-  /**
-   * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
-   * based on given rows and columns
-   **/
   public FireGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, Map<String, Point> layout) {
     super(data, cellTypes, details, states);
-
     this.probability = getDoubleFromData(data, "probCatch");
     burnedCells = new ArrayList<>();
     setLayout(layout);
@@ -83,12 +78,12 @@ public class FireGrid extends Grid {
   }
 
   private void burnCell(int x, int y) {
-    current(x, y).setState(BURNING);
+    setCellState(x,y,BURNING);
     System.out.println("caught fire: " + (x) + ", " + (y));
   }
 
   private void extinguishCell(int x, int y) {
-    current(x, y).setState(EMPTY);
+    setCellState(x,y,EMPTY);
     System.out.println("extinguished: " + (x) + ", " + (y));
   }
 }

@@ -10,8 +10,9 @@ import java.util.Random;
 public class RPSGrid extends Grid {
 
     private Random r = new Random();
-    private static final List<String> states = List.of("R", "P", "S", "empty");
-    private final String R = states.get(0);
+
+  private static final List<String> states = List.of("R", "P", "S", "empty");
+  private final String R = states.get(0);
     private final String P = states.get(1);
     private final String S = states.get(2);
     private final String EMPTY = states.get(3);
@@ -39,7 +40,7 @@ public class RPSGrid extends Grid {
 
     private void setLayout(Map<String, Point> layout) {
       if (layout == null){
-        setInits();
+        setLocalInitState();
       }
       else{
         setInitState(layout);
@@ -121,9 +122,9 @@ public class RPSGrid extends Grid {
     }
 
     private void diffuseCell(Cell a, Cell b){
-        String current_state = a.getState();
+        String currentState = a.getState();
         a.setState(b.getState());
-        b.setState(current_state);
+        b.setState(currentState);
         System.out.println("Diffuse");
     }
 
@@ -131,7 +132,7 @@ public class RPSGrid extends Grid {
         return r.nextFloat();
     }
 
-    private void setInits() {
+    private void setLocalInitState() {
         this.current(r.nextInt(getRows()),r.nextInt(getColumns())).setState(R);
         this.current(r.nextInt(getRows()),r.nextInt(getColumns())).setState(P);
         this.current(r.nextInt(getRows()),r.nextInt(getColumns())).setState(S);

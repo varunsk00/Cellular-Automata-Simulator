@@ -35,7 +35,7 @@ public class SegGrid extends Grid {
 
   private void setLayout(Map<String, Point> layout) {
     if (layout == null){
-      setInits();
+      setLocalInitState();
     }
     else{
       setInitState(layout);
@@ -52,29 +52,29 @@ public class SegGrid extends Grid {
 
   @Override
   protected void updateCell(int x, int y, List<Cell> neighbors) {
-    int similar_count = 0;
+    int similarCount = 0;
     for (Cell c : neighbors) {
       if (c.getState().equals(current(x, y).getState())) {
-        similar_count++;
+        similarCount++;
       }
     }
-    if (similar_count >= prob) {
+    if (similarCount >= prob) {
       System.out.println("satisfied: " + (x) + ", " + (y));
     } else {
       System.out.println("unsatisfied: " + (x) + ", " + (y));
-      int ran_x = r.nextInt(getColumns());
-      int ran_y = r.nextInt(getRows());
-      while (current(ran_x, ran_y).getState().equals(EMPTY)) {
-        current(ran_x, ran_y).setState(current(x, y).getState());
-        System.out.println("relocated to: " + (ran_x) + ", " + (y));
-        ran_x = r.nextInt(getColumns());
-        ran_y = r.nextInt(getRows());
+      int ranX = r.nextInt(getColumns());
+      int ranY = r.nextInt(getRows());
+      while (current(ranX, ranY).getState().equals(EMPTY)) {
+        current(ranX, ranY).setState(current(x, y).getState());
+        System.out.println("relocated to: " + (ranX) + ", " + (y));
+        ranX = r.nextInt(getColumns());
+        ranY = r.nextInt(getRows());
       }
       current(x, y).setState(EMPTY);
     }
   }
 
-  private void setInits() {
+  private void setLocalInitState() {
     for (int i = 0; i < this.getRows(); i++) {
       for (int j = 0; j < this.getColumns(); j++) {
 

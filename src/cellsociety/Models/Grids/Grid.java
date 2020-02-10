@@ -21,7 +21,8 @@ public class Grid {
   private Map<String, String> details;
   protected int numIterations;
 
-  private ResourceBundle myResources = ResourceBundle.getBundle("Standard");
+  private static final String bundleName = "Standard";
+  private ResourceBundle myResources = ResourceBundle.getBundle(bundleName);
 
 
   /**
@@ -35,7 +36,6 @@ public class Grid {
     this.rows = rows;
     this.columns = columns;
     this.grid = createGrid();
-    this.numIterations = 0;
   }
 
   public Grid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, List<String> states)
@@ -135,7 +135,6 @@ public class Grid {
         updateCell(i, j, neighbors);
       }
     }
-    numIterations++;
   }
 
   /**

@@ -32,7 +32,8 @@ public class XMLParser {
   private File myFile;
   private Element root;
   private String simulationType;
-  private ResourceBundle myResources = ResourceBundle.getBundle("Standard");
+  private static final String bundleName = "Standard";
+  private ResourceBundle myResources = ResourceBundle.getBundle(bundleName);
 
   /**
    * Create parser for XML files of given type.
@@ -154,7 +155,6 @@ public class XMLParser {
     }
     return results;
   }
-
 
   private double parseDoubleFromString(Node temp) {
     try {

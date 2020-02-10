@@ -32,7 +32,6 @@ public class SimulationView {
                 myGridView = new HexGridView();
                 break;
         }
-        System.out.println("TYPE" + myGridView.getClass());
         mySimulation.getChildren().add(myGridView.getGridPane());
         mySimulation.setVgrow(myGridView.getGridPane(), Priority.ALWAYS);
     }
