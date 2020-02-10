@@ -23,6 +23,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Ultimate Constructor for the CA Simulator
+ * Dependent on Every Class in cellsociety
+ * Creates a BorderPane with a ButtonControls on top, a SliderControls on Bottom, and SimulationView between in the center
+ * Capable of spawning Pop Up Windows for GraphViews and XML Error Messages
+ * Use this by creating an instance in Main passing String[] args to it
+ * @authors Eric Doppelt, Jaidha Rosenblatt
+ */
 public class CAController extends Application {
 
     private static final String STYLESHEET = "cellsociety/Resources/default.css";
@@ -53,20 +61,31 @@ public class CAController extends Application {
     private Stage myStage;
     private Timeline animation;
 
+
     /**
-     * Begins our JavaFX application
-     * Starts the Animation Loop and sets the Border Pane, filling it with a Header, Footer, and Gridview
-     * Sets the stage and scene and shows it
+     * Empty Constructor Needed to run the application due to Application requirements
+     * Not called explicitely in code
      */
+    public CAController() {}
 
-    public CAController() {
-        System.out.println("Creating CAController");
-    }
-
+    /**
+     * Constructor used in Main to begin the program
+     * Begins our JavaFX application
+     * Starts the Animation Loop and sets the Border Pane, filling it with a ButtonControls, SliderControls, and SimulationViews
+     * Sets the stage and scene and shows it
+     * @param args is the String[] passed in by main
+     */
     public CAController(String[] args) {
         launch(args);
     }
 
+    /**
+     * Start method for the Application
+     * Sets the BorderPane and fills it with ButtonControls (in the header) and SliderControls (in the Footer)
+     * Sets the Center with SimulationView objects to represent the Simulation
+     * Initializes allGraphs explicitely and allGrids and allSimulationViews in nested methods
+     * @param primaryStage is the stage to display the Application
+     */
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Simulation");
         startAnimationLoop();
