@@ -2,7 +2,6 @@ package cellsociety.Models.Cells;
 
 /**
  * This class represents a ForageCell for the Foraging Simulation.
- *
  * Used to represent an Ant, Nest, and Food
  *
  * @author Varun Kosgi
