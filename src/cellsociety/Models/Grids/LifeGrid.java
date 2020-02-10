@@ -50,51 +50,51 @@ public class LifeGrid extends Grid {
       super.updateGrid();
     }
 
+    @Override
+    protected List<List<Cell>> createGrid() {
+        List<List<Cell>> ret = new ArrayList<>();
+        for (int i = 0; i < getRows(); i++) {
+            List<Cell> row = new ArrayList<>();
+            for (int j = 0; j < getColumns(); j++) {
+                row.add(new Cell(DEAD,j,i));
+            }
+            ret.add(row);
+        }
+        return ret;
+    }
+
+    @Override
+    protected void updateCell(int x, int y, List<Cell> neighbors){
+        int aliveCount= 0;
+        for (Cell c: neighbors){
+            if (c.getState() == ALIVE){
+                aliveCount++;
+            }
+        }
+        if (current(x,y).getState().equals(ALIVE) && checkNeighbors(x, y, aliveCells)){
+            if(aliveCount==2 || aliveCount ==3){
+                surviveCell(x,y);
+            }
+            else{
+                killCell(x,y);
+            }
+        }
+        else{
+            if (aliveCount==3){
+                surviveCell(x,y);
+            }
+            else{
+                killCell(x,y);
+            }
+        }
+    }
+
     private void setLayout(Map<String, Point> layout) {
       if (layout == null){
         setLocalInitState();
       }
       else{
         setInitState(layout);
-      }
-    }
-
-    @Override
-    protected List<List<Cell>> createGrid() {
-      List<List<Cell>> ret = new ArrayList<>();
-      for (int i = 0; i < getRows(); i++) {
-        List<Cell> row = new ArrayList<>();
-        for (int j = 0; j < getColumns(); j++) {
-                row.add(new Cell(DEAD,j,i));
-        }
-        ret.add(row);
-      }
-      return ret;
-    }
-
-    @Override
-    protected void updateCell(int x, int y, List<Cell> neighbors){
-      int aliveCount= 0;
-      for (Cell c: neighbors){
-        if (c.getState() == ALIVE){
-          aliveCount++;
-        }
-      }
-      if (current(x,y).getState().equals(ALIVE) && checkNeighbors(x, y, aliveCells)){
-        if(aliveCount==2 || aliveCount ==3){
-          surviveCell(x,y);
-        }
-        else{
-          killCell(x,y);
-        }
-      }
-      else{
-        if (aliveCount==3){
-          surviveCell(x,y);
-        }
-        else{
-          killCell(x,y);
-        }
       }
     }
 
