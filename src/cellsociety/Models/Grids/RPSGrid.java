@@ -3,17 +3,15 @@ package cellsociety.Models.Grids;
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
-import cellsociety.Models.Cell;
+import cellsociety.Models.Cells.*;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class RPSGrid extends Grid {
 
     private Random r = new Random();
-
-    private ArrayList<Point> sameCells;
-  private static final List<String> states = List.of("R", "P", "S", "empty");
-  private final String R = states.get(0);
+    private static final List<String> states = List.of("R", "P", "S", "empty");
+    private final String R = states.get(0);
     private final String P = states.get(1);
     private final String S = states.get(2);
     private final String EMPTY = states.get(3);

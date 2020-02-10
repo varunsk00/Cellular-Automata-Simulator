@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import cellsociety.Models.Cell;
+import cellsociety.Models.Cells.*;
 import java.util.ArrayList;
 
 public class LifeGrid extends Grid {
