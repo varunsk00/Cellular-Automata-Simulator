@@ -31,8 +31,7 @@ public class XMLParser {
   private File myFile;
   private Element root;
   private String simulationType;
-  private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");
-  ;
+  private ResourceBundle myResources = ResourceBundle.getBundle("Standard");
 
   /**
    * Create parser for XML files of given type.

@@ -19,7 +19,7 @@ public class Grid {
   private Map<String, String> stateMap;
   private Map<String, String> details;
 
-  private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");
+  private ResourceBundle myResources = ResourceBundle.getBundle("Standard");
   ;
 
   /**
