@@ -11,15 +11,16 @@ public class ForageGrid extends Grid {
     private double maxPheremones;
     private double percentFood;
     private final int constant = 1;
-    private final String FOOD = "food";
-    private final String EMPTY = "empty";
-    private final String NEST = "nest";
-    private final String ANT = "ant";
-    private final String FULLANT = "fullAnt";
-    public ForageGrid(Map<String, String> data) {
-        super(data);
-        this.maxPheremones = parseDoubleFromMap(data, "maxPheremones");
-        this.percentFood = parseDoubleFromMap(data, "percentFood");
+    private static final List<String> states = List.of("food", "empty", "nest", "ant", "fullant");
+    private final String FOOD = states.get(0);
+    private final String EMPTY = states.get(1);
+    private final String NEST = states.get(2);
+    private final String ANT = states.get(3);
+    private final String FULLANT = states.get(4);
+    public ForageGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details) {
+        super(data, cellTypes, details, states);
+        this.maxPheremones = getDoubleFromData(data, "maxPheromones");
+        this.percentFood = getDoubleFromData(data, "percentFood");
         setInits();
     }
 
