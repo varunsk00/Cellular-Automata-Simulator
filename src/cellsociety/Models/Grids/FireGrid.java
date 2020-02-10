@@ -30,11 +30,21 @@ public class FireGrid extends Grid {
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
    * based on given rows and columns
    **/
-  public FireGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details) {
+  public FireGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, Map<String, Point> layout) {
     super(data, cellTypes, details, states);
+
     this.probability = getDoubleFromData(data, "probCatch");
     burnedCells = new ArrayList<>();
-    setBurningCell();
+    setLayout(layout);
+  }
+
+  private void setLayout(Map<String, Point> layout) {
+    if (layout == null){
+      setBurningCell();
+    }
+    else{
+      setInitState(layout);
+    }
   }
 
   @Override

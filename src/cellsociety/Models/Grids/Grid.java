@@ -53,6 +53,16 @@ public class Grid {
     return details;
   }
 
+  protected void setInitState(Map<String, Point> layout) throws XMLException{
+    for (String state : layout.keySet()){
+      Point p = layout.get(state);
+
+      if (p.getX() > columns - 1 || p.getX() < 0 || p.getY() > rows - 1 || p.getY() < 0){
+        throw new XMLException(myResources.getString("CellOutOfBounds"));
+      }
+      setCellState(p.x, p.y, state);
+    }
+  }
   protected void checkValidStates(List<String> states, Map<String, String> data) {
     for (String state : data.keySet()) {
       if (!states.contains(state)) {
