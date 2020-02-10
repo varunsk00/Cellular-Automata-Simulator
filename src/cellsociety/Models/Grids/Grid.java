@@ -16,11 +16,12 @@ public class Grid {
   private List<List<Cell>> grid;
   private int rows;
   private int columns;
+  private String gridType;
   private Map<String, String> stateMap;
   private Map<String, String> details;
 
   private ResourceBundle myResources = ResourceBundle.getBundle("Standard");
-  ;
+
 
   /**
    * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
@@ -40,6 +41,7 @@ public class Grid {
     checkValidStates(states, cellTypes);
     this.stateMap = cellTypes;
     this.details = details;
+    this.gridType = details.get("gridType");
     this.rows = getIntFromData(data, "rows");
     this.columns = getIntFromData(data, "columns");
     this.grid = createGrid();
@@ -159,11 +161,7 @@ public class Grid {
     current(x, y).setState(state);
   }
 
-  protected void replaceGrid(List<List<Cell>> newGrid){
-    this.grid = newGrid;
-  }
-
-  protected List<Cell> getAllNeighbors(int x, int y) {
+  private List<Cell> getAllRectangleNeighbors(int x, int y) {
     List<Cell> neighbors = new ArrayList<>();
     for (int i = x - 1; i <= x + 1; i++) {
       for (int j = y - 1; j <= y + 1; j++) {
@@ -193,7 +191,27 @@ public class Grid {
     return neighbors;
   }
 
-  protected List<Cell> getNeighbors(int x, int y) {
+  protected List<Cell> getNeighbors(int x, int y) throws XMLException{
+    switch (gridType){
+      case "rectangle":
+        return getRectangleNeighbors(x, y);
+      case "hexagon":
+        return getHexNeighbors(x, y);
+    }
+    throw new XMLException(myResources.getString("InvalidGridType"));
+  }
+
+  protected List<Cell> getAllNeighbors(int x, int y) throws XMLException{
+    switch (gridType){
+      case "rectangle":
+        return getAllRectangleNeighbors(x, y);
+      case "hexagon":
+        return getHexNeighbors(x, y);
+    }
+    throw new XMLException(myResources.getString("InvalidGridType"));
+  }
+
+  private List<Cell> getRectangleNeighbors(int x, int y) {
     List<Cell> neighbors = new ArrayList<>();
     for (int i = x - 1; i <= x + 1; i++) {
       for (int j = y - 1; j <= y + 1; j++) {
