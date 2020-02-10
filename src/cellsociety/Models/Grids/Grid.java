@@ -47,6 +47,7 @@ public class Grid {
     this.rows = getIntFromData(data, "rows");
     this.columns = getIntFromData(data, "columns");
     this.grid = createGrid();
+    this.numIterations = 0;
   }
 
   public Map<String, String> getStateMap() {

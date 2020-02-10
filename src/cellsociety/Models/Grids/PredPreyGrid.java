@@ -54,6 +54,7 @@ public class PredPreyGrid extends Grid {
       }
     }
     setCellsToFutureStates();
+    numIterations++;
   }
 
   private void setInits() {
