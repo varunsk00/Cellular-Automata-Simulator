@@ -31,8 +31,7 @@ public class XMLParser {
   private File myFile;
   private Element root;
   private String simulationType;
-  private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");
-  ;
+  private ResourceBundle myResources = ResourceBundle.getBundle("Standard");
 
   /**
    * Create parser for XML files of given type.
@@ -128,10 +127,8 @@ public class XMLParser {
   }
 
   private void validateDetailsMap(Map<String, String> map) {
-    for (String key : List.of("author","title", "gridType")) {
+    for (String key : List.of("author","title", "gridType", "language")) {
       if (!map.containsKey(key)) {
-        System.out.println(key);
-        System.out.println(map.get(key));
         throw new XMLException(myResources.getString("NullValue"), key);
       }
     }

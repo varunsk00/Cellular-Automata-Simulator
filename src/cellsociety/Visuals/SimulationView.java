@@ -24,8 +24,21 @@ public class SimulationView {
         mySimulation.getChildren().add(myStatView.getStatBox());
     }
 
+<<<<<<< Updated upstream
     private void setGridView() {
         myGridView = new GridView();
+=======
+    private void setGridView(String type) {
+        switch(type) {
+            case "Rectangle":
+                myGridView = new RectGridView();
+                break;
+            case "Hexagon":
+                myGridView = new HexGridView();
+                break;
+        }
+        System.out.println("TYPE" + myGridView.getClass());
+>>>>>>> Stashed changes
         mySimulation.getChildren().add(myGridView.getGridPane());
         mySimulation.setVgrow(myGridView.getGridPane(), Priority.ALWAYS);
     }

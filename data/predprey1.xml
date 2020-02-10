@@ -3,7 +3,8 @@
   <details>
     <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt</author>
     <title>Predator Prey</title>
-    <gridType>rectangle</gridType>
+    <gridType>Rectangle</gridType>
+    <langauge>Standard</langauge>
   </details>
   <simulationProps>
     <rows>50</rows>

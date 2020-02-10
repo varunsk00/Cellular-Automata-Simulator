@@ -3,7 +3,12 @@
   <details>
     <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt </author>
     <title>Segregation</title>
+<<<<<<< Updated upstream
     <gridType>rectangle</gridType>
+=======
+    <gridType>Hexagon</gridType>
+    <langauge>Standard</langauge>
+>>>>>>> Stashed changes
   </details>
   <simulationProps>
     <rows>20</rows>
