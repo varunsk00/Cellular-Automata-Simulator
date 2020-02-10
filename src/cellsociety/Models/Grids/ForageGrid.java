@@ -17,12 +17,21 @@ public class ForageGrid extends Grid {
     private final String NEST = states.get(2);
     private final String ANT = states.get(3);
     private final String FULLANT = states.get(4);
-    public ForageGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details) {
+    public ForageGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, Map<String, Point> layout) {
         super(data, cellTypes, details, states);
         this.maxPheremones = getDoubleFromData(data, "maxPheromones");
         this.percentFood = getDoubleFromData(data, "percentFood");
-        setInits();
+        setLayout(layout);
     }
+
+  private void setLayout(Map<String, Point> layout) {
+    if (layout == null){
+      setInits();
+    }
+    else{
+      setInitState(layout);
+    }
+  }
 
     @Override
     public void updateGrid() {

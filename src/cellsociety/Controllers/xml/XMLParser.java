@@ -2,6 +2,7 @@ package cellsociety.Controllers.xml;
 
 import cellsociety.Models.Grids.*;
 
+import java.awt.Point;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.xml.parsers.DocumentBuilder;
@@ -31,8 +32,7 @@ public class XMLParser {
   private File myFile;
   private Element root;
   private String simulationType;
-  private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");
-  ;
+  private ResourceBundle myResources = ResourceBundle.getBundle("Standard");
 
   /**
    * Create parser for XML files of given type.
@@ -58,9 +58,10 @@ public class XMLParser {
     Map<String, Double> results = getSimulationProperties();
     Map<String, String> cellTypes = getMapBySection("cellTypes");
     Map<String, String> details = getMapBySection("details");
+    Map<String, Point> layout = createLayout();
     validateDetailsMap(details);
 
-    return returnGridByType(results, cellTypes, details);
+    return returnGridByType(results, cellTypes, details, layout);
   }
 
   private Element getRootElement() {
@@ -115,9 +116,45 @@ public class XMLParser {
         results.put(temp.getNodeName(), parseDoubleFromString(temp));
       }
     }
-
     return results;
   }
+
+  public Map<String, Point> createLayout() throws XMLException {
+    NodeList allVariables = root.getElementsByTagName("layout");
+    if (allVariables.getLength() == 0) {
+      return null;
+    }
+    Element attributes = (Element) allVariables.item(0);
+    NodeList cells = attributes.getElementsByTagName("*");
+
+    Map<String, Point> results = new HashMap<>();
+
+    for (int i = 0; i < cells.getLength(); i++) {
+      NodeList cell = cells.item(i).getChildNodes();
+      Point p = new Point();
+      String state = null;
+
+      for (int j = 0; j < cell.getLength(); j++) {
+        Node prop = cell.item(j);
+        if (prop.getNodeType() == Node.ELEMENT_NODE) {
+          if (prop.getNodeName().equals("x")) {
+            p.x = parseIntFromString(prop);
+          }
+          if (prop.getNodeName().equals("y")) {
+            p.y = parseIntFromString(prop);
+          }
+          if (prop.getNodeName().equals("state")) {
+            state = prop.getTextContent();
+          }
+        }
+      }
+      if (state != null) {
+        results.put(state, p);
+      }
+    }
+    return results;
+  }
+
 
   private double parseDoubleFromString(Node temp) {
     try {
@@ -127,8 +164,16 @@ public class XMLParser {
     }
   }
 
+  private int parseIntFromString(Node temp) {
+    try {
+      return Integer.parseInt(temp.getTextContent());
+    } catch (NumberFormatException e) {
+      throw new XMLException(myResources.getString("ParseInt"), temp.getNodeName());
+    }
+  }
+
   private void validateDetailsMap(Map<String, String> map) {
-    for (String key : List.of("author","title", "gridType")) {
+    for (String key : List.of("author", "title", "gridType")) {
       if (!map.containsKey(key)) {
         System.out.println(key);
         System.out.println(map.get(key));
@@ -142,23 +187,24 @@ public class XMLParser {
     }
   }
 
-  private Grid returnGridByType(Map<String, Double> results, Map<String, String> cellTypes, Map<String, String> details)
+  private Grid returnGridByType(Map<String, Double> results, Map<String, String> cellTypes,
+      Map<String, String> details, Map<String, Point> layout)
       throws XMLException {
     switch (simulationType) {
       case "Fire":
-        return new FireGrid(results, cellTypes, details);
+        return new FireGrid(results, cellTypes, details, layout);
       case "Percolation":
-        return new PercGrid(results, cellTypes, details);
+        return new PercGrid(results, cellTypes, details, layout);
       case "Life":
-        return new LifeGrid(results, cellTypes, details);
+        return new LifeGrid(results, cellTypes, details, layout);
       case "Segregation":
-        return new SegGrid(results, cellTypes, details);
+        return new SegGrid(results, cellTypes, details, layout);
       case "PredPrey":
-        return new PredPreyGrid(results, cellTypes, details);
+        return new PredPreyGrid(results, cellTypes, details, layout);
       case "RockPaperScissors":
-        return new RPSGrid(results, cellTypes, details);
+        return new RPSGrid(results, cellTypes, details, layout);
       case "Foraging":
-        return new ForageGrid(results, cellTypes, details);
+        return new ForageGrid(results, cellTypes, details, layout);
     }
     throw new XMLException(myResources.getString("InvalidSimulationType"));
   }
