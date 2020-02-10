@@ -7,8 +7,8 @@ import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 // Inspitation Came from https://docs.oracle.com/javafx/2/charts/line-chart.htm
 public class GraphView {
@@ -17,24 +17,28 @@ public class GraphView {
     private LineChart myLineChart;
     private Map<String, XYChart.Series> mySeries;
 
-    public GraphView(String type, int time, Map<String, Integer> stats) {
+    public GraphView(String type, int time, Set<String> states, Map<String, Integer> stats, Stage parent) {
         myStage = new Stage();
-        myStage.setTitle(type + " chart");
+        myStage.setTitle(type + " Chart");
+        myStage.initOwner(parent);
         final NumberAxis xAxis = new NumberAxis();
+        xAxis.setTickUnit(1);
         final NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Count of State");
         xAxis.setLabel("Number of Updates on Grid");
+        yAxis.setLabel("Count of State");
 
         myLineChart = new LineChart<Number, Number>(xAxis, yAxis);
+        myLineChart.setAnimated(false);
         mySeries = new HashMap<>();
 
-        for (String state: stats.keySet()) {
+        for (String state : states) {
             XYChart.Series stateSeries = new XYChart.Series();
             stateSeries.setName(state);
             mySeries.put(state, stateSeries);
         }
 
         updateGraph(time, stats);
+
         Scene scene = new Scene(myLineChart, 400, 200);
         myStage.setScene(scene);
         myStage.show();
@@ -45,11 +49,13 @@ public class GraphView {
     }
 
     public void updateGraph(int time, Map<String, Integer> stats) {
-        for (String state : stats.keySet()) {
-            XYChart.Series tempSeries = mySeries.get(state);
-            tempSeries.getData().add(new XYChart.Data(time, stats.get(state)));
-            myLineChart.getData().add(tempSeries);
+        myLineChart.getData().clear();
+        for (String state : mySeries.keySet()) {
+                if (stats.get(state) == null) stats.put(state, 0);
+                mySeries.get(state).getData().add(new XYChart.Data(time, stats.get(state)));
+                myLineChart.getData().add(mySeries.get(state));
+            }
         }
     }
-}
+
 

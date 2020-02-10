@@ -183,7 +183,7 @@ public class CAController extends Application {
             center.setHgrow(tempSimulation.getSimulationView(), Priority.ALWAYS);
             totalGrids++;
 
-            allGraphs.add(new GraphView(parser.getGridType(), myTime, tempGrid.getStats()));
+            allGraphs.add(new GraphView(details.get("title"), myTime, tempGrid.getStateMap().keySet(), tempGrid.getStats(), myStage));
 
 
         } catch (XMLException e) {
@@ -212,6 +212,7 @@ public class CAController extends Application {
         for (GraphView tempGraph : allGraphs) tempGraph.close();
 
         totalGrids = 0;
+        myTime = 0;
         center.getChildren().clear();
         header.setClearOff();
     }
