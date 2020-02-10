@@ -17,6 +17,8 @@ public class Cell {
    * Constructs a new cell
    *
    * @param state the initial state for cell Sets the cell's instance variables using update()
+   * @param x x-coordinate of cell
+   * @param y y-coordinate of cell
    **/
   public Cell(String state, int x, int y) {
     this.state = state;
