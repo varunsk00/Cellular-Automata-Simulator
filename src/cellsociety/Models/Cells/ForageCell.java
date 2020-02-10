@@ -1,12 +1,12 @@
 package cellsociety.Models.Cells;
 
-public class Ant extends Cell {
+public class ForageCell extends Cell {
     private int foodPher;
     private int homePher;
     private String FULLANT = "fullant";
     private String ANT = "ant";
 
-    public Ant(String state, int x, int y) {
+    public ForageCell(String state, int x, int y) {
         super(state, x, y);
         this.foodPher=0;
         this.homePher=0;
