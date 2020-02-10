@@ -1,52 +1,54 @@
 package cellsociety.Models.Grids;
 
-import cellsociety.Controllers.xml.XMLException;
 import java.awt.Point;
-import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Map;
-
-import cellsociety.Models.Cell;
+import cellsociety.Models.Cells.*;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Set;
 
-
+/**
+ * This class simulates the spread of wildfire
+ *
+ * @author Varun Kosgi
+ * @author Jaidha Rosenblatt
+ */
 public class FireGrid extends Grid {
 
   private List<Point> burnedCells;
-  private double probability;
+  private static double probability;
   private Random r = new Random();
-  private static final List<String> states = List.of("burning","tree","empty");
-//  private final String BURNING = states.get(0);
-//  private final String TREE = states.get(1);
-//  private final String EMPTY = states.get(2);
+  private static final List<String> states = List.of("burning", "tree", "empty");
+  /*
+  These three strings are commented out because of an unknown bug related
+  to the parsing of the List and the word "tree." The strings are instead hard-coded.
+   */
+  //  private final String BURNING = states.get(0);
+  //  private final String TREE = states.get(1);
+  //  private final String EMPTY = states.get(2);
   private final String BURNING = "burning";
   private final String TREE = "tree";
   private final String EMPTY = "empty";
 
-
   /**
-   * Sets rows and columns and instance variables Calls createGrid to initialize a grid of cells
-   * based on given rows and columns
-   **/
-  public FireGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, Map<String, Point> layout) {
+   * Constructs a new Fire Simulation
+   *
+   * @param data      map for this simulation's specific variables
+   * @param cellTypes map from state to colors
+   * @param details   miscellaneous grid information, such as authors, titles, gridtype, etc.
+   * @param layout    map from Cell states to points, if null -> random generated initial state
+   */
+  public FireGrid(Map<String, Double> data, Map<String, String> cellTypes,
+      Map<String, String> details, Map<String, Point> layout) {
     super(data, cellTypes, details, states);
-
     this.probability = getDoubleFromData(data, "probCatch");
     burnedCells = new ArrayList<>();
     setLayout(layout);
   }
 
-  private void setLayout(Map<String, Point> layout) {
-    if (layout == null){
-      setBurningCell();
-    }
-    else{
-      setInitState(layout);
-    }
-  }
-
+  /**
+   * Overrides updateGrid() method to store the coordinates of Cells that are burning
+   */
   @Override
   public void updateGrid() {
     storeCellsByState(burnedCells, BURNING);
@@ -81,17 +83,25 @@ public class FireGrid extends Grid {
     }
   }
 
+  private void setLayout(Map<String, Point> layout) {
+    if (layout == null) {
+      setBurningCell();
+    } else {
+      setInitState(layout);
+    }
+  }
+
   private void setBurningCell() {
     this.getCell(this.getRows() / 2, this.getColumns() / 2).setState(BURNING);
   }
 
   private void burnCell(int x, int y) {
-    current(x, y).setState(BURNING);
+    setCellState(x, y, BURNING);
     System.out.println("caught fire: " + (x) + ", " + (y));
   }
 
   private void extinguishCell(int x, int y) {
-    current(x, y).setState(EMPTY);
+    setCellState(x, y, EMPTY);
     System.out.println("extinguished: " + (x) + ", " + (y));
   }
 }
