@@ -2,7 +2,7 @@ package cellsociety.Models.Grids;
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
-import cellsociety.Models.Cell;
+import cellsociety.Models.Cells.*;
 import java.util.ArrayList;
 import java.util.Random;
 

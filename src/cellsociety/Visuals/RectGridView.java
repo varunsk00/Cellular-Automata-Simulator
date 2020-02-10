@@ -1,6 +1,6 @@
 package cellsociety.Visuals;
 
-import cellsociety.Models.Cell;
+import cellsociety.Models.Cells.Cell;
 import cellsociety.Models.Grids.Grid;
 import java.util.Map;
 import javafx.geometry.Insets;
