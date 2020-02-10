@@ -3,6 +3,7 @@ package cellsociety.Controllers;
 import cellsociety.Controllers.xml.XMLException;
 import cellsociety.Controllers.xml.XMLParser;
 import cellsociety.Models.Grids.Grid;
+import cellsociety.Visuals.GraphView;
 import cellsociety.Visuals.SimulationView;
 import java.util.Map;
 import javafx.animation.KeyFrame;
@@ -14,8 +15,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Shape;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -44,6 +43,7 @@ public class CAController extends Application {
 
     private List<SimulationView> allSimulationViews;
     private List<Grid> allGrids;
+    private List<GraphView> allGraphs;
     private int totalGrids;
 
     private BorderPane root;
@@ -53,15 +53,15 @@ public class CAController extends Application {
     private Stage myStage;
     private Timeline animation;
 
-    private Shape myShape = new Polygon();
-
     /**
      * Begins our JavaFX application
      * Starts the Animation Loop and sets the Border Pane, filling it with a Header, Footer, and Gridview
      * Sets the stage and scene and shows it
      */
 
-    public CAController() {}
+    public CAController() {
+        System.out.println("Creating CAController");
+    }
 
     public CAController(String[] args) {
         launch(args);
@@ -75,6 +75,8 @@ public class CAController extends Application {
         setHeader();
         setFooter();
         setCenter();
+
+        allGraphs = new ArrayList<>();
 
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.getStylesheets()
@@ -180,6 +182,8 @@ public class CAController extends Application {
             center.setHgrow(tempSimulation.getSimulationView(), Priority.ALWAYS);
             totalGrids++;
 
+            allGraphs.add(new GraphView(details.get("title"), tempGrid, tempGrid.getStateMap().keySet(), myStage));
+
         } catch (XMLException e) {
             System.out.println(e.getMessage());
             showMessage(AlertType.ERROR, e.getMessage());
@@ -201,15 +205,19 @@ public class CAController extends Application {
 
   private void updateState() {
         for (int i = 0; i < totalGrids; i++) {
-            allGrids.get(i).updateGrid();
+            Grid tempGrid = allGrids.get(i);
+            tempGrid.updateGrid();
             allSimulationViews.get(i).
-                    updateGridView(allGrids.get(i));
+                    updateGridView(tempGrid);
+            allGraphs.get(i).updateGraph(tempGrid.getNumIterations(), tempGrid.getStats());
         }
     }
 
     private void updateClear() {
         allGrids.clear();
         allSimulationViews.clear();
+        for (GraphView tempGraph : allGraphs) tempGraph.close();
+
         totalGrids = 0;
         center.getChildren().clear();
         header.setClearOff();

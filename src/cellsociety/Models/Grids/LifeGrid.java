@@ -31,7 +31,7 @@ public class LifeGrid extends Grid {
 
   private void setLayout(Map<String, Point> layout) {
     if (layout == null){
-      setAliveCells();
+      setLocalInitState();
     }
     else{
       setInitState(layout);
@@ -59,14 +59,14 @@ public class LifeGrid extends Grid {
 
   @Override
   protected void updateCell(int x, int y, List<Cell> neighbors){
-    int alive_count= 0;
+    int aliveCount= 0;
     for (Cell c: neighbors){
       if (c.getState() == ALIVE){
-        alive_count++;
+        aliveCount++;
       }
     }
     if (current(x,y).getState().equals(ALIVE) && checkNeighbors(x, y, aliveCells)){
-      if(alive_count==2 || alive_count ==3){
+      if(aliveCount==2 || aliveCount ==3){
         surviveCell(x,y);
       }
       else{
@@ -74,7 +74,7 @@ public class LifeGrid extends Grid {
       }
     }
     else{
-      if (alive_count==3){
+      if (aliveCount==3){
         surviveCell(x,y);
       }
       else{
@@ -83,7 +83,7 @@ public class LifeGrid extends Grid {
     }
   }
 
-  private void setAliveCells(){
+  private void setLocalInitState(){
     for (int i = 0; i < this.getRows(); i++) {
       for (int j = 0; j < this.getColumns(); j++) {
         if (r.nextFloat() <= percentAlive){

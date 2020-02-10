@@ -19,6 +19,8 @@ public class Grid {
   private String gridType;
   private Map<String, String> stateMap;
   private Map<String, String> details;
+  protected int numIterations;
+
   private static final String bundleName = "Standard";
   private ResourceBundle myResources = ResourceBundle.getBundle(bundleName);
 
@@ -278,5 +280,9 @@ public class Grid {
       }
     }
     return stats;
+  }
+
+  public int getNumIterations() {
+    return numIterations;
   }
 }

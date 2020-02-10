@@ -3,7 +3,6 @@ package cellsociety.Controllers.xml;
 import cellsociety.Models.Grids.*;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.xml.parsers.DocumentBuilder;
@@ -204,6 +203,8 @@ public class XMLParser {
         return new PredPreyGrid(results, cellTypes, details, layout);
       case "RockPaperScissors":
         return new RPSGrid(results, cellTypes, details, layout);
+      case "Foraging":
+        return new ForageGrid(results, cellTypes, details, layout);
     }
     throw new XMLException(myResources.getString("InvalidSimulationType"));
   }

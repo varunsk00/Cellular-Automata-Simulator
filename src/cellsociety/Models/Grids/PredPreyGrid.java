@@ -38,7 +38,7 @@ public class PredPreyGrid extends Grid {
 
   private void setLayout(Map<String, Point> layout) {
     if (layout == null){
-      setInits();
+      setLocalInitState();
     }
     else{
       setInitState(layout);
@@ -56,7 +56,7 @@ public class PredPreyGrid extends Grid {
     setCellsToFutureStates();
   }
 
-  private void setInits() {
+  private void setLocalInitState() {
     for (int i = 0; i < getRows(); i++) {
       for (int j = 0; j < getColumns(); j++) {
         if (r.nextFloat() <= percentPredator) {
@@ -106,6 +106,7 @@ public class PredPreyGrid extends Grid {
     //if there is a prey in neighbors
     if (newCell != null) {
       predatorEatPrey(currentCell, newCell);
+      System.out.println("Predator ate prey");
       return;
     }
     //if there are empty neighbors
@@ -117,6 +118,7 @@ public class PredPreyGrid extends Grid {
     else {
       currentCell.updateLives(-1);
       if (currentCell.getLives() < 0) {
+        System.out.println("Predator died");
         resetToEmptyCell(currentCell);
       }
     }
@@ -140,6 +142,7 @@ public class PredPreyGrid extends Grid {
     newCell.setLives(currentCell.getLives() - 1);
     resetToEmptyCell(currentCell);
     if (newCell.getLives() < 0) {
+      System.out.println("Predator died");
       resetToEmptyCell(newCell);
     }
   }

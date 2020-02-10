@@ -2,7 +2,7 @@
 <data simulationType="RockPaperScissors">
   <details>
     <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt</author>
-    <title>Pock Paper Scissors</title>
+    <title>Rock Paper Scissors</title>
     <gridType>rectangle</gridType>
   </details>
   <simulationProps>
@@ -27,7 +27,7 @@
       <state>R</state>
     </cell>
     <cell>
-      <x>300</x>
+      <x>30</x>
       <y>30</y>
       <state>P</state>
     </cell>
