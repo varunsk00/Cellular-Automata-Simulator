@@ -22,8 +22,8 @@ public class LifeGrid extends Grid {
    * based on given rows and columns
    *
    **/
-  public LifeGrid(Map<String, Double> data, Map<String, String> cellTypes) {
-    super(data,cellTypes, states);
+  public LifeGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details) {
+    super(data,cellTypes,details, states);
     this.percentAlive = getDoubleFromData(data,"percentAlive");
     this.aliveCells = new ArrayList<>();
     setAliveCells();

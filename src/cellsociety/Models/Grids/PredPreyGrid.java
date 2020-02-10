@@ -22,8 +22,8 @@ public class PredPreyGrid extends Grid {
   private Random r = new Random();
 
 
-  public PredPreyGrid(Map<String, Double> data, Map<String, String> cellTypes) {
-    super(data, cellTypes, states);
+  public PredPreyGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details) {
+    super(data, cellTypes, details, states);
     this.predatorStartingEnergy = getIntFromData(data, "predatorStartingEnergy");
     this.predatorEnergyPerPrey = getIntFromData(data, "predatorEnergyPerPrey");
     this.preyGenerationRate = getIntFromData(data, "preyGenerationRate");

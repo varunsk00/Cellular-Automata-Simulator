@@ -17,6 +17,8 @@ public class Grid {
   private int rows;
   private int columns;
   private Map<String, String> stateMap;
+  private Map<String, String> details;
+
   private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");
   ;
 
@@ -33,10 +35,11 @@ public class Grid {
     this.grid = createGrid();
   }
 
-  public Grid(Map<String, Double> data, Map<String, String> cellTypes, List<String> states)
+  public Grid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, List<String> states)
       throws XMLException {
     checkValidStates(states, cellTypes);
     this.stateMap = cellTypes;
+    this.details = details;
     this.rows = getIntFromData(data, "rows");
     this.columns = getIntFromData(data, "columns");
     this.grid = createGrid();
@@ -44,6 +47,10 @@ public class Grid {
 
   public Map<String, String> getStateMap() {
     return stateMap;
+  }
+
+  public Map<String, String> getDetails() {
+    return details;
   }
 
   protected void checkValidStates(List<String> states, Map<String, String> data) {

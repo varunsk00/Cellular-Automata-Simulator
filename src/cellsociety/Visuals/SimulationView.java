@@ -13,10 +13,10 @@ public class SimulationView {
     private StatView myStatView;
     private GridView myGridView;
 
-    public SimulationView(String language, String author, String title, Map stats) {
+    public SimulationView(String author, String title, Map stats) {
         mySimulation = new VBox();
         setStatView(title, author, stats);
-        setGridView(language);
+        setGridView();
     }
 
     private void setStatView(String title, String author, Map stats) {
@@ -24,7 +24,7 @@ public class SimulationView {
         mySimulation.getChildren().add(myStatView.getStatBox());
     }
 
-    private void setGridView(String language) {
+    private void setGridView() {
         myGridView = new GridView();
         mySimulation.getChildren().add(myGridView.getGridPane());
         mySimulation.setVgrow(myGridView.getGridPane(), Priority.ALWAYS);

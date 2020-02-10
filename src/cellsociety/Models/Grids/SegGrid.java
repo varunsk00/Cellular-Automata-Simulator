@@ -25,8 +25,8 @@ public class SegGrid extends Grid {
    * based on given rows and columns
    *
    **/
-  public SegGrid(Map<String, Double> data, Map<String, String> cellTypes) {
-    super(data, cellTypes, states);
+  public SegGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details) {
+    super(data, cellTypes, details, states);
     this.prob = getDoubleFromData(data,"satisfiedThreshold") * numberOfNeighbors;
     this.percentFull = getDoubleFromData(data, "percentFull");
     this.sameCells = new ArrayList<>();

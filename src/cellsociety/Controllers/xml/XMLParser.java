@@ -2,6 +2,7 @@ package cellsociety.Controllers.xml;
 
 import cellsociety.Models.Grids.*;
 
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,7 +30,7 @@ public class XMLParser {
   private final DocumentBuilder DOCUMENT_BUILDER;
   private File myFile;
   private Element root;
-  private String gridType;
+  private String simulationType;
   private ResourceBundle myResources = ResourceBundle.getBundle("XMLErrors");
   ;
 
@@ -51,21 +52,15 @@ public class XMLParser {
    * @return Grid object based on grid type in cellsociety.Controllers.xml file
    */
   public Grid getGrid() throws XMLException {
-    gridType = root.getAttribute("simulationType");
+    simulationType = root.getAttribute("simulationType");
 
     // read data associated with the fields given by the object
     Map<String, Double> results = getSimulationProperties();
     Map<String, String> cellTypes = getMapBySection("cellTypes");
+    Map<String, String> details = getMapBySection("details");
+    validateDetailsMap(details);
 
-    return returnGridByType(results, cellTypes);
-  }
-
-
-  public String getGridType() {
-//    if (!gridType.equals("rectangle") & !gridType.equals("rectangle")){
-//      throw new XMLException(myResources.getString("InvalidGridType"));
-//    }
-    return this.gridType;
+    return returnGridByType(results, cellTypes, details);
   }
 
   private Element getRootElement() {
@@ -132,21 +127,36 @@ public class XMLParser {
     }
   }
 
-  private Grid returnGridByType(Map<String, Double> results, Map<String, String> cellTypes)
+  private void validateDetailsMap(Map<String, String> map) {
+    for (String key : List.of("author","title", "gridType")) {
+      if (!map.containsKey(key)) {
+        System.out.println(key);
+        System.out.println(map.get(key));
+        throw new XMLException(myResources.getString("NullValue"), key);
+      }
+    }
+
+    String gridType = map.get("gridType");
+    if (!gridType.equals("rectangle") & !gridType.equals("rectangle")) {
+      throw new XMLException(myResources.getString("InvalidGridType"));
+    }
+  }
+
+  private Grid returnGridByType(Map<String, Double> results, Map<String, String> cellTypes, Map<String, String> details)
       throws XMLException {
-    switch (gridType) {
+    switch (simulationType) {
       case "Fire":
-        return new FireGrid(results, cellTypes);
+        return new FireGrid(results, cellTypes, details);
       case "Percolation":
-        return new PercGrid(results, cellTypes);
+        return new PercGrid(results, cellTypes, details);
       case "Life":
-        return new LifeGrid(results, cellTypes);
+        return new LifeGrid(results, cellTypes, details);
       case "Segregation":
-        return new SegGrid(results, cellTypes);
+        return new SegGrid(results, cellTypes, details);
       case "PredPrey":
-        return new PredPreyGrid(results, cellTypes);
+        return new PredPreyGrid(results, cellTypes, details);
       case "RockPaperScissors":
-        return new RPSGrid(results, cellTypes);
+        return new RPSGrid(results, cellTypes, details);
     }
     throw new XMLException(myResources.getString("InvalidSimulationType"));
   }
