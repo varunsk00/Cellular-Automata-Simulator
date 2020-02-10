@@ -15,4 +15,11 @@
     <tree>#009933</tree>
     <empty>#ffff00</empty>
   </cellTypes>
+  <layout>
+    <cell>
+      <x>10</x>
+      <y>10</y>
+      <state>burning</state>
+    </cell>
+  </layout>
 </data>

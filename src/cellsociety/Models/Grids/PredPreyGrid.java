@@ -1,6 +1,7 @@
 package cellsociety.Models.Grids;
 
 import cellsociety.Models.Cell;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class PredPreyGrid extends Grid {
   private Random r = new Random();
 
 
-  public PredPreyGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details) {
+  public PredPreyGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, Map<String, Point> layout) {
     super(data, cellTypes, details, states);
     this.predatorStartingEnergy = getIntFromData(data, "predatorStartingEnergy");
     this.predatorEnergyPerPrey = getIntFromData(data, "predatorEnergyPerPrey");
@@ -30,9 +31,18 @@ public class PredPreyGrid extends Grid {
     this.predatorGenerationRate = getIntFromData(data, "predatorGenerationRate");
     this.percentPredator = getDoubleFromData(data, "percentPredator");
     this.percentPrey = getDoubleFromData(data,"percentPrey");
-
     createGrid();
-    setInits();
+    setLayout(layout);
+//    setInits();
+  }
+
+  private void setLayout(Map<String, Point> layout) {
+    if (layout == null){
+      setInits();
+    }
+    else{
+      setInitState(layout);
+    }
   }
 
   @Override
