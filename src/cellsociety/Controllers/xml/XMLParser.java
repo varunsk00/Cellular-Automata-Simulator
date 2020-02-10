@@ -48,14 +48,14 @@ public class XMLParser {
   }
 
   /**
-   * Get data contained in this XML file as an object
-   *
-   * @return Grid object based on grid type in cellsociety.Controllers.xml file
+   * Get data contained in this XML file as a grid object by scanning in all tags from XML file,
+   * adding them into maps, and returning a grid with resulting data.
+   * @return a grid of specified type with full properties
+   * @throws XMLException custom exception that handles XML related errors
    */
   public Grid getGrid() throws XMLException {
     simulationType = root.getAttribute("simulationType");
 
-    // read data associated with the fields given by the object
     Map<String, Double> results = getSimulationProperties();
     Map<String, String> cellTypes = getMapBySection("cellTypes");
     Map<String, String> details = getMapBySection("details");
@@ -92,7 +92,7 @@ public class XMLParser {
     return attributes.getElementsByTagName("*");
   }
 
-  public Map<String, String> getMapBySection(String section) throws XMLException {
+  private Map<String, String> getMapBySection(String section) throws XMLException {
     NodeList variables = getNodeListFromSectionName(section);
     if (variables.getLength() == 0) {
       throw new XMLException(myResources.getString("SectionNotFound"), section);
@@ -107,7 +107,7 @@ public class XMLParser {
     return results;
   }
 
-  public Map<String, Double> getSimulationProperties() throws XMLException {
+  private Map<String, Double> getSimulationProperties() throws XMLException {
     NodeList variables = getNodeListFromSectionName("simulationProps");
     Map<String, Double> results = new HashMap<>();
 
@@ -120,7 +120,7 @@ public class XMLParser {
     return results;
   }
 
-  public Map<String, Point> createLayout() throws XMLException {
+  private Map<String, Point> createLayout() throws XMLException {
     NodeList allVariables = root.getElementsByTagName("layout");
     if (allVariables.getLength() == 0) {
       return null;
@@ -132,28 +132,33 @@ public class XMLParser {
 
     for (int i = 0; i < cells.getLength(); i++) {
       NodeList cell = cells.item(i).getChildNodes();
-      Point p = new Point();
-      String state = null;
-
-      for (int j = 0; j < cell.getLength(); j++) {
-        Node prop = cell.item(j);
-        if (prop.getNodeType() == Node.ELEMENT_NODE) {
-          if (prop.getNodeName().equals("x")) {
-            p.x = parseIntFromString(prop);
-          }
-          if (prop.getNodeName().equals("y")) {
-            p.y = parseIntFromString(prop);
-          }
-          if (prop.getNodeName().equals("state")) {
-            state = prop.getTextContent();
-          }
-        }
-      }
-      if (state != null) {
-        results.put(state, p);
-      }
+      addCellToMap(results, cell);
     }
     return results;
+  }
+
+  private void addCellToMap(Map<String, Point> results, NodeList cell) {
+    Point p = new Point();
+    String state = null;
+
+    for (int j = 0; j < cell.getLength(); j++) {
+      Node prop = cell.item(j);
+      if (prop.getNodeType() == Node.ELEMENT_NODE) {
+        if (prop.getNodeName().equals("x")) {
+          p.x = parseIntFromString(prop);
+        }
+        if (prop.getNodeName().equals("y")) {
+          p.y = parseIntFromString(prop);
+        }
+        if (prop.getNodeName().equals("state")) {
+          state = prop.getTextContent();
+        }
+      }
+    }
+    // Skip initial null cell
+    if (state != null) {
+      results.put(state, p);
+    }
   }
 
   private double parseDoubleFromString(Node temp) {

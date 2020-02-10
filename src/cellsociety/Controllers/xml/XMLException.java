@@ -2,14 +2,13 @@ package cellsociety.Controllers.xml;
 
 
 /**
- * This class represents what might go wrong when using XML files.
+ * Custom XML Exception from lecture
  *
  * @author Robert C. Duvall
  */
 public class XMLException extends RuntimeException {
   // for serialization
   private static final long serialVersionUID = 1L;
-
 
   /**
    * Create an exception based on an issue in our code.
