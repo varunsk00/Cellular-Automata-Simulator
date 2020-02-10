@@ -1,8 +1,21 @@
 package cellsociety.Models.Cells;
 
+/**
+ * This class represents a Predator or Prey Cell for the Foraging Simulation.
+ *
+ * @author Varun Kosgi
+ * @author Jaidha Rosenblatt
+ */
 public class PredPreyCell extends Cell {
     private int lives;
 
+    /**
+     * Constructs a new PredPrey cell
+     *
+     * @param state the initial state for cell Sets the cell's instance variables using update()
+     * @param x x-coordinate of cell
+     * @param y y-coordinate of cell
+     **/
     public PredPreyCell(String state, int x, int y) {
         super(state, x, y);
         this.lives=0;
