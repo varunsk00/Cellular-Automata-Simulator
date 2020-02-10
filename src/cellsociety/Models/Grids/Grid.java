@@ -19,8 +19,8 @@ public class Grid {
   private String gridType;
   private Map<String, String> stateMap;
   private Map<String, String> details;
-
-  private ResourceBundle myResources = ResourceBundle.getBundle("Standard");
+  private static final String bundleName = "Standard";
+  private ResourceBundle myResources = ResourceBundle.getBundle(bundleName);
 
 
   /**

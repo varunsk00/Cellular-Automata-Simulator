@@ -10,6 +10,8 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -180,6 +182,11 @@ public class CAController extends Application {
 
         } catch (XMLException e) {
             System.out.println(e.getMessage());
+            showMessage(AlertType.ERROR, e.getMessage());
+        }
+        catch (NullPointerException e){
+          header.setLoadOff();
+          return;
         }
         header.setLoadOff();
     }
@@ -188,7 +195,11 @@ public class CAController extends Application {
         animation.setRate(footer.getSpeed());
     }
 
-    private void updateState() {
+    private void showMessage (AlertType type, String message) {
+      new Alert(type, message).show();
+    }
+
+  private void updateState() {
         for (int i = 0; i < totalGrids; i++) {
             allGrids.get(i).updateGrid();
             allSimulationViews.get(i).
