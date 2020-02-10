@@ -21,6 +21,7 @@ public class RPSGrid extends Grid {
     private double time = 0.0;
     private double K;
     private double diffusivityRate;
+    private double equationConstant = 0.5*diffusivityRate;
     private double growthRate;
 
 
@@ -68,7 +69,7 @@ public class RPSGrid extends Grid {
         if (probability() <= sigmoid && isCellFull(current(x,y)) && isCellFull(randomNeighbor)) {
             rockPaperScissors(current(x,y), randomNeighbor);
         }
-        else if (probability() <= 0.5*diffusivityRate && (randomNeighbor.getState().equals(current(x,y).getState()) || randomNeighbor.getState().equals(EMPTY))){
+        else if (probability() <= equationConstant && (randomNeighbor.getState().equals(current(x,y).getState()) || randomNeighbor.getState().equals(EMPTY))){
             diffuseCell(current(x,y), randomNeighbor);
         }
         numIterations++;
