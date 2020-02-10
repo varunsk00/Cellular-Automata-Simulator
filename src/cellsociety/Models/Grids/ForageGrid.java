@@ -7,38 +7,47 @@ import java.util.*;
 import java.util.List;
 
 public class ForageGrid extends Grid {
-    private Random r = new Random();
-    private double maxPheremones;
-    private double percentFood;
-    private final int constant = 1;
-    private static final List<String> states = List.of("food", "empty", "nest", "ant", "fullant");
-    private final String FOOD = states.get(0);
-    private final String EMPTY = states.get(1);
-    private final String NEST = states.get(2);
-    private final String ANT = states.get(3);
-    private final String FULLANT = states.get(4);
-    public ForageGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details) {
-        super(data, cellTypes, details, states);
-        this.maxPheremones = getDoubleFromData(data, "maxPheromones");
-        this.percentFood = getDoubleFromData(data, "percentFood");
-        setInits();
-    }
+  private Random r = new Random();
+  private double maxPheremones;
+  private double percentFood;
+  private final int constant = 1;
+  private static final List<String> states = List.of("food", "empty", "nest", "ant", "fullant");
+  private final String FOOD = states.get(0);
+  private final String EMPTY = states.get(1);
+  private final String NEST = states.get(2);
+  private final String ANT = states.get(3);
+  private final String FULLANT = states.get(4);
+  public ForageGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details,  Map<String, Point> layout) {
+    super(data, cellTypes, details, states);
+    this.maxPheremones = getDoubleFromData(data, "maxPheromones");
+    this.percentFood = getDoubleFromData(data, "percentFood");
+    setLayout(layout);
+  }
 
-    /**
-     * Initializes an ArrayList of ArrayLists representative of the grid
-     **/
-    @Override
-    protected List<List<Cell>> createGrid() {
-        List<List<Cell>> ret = new ArrayList<>();
-        for (int i = 0; i < getRows(); i++) {
-            ArrayList<Cell> row = new ArrayList<>();
-            for (int j = 0; j < getColumns(); j++) {
-                row.add(new ForageCell("empty", j, i));
-            }
-            ret.add(row);
-        }
-        return ret;
+  private void setLayout(Map<String, Point> layout) {
+    if (layout == null){
+      setLocalStateInits();
     }
+    else{
+      setInitState(layout);
+    }
+  }
+
+  /**
+   * Initializes an ArrayList of ArrayLists representative of the grid
+   **/
+  @Override
+  protected List<List<Cell>> createGrid() {
+    List<List<Cell>> ret = new ArrayList<>();
+    for (int i = 0; i < getRows(); i++) {
+      ArrayList<Cell> row = new ArrayList<>();
+      for (int j = 0; j < getColumns(); j++) {
+        row.add(new ForageCell("empty", j, i));
+      }
+      ret.add(row);
+    }
+    return ret;
+  }
 
     @Override
     public void updateGrid() {
@@ -222,7 +231,7 @@ public class ForageGrid extends Grid {
         return current.getCoordinate().equals(new Point(getRows()/2,getColumns()/2));
     }
 
-    private void setInits() {
+    private void setLocalStateInits() {
         List<Cell> NestNeighbors = getAllNeighbors(getRows()/2, getColumns()/2);
         for (int i = 0; i < this.getRows(); i++) {
             for (int j = 0; j < this.getColumns(); j++) {

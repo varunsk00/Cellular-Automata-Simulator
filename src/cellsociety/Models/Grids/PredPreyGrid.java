@@ -2,6 +2,7 @@ package cellsociety.Models.Grids;
 
 import cellsociety.Models.Cells.*;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class PredPreyGrid extends Grid {
   private Random r = new Random();
 
 
-  public PredPreyGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details) {
+  public PredPreyGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details, Map<String, Point> layout) {
     super(data, cellTypes, details, states);
     this.predatorStartingEnergy = getIntFromData(data, "predatorStartingEnergy");
     this.predatorEnergyPerPrey = getIntFromData(data, "predatorEnergyPerPrey");
@@ -31,7 +32,16 @@ public class PredPreyGrid extends Grid {
     this.predatorGenerationRate = getIntFromData(data, "predatorGenerationRate");
     this.percentPredator = getDoubleFromData(data, "percentPredator");
     this.percentPrey = getDoubleFromData(data,"percentPrey");
-    setInits();
+    setLayout(layout);
+  }
+
+  private void setLayout(Map<String, Point> layout) {
+    if (layout == null){
+      setLocalInitsState();
+    }
+    else{
+      setInitState(layout);
+    }
   }
 
   /**
@@ -62,7 +72,7 @@ public class PredPreyGrid extends Grid {
     numIterations++;
   }
 
-  private void setInits() {
+  private void setLocalInitsState() {
     for (int i = 0; i < getRows(); i++) {
       for (int j = 0; j < getColumns(); j++) {
         PredPreyCell current = (PredPreyCell) current(i,j);

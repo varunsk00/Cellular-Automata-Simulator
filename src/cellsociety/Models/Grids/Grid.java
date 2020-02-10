@@ -21,7 +21,8 @@ public class Grid {
   private Map<String, String> details;
   protected int numIterations;
 
-  private ResourceBundle myResources = ResourceBundle.getBundle("Standard");
+  private static final String bundleName = "Standard";
+  private ResourceBundle myResources = ResourceBundle.getBundle(bundleName);
 
 
   /**
