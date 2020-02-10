@@ -12,9 +12,10 @@ import javafx.scene.shape.Shape;
 
 /**
  * Converts a Grid object to a dynamic GridPane object with Hexagon cell shapes that can be displayed in CAController
- * HexGridView extends GridView inheriting a GridPane
- * The GridPane is dynamic in size and changes based on changes to the size of the window
- * @authors Eric Doppelt
+ * HexGridView extends GridView inheriting a GridPane that becomes filled with offset Hexagons
+ * Hexagons are broken up into two halves to allow an offset grid
+ * The GridPane is dynamic in size and changes to fill the size of the window
+ * @author Eric Doppelt
  */
 public class HexGridView extends GridView {
 
@@ -24,9 +25,7 @@ public class HexGridView extends GridView {
 
     /**
      * Basic constructor for a GridView object
-     * Takes no parameters but creates an instance that can be used later to call updateGrid()
-     * Future variations can store a grid to the GridPane to be updated for efficiency purposes
-     * Creates the GridPane and sets Horizontal and Vertical Gaps to 1
+     * Takes no parameters but creates the hexagon halves by calling getRightHex() and getLeftHex()
      */
     public HexGridView() {
         myRightHex = getRightHex();
@@ -38,7 +37,6 @@ public class HexGridView extends GridView {
      * Clears instance variable myGridPane and updates it to show the grid parameter
      * Dynamically sized to fit size of center in BorderPane in Main
      * Called in Main every time the grid updates through the step() function
-     *
      * @param grid takes in a grid to be represented via a GridPane
      */
     @Override

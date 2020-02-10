@@ -60,6 +60,7 @@ public class GraphView {
      * @param stats is a Map that connects each State to its count
      */
     public void updateGraph(int time, Map<String, Integer> stats) {
+        System.out.println(time);
         if (time < 0) return;
         myLineChart.getData().clear();
         for (String state : mySeries.keySet()) {

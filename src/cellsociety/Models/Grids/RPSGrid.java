@@ -70,6 +70,7 @@ public class RPSGrid extends Grid {
         else if (probability() <= 0.5*diffusivityRate && (randomNeighbor.getState().equals(current(x,y).getState()) || randomNeighbor.getState().equals(EMPTY))){
             diffuseCell(current(x,y), randomNeighbor);
         }
+        numIterations++;
     }
 
     private void calculateEmptyNeighbors(Cell c, List<Cell> emptyNeighbors){

@@ -49,6 +49,7 @@ public class ForageGrid extends Grid {
             }
         }
         setCellsToFutureStates();
+        numIterations++;
     }
 
     private void setCellsToFutureStates() {

@@ -9,20 +9,18 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 /**
- * Converts a Grid object to a dynamic GridPane object that can be displayed in Main
- * GridPane is dynamic in size and changes based on changes to the size of the window
- * GridPane does not store a Grid, but future implementations could make GridPane instance variable mutable
- * to prevent clearing the GridPane on every update() call
+ * Converts a Grid object to a dynamic GridPane object with Rectangle cell shapes that can be displayed in CAController
+ * RectGridView extends GridView inheriting a GridPane
+ * The GridPane is dynamic in size and Rectangles grow or shrink to fill the size of the window
  * @authors Eric Doppelt, Jaidha Rosenblatt
  */
 public class RectGridView extends GridView {
     private Map<String, String> stateMap;
 
     /**
-     * Basic constructor for a GridView object
+     * Basic constructor for a RectGridView object
      * Takes no parameters but creates an instance that can be used later to call updateGrid()
-     * Future variations can store a grid to the GridPane to be updated for efficiency purposes
-     * Creates the GridPane and sets Horizontal and Vertical Gaps to 1
+     * Creates the GridPane and sets Horizontal and Vertical Gaps to 1 to show the Grid well
      */
     public RectGridView() {
         super();
@@ -35,7 +33,6 @@ public class RectGridView extends GridView {
      * Clears instance variable myGridPane and updates it to show the grid parameter
      * Dynamically sized to fit size of center in BorderPane in Main
      * Called in Main every time the grid updates through the step() function
-     *
      * @param grid takes in a grid to be represented via a GridPane
      */
     @Override
