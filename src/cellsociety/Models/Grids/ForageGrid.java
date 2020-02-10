@@ -13,36 +13,36 @@ import java.util.List;
  * @author Jaidha Rosenblatt
  */
 public class ForageGrid extends Grid {
-  private Random r = new Random();
-  private double maxPheremones;
-  private double percentFood;
-  private final int constant = 1;
-  private static final List<String> states = List.of("food", "empty", "nest", "ant", "fullant");
-  private final String FOOD = states.get(0);
-  private final String EMPTY = states.get(1);
-  private final String NEST = states.get(2);
-  private final String ANT = states.get(3);
-  private final String FULLANT = states.get(4);
+    private Random r = new Random();
+    private double maxPheremones;
+    private double percentFood;
+    private final int constant = 1;
+    private static final List<String> states = List.of("food", "empty", "nest", "ant", "fullant");
+    private final String FOOD = states.get(0);
+    private final String EMPTY = states.get(1);
+    private final String NEST = states.get(2);
+    private final String ANT = states.get(3);
+    private final String FULLANT = states.get(4);
 
-  /**
-   * Constructs a new Forage Simulation
-   * @param data map for this simulation's specific variables
-   * @param cellTypes map from state to colors
-   * @param details miscellaneous grid information, such as authors, titles, gridtype, etc.
-   * @param layout map from Cell states to points, if null -> random generated initial state
-   */
-  public ForageGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details,  Map<String, Point> layout) {
+    /**
+    * Constructs a new Forage Simulation
+    * @param data map for this simulation's specific variables
+    * @param cellTypes map from state to colors
+    * @param details miscellaneous grid information, such as authors, titles, gridtype, etc.
+    * @param layout map from Cell states to points, if null -> random generated initial state
+    */
+    public ForageGrid(Map<String, Double> data, Map<String, String> cellTypes, Map<String, String> details,  Map<String, Point> layout) {
     super(data, cellTypes, details, states);
     this.maxPheremones = getDoubleFromData(data, "maxPheromones");
     this.percentFood = getDoubleFromData(data, "percentFood");
     setLayout(layout);
-  }
+    }
 
-  /**
-   * Overrides updateGrid() method to specify all eight neighbors
-   */
-  @Override
-  public void updateGrid() {
+    /**
+    * Overrides updateGrid() method to specify all eight neighbors
+    */
+    @Override
+    public void updateGrid() {
     for (int i = 0; i < getRows(); i++) {
       for (int j = 0; j < getColumns(); j++) {
         List<Cell> neighbors = getAllNeighbors(i, j);
@@ -51,41 +51,41 @@ public class ForageGrid extends Grid {
     }
     setCellsToFutureStates();
     numIterations++;
-  }
+    }
 
-  private void setLayout(Map<String, Point> layout) {
+    @Override
+    protected List<List<Cell>> createGrid() {
+        List<List<Cell>> ret = new ArrayList<>();
+        for (int i = 0; i < getRows(); i++) {
+            ArrayList<Cell> row = new ArrayList<>();
+            for (int j = 0; j < getColumns(); j++) {
+                row.add(new ForageCell("empty", j, i));
+            }
+            ret.add(row);
+        }
+        return ret;
+    }
+
+    private void setLayout(Map<String, Point> layout) {
     if (layout == null){
       setLocalStateInits();
     }
     else{
       setInitState(layout);
     }
-  }
-
-  @Override
-  protected List<List<Cell>> createGrid() {
-    List<List<Cell>> ret = new ArrayList<>();
-    for (int i = 0; i < getRows(); i++) {
-      ArrayList<Cell> row = new ArrayList<>();
-      for (int j = 0; j < getColumns(); j++) {
-        row.add(new ForageCell("empty", j, i));
-      }
-      ret.add(row);
     }
-    return ret;
-  }
 
-  private void setCellsToFutureStates() {
+    private void setCellsToFutureStates() {
       for (int i = 0; i < getRows(); i++) {
           for (int j = 0; j < getColumns(); j++) {
               String state = current(i, j).getNextState();
               setCellState(i, j, state);
           }
       }
-  }
+    }
 
-  @Override
-  protected void updateCell(int x, int y, List<Cell> neighbors) {
+    @Override
+    protected void updateCell(int x, int y, List<Cell> neighbors) {
       ForageCell currentCell = (ForageCell) current(x, y);
       if(currentCell.isHungry() || currentCell.isFull()){
           handleAnt(currentCell, neighbors);
@@ -93,18 +93,18 @@ public class ForageGrid extends Grid {
       if(currentCell.getState().equals(NEST)){
           current(x,y).setNextState(ANT);
       }
-  }
+    }
 
-  private void handleAnt(ForageCell current, List<Cell> neighbors){
+    private void handleAnt(ForageCell current, List<Cell> neighbors){
       if(current.isFull()){
           goToNest(current, neighbors);
       }
       else if (current.isHungry()){
           goToFood(current, neighbors);
       }
-  }
+    }
 
-  private void goToNest(ForageCell current, List<Cell> neighbors){
+    private void goToNest(ForageCell current, List<Cell> neighbors){
       ForageCell maxHomePherCell = maxHomePheromonesCell(neighbors);
       Cell home = homeNeighbor(neighbors);
       if(home != null){
@@ -115,9 +115,9 @@ public class ForageGrid extends Grid {
           moveAnt(current, maxHomePherCell);
           dropHomePheromone(current);
       }
-  }
+    }
 
-  private void goToFood(ForageCell current, List<Cell> neighbors){
+    private void goToFood(ForageCell current, List<Cell> neighbors){
       if(foodNeighbor(neighbors) != null){
           current.setFull();
           System.out.println("EAT");
@@ -136,27 +136,27 @@ public class ForageGrid extends Grid {
               dropFoodPheromone(current);
           }
       }
-  }
+    }
 
-  private ForageCell foodNeighbor(List<Cell> neighbors){
+    private ForageCell foodNeighbor(List<Cell> neighbors){
       for(Cell c: neighbors){
           if (c.getState().equals(FOOD)){
               return (ForageCell) c;
           }
       }
       return null;
-  }
+    }
 
-  private ForageCell homeNeighbor(List<Cell> neighbors){
+    private ForageCell homeNeighbor(List<Cell> neighbors){
       for(Cell c: neighbors){
           if (atNest((ForageCell) c)){
               return (ForageCell) c;
           }
       }
       return null;
-  }
+    }
 
-  private void moveAnt(Cell a, Cell b){
+    private void moveAnt(Cell a, Cell b){
       if(a.getState().equals(ANT)){
           b.setNextState(ANT);
           a.setNextState(EMPTY);
@@ -165,27 +165,27 @@ public class ForageGrid extends Grid {
           b.setNextState(FULLANT);
           a.setNextState(EMPTY);
       }
-  }
+    }
 
-  private void dropFoodPheromone(ForageCell c){
+    private void dropFoodPheromone(ForageCell c){
       if(c.getFoodPher() >= maxPheremones) {
           c.updateFoodPher(0);
       }
       else{
           c.updateFoodPher(1);
       }
-  }
+    }
 
-  private void dropHomePheromone(ForageCell c){
+    private void dropHomePheromone(ForageCell c){
       if(c.getHomePher() >= maxPheremones - constant) {
           c.updateHomePher(0);
       }
       else{
           c.updateHomePher(1);
       }
-  }
+    }
 
-  private int maxFoodPheromones(List<Cell> neighbors){
+    private int maxFoodPheromones(List<Cell> neighbors){
       int maxFoodPher = 0;
       for (Cell cell : neighbors) {
           ForageCell neighbor = (ForageCell) cell;
@@ -193,9 +193,9 @@ public class ForageGrid extends Grid {
           maxFoodPher = neighbor.getFoodPher();
       }
       return maxFoodPher;
-  }
+    }
 
-  private int maxHomePheromones(List<Cell> neighbors){
+    private int maxHomePheromones(List<Cell> neighbors){
       int maxHomePher = 0;
       for(Cell cell : neighbors){
           ForageCell neighbor = (ForageCell) cell;
@@ -203,9 +203,9 @@ public class ForageGrid extends Grid {
           maxHomePher = neighbor.getHomePher();
       }
       return maxHomePher;
-  }
+    }
 
-  private ForageCell maxFoodPheromonesCell(List<Cell> neighbors){
+    private ForageCell maxFoodPheromonesCell(List<Cell> neighbors){
       int max = maxFoodPheromones(neighbors);
       List<ForageCell> maxPher = new ArrayList<>();
       for(Cell cell : neighbors){
@@ -214,13 +214,13 @@ public class ForageGrid extends Grid {
               maxPher.add(neighbor);
       }
       return randomNeighbor(maxPher);
-  }
+    }
 
-  private boolean isEmpty(ForageCell c){
+    private boolean isEmpty(ForageCell c){
       return c.getState().equals(EMPTY);
-  }
+    }
 
-  private ForageCell maxHomePheromonesCell(List<Cell> neighbors){
+    private ForageCell maxHomePheromonesCell(List<Cell> neighbors){
       int max = maxHomePheromones(neighbors);
       List<ForageCell> maxPher = new ArrayList<>();
       for(Cell cell : neighbors){
@@ -229,9 +229,9 @@ public class ForageGrid extends Grid {
           maxPher.add(neighbor);
       }
       return randomNeighbor(maxPher);
-  }
+    }
 
-  private ForageCell randomNeighbor(List<ForageCell> neighbors){
+    private ForageCell randomNeighbor(List<ForageCell> neighbors){
       int randIndex = r.nextInt(neighbors.size());
       for(ForageCell neighbor: neighbors){
           if(neighbors.get(randIndex).equals(neighbor) && neighbor.getState().equals(EMPTY)){
@@ -239,13 +239,13 @@ public class ForageGrid extends Grid {
           }
       }
       return null;
-  }
+    }
 
-  private boolean atNest(ForageCell current){
+    private boolean atNest(ForageCell current){
       return current.getCoordinate().equals(new Point(getRows()/2,getColumns()/2));
-  }
+    }
 
-  private void setLocalStateInits() {
+    private void setLocalStateInits() {
       List<Cell> NestNeighbors = getAllNeighbors(getRows()/2, getColumns()/2);
       for (int i = 0; i < this.getRows(); i++) {
           for (int j = 0; j < this.getColumns(); j++) {
@@ -256,5 +256,5 @@ public class ForageGrid extends Grid {
           }
       }
       this.current(getRows()/2,getColumns()/2).setState(NEST);
-  }
+    }
 }
