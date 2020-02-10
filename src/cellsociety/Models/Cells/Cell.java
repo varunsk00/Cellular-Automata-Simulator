@@ -2,12 +2,16 @@ package cellsociety.Models.Cells;
 
 import java.awt.Point;
 
+/**
+ * This class represents a single Cell within a simulation.
+ *
+ * @author Varun Kosgi
+ * @author Jaidha Rosenblatt
+ */
 public class Cell {
-
   private String state;
   private String nextState;
   private Point coordinate;
-
 
   /**
    * Constructs a new cell
@@ -20,16 +24,26 @@ public class Cell {
     this.coordinate = new Point(x, y);
   }
 
+  /**
+   * Get the upcoming state of a cell
+   *
+   * @return the modified state
+   */
   public String getNextState() {
     return nextState;
   }
 
+  /**
+   * Set the upcoming state of the cell
+   *
+   * @param nextState the new state that will be accessed by the grid
+   */
   public void setNextState(String nextState) {
     this.nextState = nextState;
   }
 
   /**
-   * Get current of the cell
+   * Get current location of the cell
    *
    * @return a point coordinate
    */
@@ -37,10 +51,20 @@ public class Cell {
     return this.coordinate;
   }
 
+  /**
+   * Get the X-component of the Point
+   *
+   * @return the X-coordinate of a cell
+   */
   public int getX(){
     return this.coordinate.x;
   }
 
+  /**
+   * Get the Y-component of the Point
+   *
+   * @return the Y-coordinate of a cell
+   */
   public int getY(){
     return this.coordinate.y;
   }
