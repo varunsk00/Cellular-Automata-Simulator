@@ -50,6 +50,7 @@ public class XMLParser {
   /**
    * Get data contained in this XML file as a grid object by scanning in all tags from XML file,
    * adding them into maps, and returning a grid with resulting data.
+   *
    * @return a grid of specified type with full properties
    * @throws XMLException custom exception that handles XML related errors
    */

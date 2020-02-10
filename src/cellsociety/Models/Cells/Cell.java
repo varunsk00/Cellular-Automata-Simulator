@@ -9,6 +9,7 @@ import java.awt.Point;
  * @author Jaidha Rosenblatt
  */
 public class Cell {
+
   private String state;
   private String nextState;
   private Point coordinate;
@@ -17,8 +18,8 @@ public class Cell {
    * Constructs a new cell
    *
    * @param state the initial state for cell Sets the cell's instance variables using update()
-   * @param x x-coordinate of cell
-   * @param y y-coordinate of cell
+   * @param x     x-coordinate of cell
+   * @param y     y-coordinate of cell
    **/
   public Cell(String state, int x, int y) {
     this.state = state;
@@ -58,7 +59,7 @@ public class Cell {
    *
    * @return the X-coordinate of a cell
    */
-  public int getX(){
+  public int getX() {
     return this.coordinate.x;
   }
 
@@ -67,7 +68,7 @@ public class Cell {
    *
    * @return the Y-coordinate of a cell
    */
-  public int getY(){
+  public int getY() {
     return this.coordinate.y;
   }
 
