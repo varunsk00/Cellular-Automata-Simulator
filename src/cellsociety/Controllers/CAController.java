@@ -195,6 +195,7 @@ public class CAController extends Application {
     private void updateClear() {
         allGrids.clear();
         allSimulationViews.clear();
+        totalGrids = 0;
         center.getChildren().clear();
         header.setClearOff();
     }
