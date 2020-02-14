@@ -19,7 +19,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * This class handles parsing XML files and returning a completed object. Modified from
+ * This class handles parsing XML files and converting it into a Grid of specified type. It is
+ * dependent on all of the Grid subclasses. This class uses XML start code from
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation
  *
  * @author Rhondu Smithwick
@@ -36,7 +37,8 @@ public class XMLParser {
   private ResourceBundle myResources = ResourceBundle.getBundle(bundleName);
 
   /**
-   * Create parser for XML files of given type.
+   * Create parser for XML files of given type. Also catches null file and replaces the error
+   * message.
    */
   public XMLParser(File dataFile) throws NullPointerException {
     if (dataFile == null) {

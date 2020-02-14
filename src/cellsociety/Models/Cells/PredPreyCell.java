@@ -1,7 +1,7 @@
 package cellsociety.Models.Cells;
 
 /**
- * This class represents a Predator or Prey Cell for the Foraging Simulation.
+ * This class represents a Predator or Prey Cell for the PredatorPrey Simulation.
  *
  * @author Varun Kosgi
  * @author Jaidha Rosenblatt
