@@ -1,0 +1,21 @@
+<?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
+<data simulationType="Foraging">
+  <details>
+    <author>Eric Doppelt, Varun Kosgi, Jaidha Rosenblatt</author>
+    <title>Foraging Simulation</title>
+    <gridType>hexagon</gridType>
+  </details>
+  <simulationProps>
+    <rows>50</rows>
+    <columns>50</columns>
+    <maxPheromones>5</maxPheromones>
+    <percentFood>0.02</percentFood>
+  </simulationProps>
+  <cellTypes>
+    <food>#00ff00</food>
+    <empty>#ffffff</empty>
+    <nest>#964b00</nest>
+    <ant>#909090</ant>
+    <fullant>#000000</fullant>
+  </cellTypes>
+</data>
