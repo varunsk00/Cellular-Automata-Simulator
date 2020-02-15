@@ -2,48 +2,45 @@ package cellsociety.Visuals;
 
 import cellsociety.Models.Cells.Cell;
 import cellsociety.Models.Grids.Grid;
-import java.util.Map;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
 /**
- * Converts a Grid object to a dynamic GridPane object with Hexagon cell shapes that can be
- * displayed in CAController HexGridView extends GridView inheriting a GridPane that becomes filled
- * with offset Hexagons Hexagons are broken up into two halves to allow an offset grid The GridPane
- * is dynamic in size and changes to fill the size of the window
+ * Converts a Grid object to a dynamic GridPane object with Hexagon cell shapes that can be displayed in CAController
+ * HexGridView extends GridView inheriting a GridPane that becomes filled with offset Hexagons and a Map told hold the colors for each state
+ * Hexagons are broken up into two halves to allow an offset grid
+ * The GridPane is dynamic in size and changes to fill the size of the window
  *
  * @author Eric Doppelt
  */
 public class HexGridView extends GridView {
 
-  private Shape myRightHex;
-  private Shape myLeftHex;
-  private Map<String, String> stateMap;
+  private static final Shape myRightHex = getRightHex();
+  private static final Shape myLeftHex = getLeftHex();
 
   /**
-   * Basic constructor for a GridView object Takes no parameters but creates the hexagon halves by
-   * calling getRightHex() and getLeftHex()
+   * Basic constructor for a GridView object
+   * Takes no parameters and simply calls the super to instantiate the GridPane
    */
   public HexGridView() {
-    myRightHex = getRightHex();
-    myLeftHex = getLeftHex();
+    super();
   }
 
   /**
-   * Method provides the functionality of the Grid View class Clears instance variable myGridPane
-   * and updates it to show the grid parameter Dynamically sized to fit size of center in BorderPane
-   * in Main Called in Main every time the grid updates through the step() function
+   * Method provides the functionality of the Grid View subclass
+   * Clears instance variable myGridPane and updates it to show the grid parameter
+   * Stores colors from the grid in myStates Map
+   * Dynamically sized to fit size of center in BorderPane in Main
+   * Called in Main every time the grid updates through the step() function
    *
    * @param grid takes in a grid to be represented via a GridPane
    */
   @Override
   public void updateGridView(Grid grid) {
-    myGridPane.getChildren().clear();
-    stateMap = grid.getStateMap();
+
+    setInstanceVariables(grid);
+
     boolean rowHasFrontBuffer = false;
 
     for (int i = 0; i < grid.getRows(); i++) {
@@ -67,47 +64,32 @@ public class HexGridView extends GridView {
     return 2 * j + 2;
   }
 
-  private void addHexagon(Cell cell, boolean buffer) {
+  private void addHexagon(Cell cell, boolean frontBuffer) {
     int column = 2 * cell.getCoordinate().x;
-    if (buffer) {
-      column++;
-    }
+    if (frontBuffer) column++;
     int row = cell.getCoordinate().y;
 
-    Color regionColor = Color.web(stateMap.get(cell.getState()));
-
-    Region addedLeftHex = makeHalfHex(myLeftHex, regionColor);
-    Region addedRightHex = makeHalfHex(myRightHex, regionColor);
-
-    myGridPane.add(addedLeftHex, column, row);
-    myGridPane.add(addedRightHex, ++column, row);
-
-    makeNodeDynamic(addedLeftHex);
-    makeNodeDynamic(addedRightHex);
+    addHalfHex(myLeftHex, cell.getState(), column, row);
+    addHalfHex(myRightHex, cell.getState(), ++column, row);
   }
 
-  private Region makeHalfHex(Shape shape, Color color) {
-    Region tempHalfHex = new Region();
+  private void addHalfHex(Shape shape, String state, int col, int row) {
+    Region addedHalfHex = makeHalfHex(shape, state);
+    addRegion(addedHalfHex, col, row);
+  }
+
+  private Region makeHalfHex(Shape shape, String state) {
+    Region tempHalfHex = makeRegion(state);
     tempHalfHex.setShape(shape);
-    Background regionBackground = new Background(
-        new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
-    tempHalfHex.setBackground(regionBackground);
     return tempHalfHex;
   }
 
   private void addBuffer(int i, int j) {
     Region addedBuffer = new Region();
-    myGridPane.add(addedBuffer, j, i);
-    myGridPane.setHgrow(addedBuffer, Priority.ALWAYS);
-    myGridPane.setVgrow(addedBuffer, Priority.ALWAYS);
+    addRegion(addedBuffer, j, i);
   }
 
-  private void makeNodeDynamic(Node region) {
-    myGridPane.setHgrow(region, Priority.ALWAYS);
-    myGridPane.setVgrow(region, Priority.ALWAYS);
-  }
-
-  private Shape getRightHex() {
+  private static Shape getRightHex() {
     Polygon rightHex = new Polygon();
     rightHex.getPoints().addAll(0.0, 0.0,
         100.0, 0.0,
@@ -117,7 +99,7 @@ public class HexGridView extends GridView {
     return rightHex;
   }
 
-  private Shape getLeftHex() {
+  private static Shape getLeftHex() {
     Polygon leftHex = new Polygon();
     leftHex.getPoints().addAll(0.0, 0.0,
         -100.0, 0.0,
