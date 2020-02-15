@@ -1,0 +1,25 @@
+<?cellsociety.Controllers.xml version="1.0" encoding="UTF-8" ?>
+<data simulationType="Fire">
+    <details>
+        <author>Eric Doppelt</author>
+        <title>Fire</title>
+        <gridType>rectangle</gridType>
+    </details>
+    <simulationProps>
+        <rows>40</rows>
+        <columns>40</columns>
+        <probCatch>0.8</probCatch>
+    </simulationProps>
+    <cellTypes>
+        <burning>#ff3300</burning>
+        <tree>#009933</tree>
+        <empty>#ffff00</empty>
+    </cellTypes>
+    <layout>
+        <cell>
+            <x>5</x>
+            <y>5</y>
+            <state>burning</state>
+        </cell>
+    </layout>
+</data>
